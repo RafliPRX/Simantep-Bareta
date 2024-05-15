@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mengambil Foto dan Meng-Upload ke Folder</title>
+  <style>
+    video {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <video autoplay></video>
+  <button id="snapshot-button">Ambil Foto</button>
+  <button id="snapshot-button1">Ambil Foto1</button>
+  <canvas id="canvas" style="display: none;"></canvas>
+
+  <script>
+    // Minta izin untuk mengakses kamera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        // Tampilkan video stream di elemen <video>
+        const video = document.querySelector('video');
+        video.srcObject = stream;
+        video.play();
+
+        // Tangkap foto saat tombol di klik
+        const snapshotButton = document.querySelector('#snapshot-button');
+        snapshotButton.addEventListener('click', function() {
+          const canvas = document.querySelector('#canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const imageData = canvas.toDataURL('image/jpeg');
+          uploadImage(imageData);
+        });
+          const snapshotButton1 = document.querySelector('#snapshot-button1');
+          snapshotButton1.addEventListener('click', function() {
+            const canvas1 = document.querySelector('#canvas');
+            const context1 = canvas1.getContext('2d');
+            canvas1.width = video1.videoWidth;
+            canvas1.height = video1.videoHeight;
+            context1.drawImage(video1, 0, 0, canvas.width, canvas.height);
+            const imageData1 = canvas.toDataURL('image/jpeg');
+            uploadImage1(imageData1);
+          });
+      })
+      .catch(function(error) {
+        console.error('Error accessing camera:', error);
+      });
+
+     function uploadImage(imageData) {
+      const url = 'saveimage.php';
+      const data = {
+        image: imageData
+      };
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(function(response) {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error uploading image');
+          }
+        })
+        .then(function(data) {
+          console.log(data.message);
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
+    function uploadImage1(imageData1) {
+      const url = 'Absen_out.php';
+      const data = {
+        image: imageData1
+      };
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(function(response) {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error uploading image');
+          }
+        })
+        .then(function(data) {
+          console.log(data.message);
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
+    
+    // Fungsi getUserMedia()
+    function getUserMedia() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+          const video = document.querySelector('video');
+          video.srcObject = stream;
+          video.play();
+          const video1 = document.querySelector('video1');
+          video1.srcObject = stream;
+          video1.play();
+        })
+        .catch(function(error) {
+          console.error('Error accessing camera:', error);
+        });
+    }
+
+    // Memanggil fungsi getUserMedia() saat halaman dimuat
+    window.addEventListener('load', function() {
+      getUserMedia();
+    });
+  </script>
+</body>
+</html>

@@ -183,8 +183,7 @@ $nama = $_SESSION['nama'];
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="card">
-                  </div>
+                  <div class="card"></div>
                 </div>
                 <div class="col-md-4">
                   <div class="card">

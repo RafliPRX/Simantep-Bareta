@@ -1,4 +1,5 @@
 <?php
+include 'konek.php';
 session_start();
 if (!isset($_SESSION['login'])) {
     header('Location:index.php');
@@ -121,7 +122,25 @@ if (!isset($_SESSION['login'])) {
         <div class="card">
           <div class="card-body">
             <h5 align="center" class="card-title fw-semibold mb-4">Daftar Surat</h5>
-            
+            <div class="card-body">
+              <div class="card">
+                <select class="form-control" name="nama" id="nama" >
+                  <option value="">Nama</option>
+                  <?php
+                    $sql = "SELECT * FROM user_bnn";
+                    $res = mysqli_query($konek, $sql);
+                    while ($brs=mysqli_fetch_array($res)) {
+                        if ($brs[0]==$nama) {
+                            echo "<option value= '$brs[1]'selected>$brs[1]</option>";
+                        }else {
+                            echo "<option value= '$brs[1]'>$brs[1]</option>";
+                        }
+                    }
+                  ?>
+                </select>                            
+                  <input type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="kirim" value="Cari">
+              </div>
+            </div>
             <table class="fl-table" border="1" width="100%" >
             <tr>
                 <th width="5%">NO.</th>
@@ -137,7 +156,7 @@ if (!isset($_SESSION['login'])) {
         <?php
         include 'konek.php';
         $no=1;
-        $kata=$_POST['kata'];
+        $kata=$_POST['kirim'];
         $role=$_SESSION['id_jabatan_sup'];
         $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, a.veri_2, a.veri_3 from surat a,jabatan b where a.id_jabatan=b.id_jabatan and (a.nama like '%$kata%' or a.keterangan='%$kata%') AND a.veri_1 = 2";
         $hasil=mysqli_query($konek,$query);

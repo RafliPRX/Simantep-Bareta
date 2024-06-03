@@ -281,6 +281,8 @@ if (!isset($_SESSION['login'])) {
                   .catch(function(error) {
                     console.error(error);
                   });
+                  alert("Berhasil Absen Pagi");
+                  location.reload();
                 } else {
                   alert("Location is not within radius");
                 }
@@ -327,6 +329,8 @@ if (!isset($_SESSION['login'])) {
                   .catch(function(error) {
                     console.error(error);
                   });
+                  alert("Berhasil Absen Malam");
+                  location.reload();
                 } else {
                   alert("Location is not within radius");
                 }
@@ -373,7 +377,9 @@ if (!isset($_SESSION['login'])) {
                       })
                       .catch(function(error) {
                         console.error(error);
-                      });
+                      });                      
+                      alert("Berhasil Absen Keluar");
+                      location.reload();
                     } else {
                       alert("Location is not within radius");
                     }

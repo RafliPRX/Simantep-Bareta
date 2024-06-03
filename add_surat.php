@@ -32,7 +32,7 @@ session_start();
         </div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a href="list_srt.php" class="text-nowrap logo-img">
-            <img src="image/logo sipecut 2.png" width="160" alt="" />
+            <img src="image/logo simantep 2.png" width="160" alt="" />
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>

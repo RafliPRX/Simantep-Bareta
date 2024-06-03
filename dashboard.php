@@ -38,7 +38,7 @@ $nama = $_SESSION['nama'];
         </div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a href="list_srt.php" class="text-nowrap logo-img">
-            <img src="image/logo sipecut 2.png" width="160" alt="" />
+            <img src="image/logo simantep 2.png" width="160" alt="" />
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
@@ -158,7 +158,7 @@ $nama = $_SESSION['nama'];
         $dashboard = "SELECT * FROM snap WHERE nama = '$nama' AND today = '$today'";
         $qry = mysqli_query($konek, $dashboard);
         $hasil = mysqli_fetch_array($qry);
-        $jam_wajib_masuk = date("07:30");
+        $jam_wajib_masuk = date("07:30:00");
         $jam_masuk = date($hasil[3]);
       ?>
       <div class="container-fluid">

@@ -39,7 +39,7 @@ if (!isset($_SESSION['login'])) {
         </div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a href="list_srt.php" class="text-nowrap logo-img">
-            <img src="image/logo sipecut 2.png" width="160" alt="" />
+            <img src="image/logo simantep 2.png" width="160" alt="" />
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>
@@ -156,7 +156,13 @@ if (!isset($_SESSION['login'])) {
       <div class="container-fluid">
         <div class="card">
           <div class="card-body">
+            <?php 
+              $jam_now = new DateTime("now");
+              $timezone = new DateTimeZone("Asia/Kuala_Lumpur");
+              $jam_now->setTimezone($timezone);
+            ?> 
             <h5 align="center" class="card-title fw-semibold mb-4">SnapShot Absen</h5>
+            <h5 align="center" class="card-title fw-semibold mb-4"> Jam Sekarang <?php echo $jam_now -> format('H:i:s'); ?> </h5>
             <div class="card">
                <div class="card-body">
                <video autoplay></video>
@@ -164,6 +170,10 @@ if (!isset($_SESSION['login'])) {
                <canvas id="canvas1" style="display: none;"></canvas>
                <div id="map"></div><br>
                <div class="form-control">
+
+               <input class="form-check-input primary" type="checkbox" name="" id="check_Malam">
+               <label class="form-check-label text-dark">Shift Malam</label><br><br>
+               
                <?php  
                     include 'konek.php';
                     $nama = $_SESSION['nama'];
@@ -173,11 +183,28 @@ if (!isset($_SESSION['login'])) {
                     $brs = mysqli_fetch_array($result);
                     if ($brs['today'] == $today) 
                     {
-                      ?> <button class="btn btn-danger" id="snapshot-button1">absen keluar</button> <?php
+                      ?> <button align="right" class="btn btn-danger" onclick="snapshot_out()">Absen Keluar</button> <?php
                     } else {
-                      ?> <button class="btn btn-primary" id="snapshot-button">absen masuk</button> <?php
+                      ?> <button align="left" class="btn btn-primary" onclick="handleButtonClick()">Absen Masuk</button> <?php
                     }
                 ?>
+                
+                <!-- <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                      <button align="left" class="btn btn-primary" id="snapshot-button">absen masuk</button>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                  <div class="card"></div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card">
+                      <button align="right" class="btn btn-danger" id="snapshot-button1">absen keluar</button>
+                  </div> -->
+                </div>
+                </div>
                 </div>
                <style>
                 #map { 
@@ -192,123 +219,259 @@ if (!isset($_SESSION['login'])) {
 
               <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="crossorigin=""></script>  
                <script>
+                function handleButtonClick() {
+                  var checkbox = document.getElementById("check_Malam");
+                  if (checkbox.checked) {
+                    snapshot_in_malam();
+                  } else{
+                    snapshot_in_pagi();
+                  }
+                }
                 // Minta izin untuk mengakses kamera
+                function startVideo() {
                 navigator.mediaDevices.getUserMedia({ video: true })
                   .then(function(stream) {
-                    // Tampilkan video stream di elemen <video>
                     const video = document.querySelector('video');
                     video.srcObject = stream;
                     video.play();
-                    
-
-                     // Tangkap foto saat tombol di klik
-                     const snapshotButton = document.querySelector('#snapshot-button');
-                     snapshotButton.addEventListener('click', function() {
-                      const canvas = document.querySelector('#canvas');
-                      const context = canvas.getContext('2d');
-                      canvas.width = video.videoWidth;
-                      canvas.height = video.videoHeight;
-                      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                      const imageData = canvas.toDataURL('image/jpeg');
-                      uploadImage(imageData);
-                     });
-                     const snapshotButton1 = document.querySelector('#snapshot-button1');
-                      snapshotButton1.addEventListener('click', function() {
-                        const canvas1 = document.querySelector('#canvas1');
-                        const context1 = canvas1.getContext('2d');
-                        canvas1.width = video.videoWidth;
-                        canvas1.height = video.videoHeight;
-                        context1.drawImage(video, 0, 0, canvas1.width, canvas1.height);
-                        const imageData1 = canvas1.toDataURL('image/jpeg');
-                        uploadImage1(imageData1);
-                      });
-                      
                   })
                   .catch(function(error) {
                     console.error('Error accessing camera:', error);
                   });
+                 }
+                 
+                function snapshot_in_pagi() {
+                // Tampilkan video stream di elemen <video>
+                startVideo(); 
+                const video = document.querySelector('video');
+                video.play();
 
-                function uploadImage(imageData) {
-                  const url = 'Absen_in.php';
-                  const data = {
-                    image: imageData
-                  };
-                  var currentLocation = map.getCenter();
-                  
-                  if (circle.getBounds().contains(currentLocation)) {
-                   fetch(url, {
+                // Tangkap foto saat tombol di klik
+                const canvas = document.querySelector('#canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = canvas.toDataURL('image/jpeg');
+                // uploadImage_in(imageData);
+                const url = 'Absen_in.php';
+                const data = {
+                  image: imageData
+                };
+                var currentLocation = map.getCenter();
+
+                if (circle.getBounds().contains(currentLocation)) {
+                  fetch(url, {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
-                   })
-                    .then(function(response) {
-                      if (response.ok) {
-                        return response.json();
-                      } else {
-                        throw new Error('Error uploading image');
-                      }
-                    })
-                    .then(function(data) {
-                      console.log(data.message);
-                    })
-                    .catch(function(error) {
-                      console.error(error);
-                    });
-                  } else {
-                    alert("Location is not within radius");
-                  }
+                  })
+                  .then(function(response) {
+                    if (response.ok) {
+                      return response.json();
+                    } else {
+                      throw new Error('Error uploading image');
+                    }
+                  })
+                  .then(function(data) {
+                    console.log(data.message);
+                  })
+                  .catch(function(error) {
+                    console.error(error);
+                  });
+                } else {
+                  alert("Location is not within radius");
                 }
-                function uploadImage1(imageData1) {
-                  const url = 'Absen_out.php';
-                  const data = {
-                    image: imageData1
-                  };
-                  var currentLocation = map.getCenter();
 
-                  if (circle.getBounds().contains(currentLocation)) {
-                   fetch(url, {
+               }
+               function snapshot_in_malam() {
+                // Tampilkan video stream di elemen <video>
+                startVideo(); 
+                const video = document.querySelector('video');
+                video.play();
+
+                // Tangkap foto saat tombol di klik
+                const canvas = document.querySelector('#canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = canvas.toDataURL('image/jpeg');
+                // uploadImage_in(imageData);
+                const url = 'Absen_in.php';
+                const data = {
+                  image: imageData
+                };
+                var currentLocation = map.getCenter();
+
+                if (circle.getBounds().contains(currentLocation)) {
+                  fetch(url, {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
-                   })
-                    .then(function(response) {
-                      if (response.ok) {
-                        return response.json();
-                      } else {
-                        throw new Error('Error uploading image');
-                      }
-                    })
-                    .then(function(data) {
-                      console.log(data.message);
-                    })
-                    .catch(function(error) {
-                      console.error(error);
-                    });
-                  } else {
-                    alert("Location is not within radius");
-                  }
+                  })
+                  .then(function(response) {
+                    if (response.ok) {
+                      return response.json();
+                    } else {
+                      throw new Error('Error uploading image');
+                    }
+                  })
+                  .then(function(data) {
+                    console.log(data.message);
+                  })
+                  .catch(function(error) {
+                    console.error(error);
+                  });
+                } else {
+                  alert("Location is not within radius");
                 }
+
+               }
+
+               function snapshot_out() {
+                // Tampilkan video stream di elemen <video>
+                startVideo(); 
+                const video = document.querySelector('video');
+                video.play();
+
+                // Tangkap foto saat tombol di klik
+                const canvas = document.querySelector('#canvas1');
+                const context = canvas.getContext('2d');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = canvas.toDataURL('image/jpeg');
+                // uploadImage_out(imageData);
+                const url = 'Absen_out.php';
+                    const data = {
+                      image: imageData
+                    };
+                    var currentLocation = map.getCenter();
+
+                    if (circle.getBounds().contains(currentLocation)) {
+                      fetch(url, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                      })
+                      .then(function(response) {
+                        if (response.ok) {
+                          return response.json();
+                        } else {
+                          throw new Error('Error uploading image');
+                        }
+                      })
+                      .then(function(data) {
+                        console.log(data.message);
+                      })
+                      .catch(function(error) {
+                        console.error(error);
+                      });
+                    } else {
+                      alert("Location is not within radius");
+                    }
+
+               }
+
+
+                    //  const snapshotButton = document.querySelector('#snapshot-button');
+                    //  snapshotButton.addEventListener('click', function() {
+                    //   const canvas = document.querySelector('#canvas');
+                    //   const context = canvas.getContext('2d');
+                    //   canvas.width = video.videoWidth;
+                    //   canvas.height = video.videoHeight;
+                    //   context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    //   const imageData = canvas.toDataURL('image/jpeg');
+                    //   uploadImage(imageData);
+                    //  });
+                    //  const snapshotButton1 = document.querySelector('#snapshot-button1');
+                    //   snapshotButton1.addEventListener('click', function() {
+                    //     const canvas1 = document.querySelector('#canvas1');
+                    //     const context1 = canvas1.getContext('2d');
+                    //     canvas1.width = video.videoWidth;
+                    //     canvas1.height = video.videoHeight;
+                    //     context1.drawImage(video, 0, 0, canvas1.width, canvas1.height);
+                    //     const imageData1 = canvas1.toDataURL('image/jpeg');
+                    //     uploadImage1(imageData1);
+                    //   });
+                      
+                    function uploadImage_in(imageData) {
+                    const url = 'Absen_in.php';
+                    const data = {
+                      image: imageData
+                    };
+                    var currentLocation = map.getCenter();
+
+                    if (circle.getBounds().contains(currentLocation)) {
+                      fetch(url, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                      })
+                      .then(function(response) {
+                        if (response.ok) {
+                          return response.json();
+                        } else {
+                          throw new Error('Error uploading image');
+                        }
+                      })
+                      .then(function(data) {
+                        console.log(data.message);
+                      })
+                      .catch(function(error) {
+                        console.error(error);
+                      });
+                    } else {
+                      alert("Location is not within radius");
+                    }
+                  }                
+                  function uploadImage_out(imageData) {
+                    const url = 'Absen_out.php';
+                    const data = {
+                      image: imageData
+                    };
+                    var currentLocation = map.getCenter();
+
+                    if (circle.getBounds().contains(currentLocation)) {
+                      fetch(url, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                      })
+                      .then(function(response) {
+                        if (response.ok) {
+                          return response.json();
+                        } else {
+                          throw new Error('Error uploading image');
+                        }
+                      })
+                      .then(function(data) {
+                        console.log(data.message);
+                      })
+                      .catch(function(error) {
+                        console.error(error);
+                      });
+                    } else {
+                      alert("Location is not within radius");
+                    }
+                  }                
                 
-                // Fungsi getUserMedia()
-                function getUserMedia() {
-                  navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function(stream) {
-                      const video = document.querySelector('video');
-                      video.srcObject = stream;
-                      video.play();
-                    })
-                    .catch(function(error) {
-                      console.error('Error accessing camera:', error);
-                    });
-                }
+                
 
                 // Memanggil fungsi getUserMedia() saat halaman dimuat
                 window.addEventListener('load', function() {
-                  getUserMedia();
+                  startVideo();
                 });
                  var map = L.map('map').setView([-0.4412475506659761, 117.21952014085822], 17);
                  //  var marker = L.marker([-0.4412475506659761, 117.21952014085822]).addTo(map);

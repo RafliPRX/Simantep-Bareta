@@ -6,32 +6,57 @@ session_start();
     // var_dump($_FILES); 
     // die;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$nama = $_SESSION['nama'];	
-	$filename =  time() . '-masuk'.'.jpg';
-	$filepath = 'uploads/';
-	date_default_timezone_set("Asia/Kuala_Lumpur");
-	$time= date("H:i");
-	$today= date("Y/m/d");
-    // Dekode data JSON yang diterima
+    $nama = $_SESSION['nama'];
+    $filename = time() . '-masuk' . '.jpg';
+    $filepath = 'uploads/';
+    date_default_timezone_set("Asia/Kuala_Lumpur");
+    $time = date("H:i:s");
+    // $time = date("16:30:00");
+    $today = date("Y/m/d");
+
+    // Decode JSON data received from the request
     $data = json_decode(file_get_contents('php://input'));
 
-    // Ambil data gambar dari request
+    // Check if the JSON data is valid
+    if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Invalid JSON data']);
+        return;
+    }
+
+    // Buat Cookie dengan nama 'startTime' dan simpan waktu saat ini
+    setcookie('startTime', time(), time() + (86400 * 30), '/'); // 86400 adalah detik dalam sehari, 30 adalah masa aktif Cookie dalam hari
+
+    // Get the image data from the request
     $imageData = $data->image;
 
-    // Mengonversi data gambar dari base64 ke format file
+    //bagian pagi dan malam
+    function bagian($time){
+     $currentTime = date('H:i:s', strtotime($time)); // Mengubah format waktu menjadi format 24 jam
+     $currentHour = date('H', strtotime($currentTime)); // Mendapatkan jam saat ini
+
+     if ($currentHour >= 6 && $currentHour < 15) {
+         return 'pagi';
+     } else {
+         return 'malam';
+     }    
+    }
+
+    $bagian_waktu = bagian($time);
+    // Convert the base64 image data to a file
     $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
     $imageData = str_replace(' ', '+', $imageData);
     $imageBinary = base64_decode($imageData);
 
-    // Tentukan nama file berdasarkan tanggal
+    // Set the filename based on the current date and time
     $filename = 'uploads/image_' . date('Y-m-d_H-i-s') . '.jpg';
 
-    // Simpan gambar ke folder server dengan nama file berdasarkan tanggal
+    // Save the image file to the server with the generated filename
     file_put_contents($filename, $imageBinary);
 
-    // Kirim respons ke klien
-    $response = ['message' => 'Gambar berhasil di-upload'];
-	$sql = "INSERT into snap(id_snap, nama, snap_in, jam_in, today) values( NULL, '$nama', '$filename', '$time', '$today')";
+    // Send a response to the client
+    echo json_encode(['message' => 'Image uploaded successfully']);
+    $sql = "INSERT into snap(id_snap, nama, snap_in, jam_in, today, bagian) values( NULL, '$nama', '$filename', '$time', '$today', '$bagian_waktu')";
     $res = mysqli_query($konek, $sql);
 	if ($res) {
       echo "Foto berhasil disimpan";
@@ -39,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       echo "Gagal menyimpan foto ke database";
     }
     header('Content-Type: application/json');
-    echo json_encode($response);
 } else {
     // Jika bukan metode POST, kirim respons error
     http_response_code(405); // Method Not Allowed

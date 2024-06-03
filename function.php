@@ -1,27 +1,6 @@
 <?php
     session_start();
     include 'konek.php';
-    // daftar user
-//     if (isset($_POST['register'])) {
-//     $nama = $_POST['nama'];
-//     $pass = $_POST['pass'];
-//     $jabatan = $_POST['jabatan'];
-
-//     $h_pass = password_hash($pass, PASSWORD_DEFAULT);
-
-//     $daftar = mysqli_query($konek, "INSERT INTO user_bnn (id, nama, pass, id_jabatan, id_jabatan_sup) VALUES (NULL, '$nama', '$h_pass', '$jabatan', '1')");
-
-//     if ($daftar) {
-//             echo "<script language ='JavaScript'> (window.alert('user baru telah terbuat'))
-//             location.href='index.php'
-//             </script>";
-//     } else {
-//             echo "<script language='JavaScript'>
-//                 (window.alert('error'))
-//                 location.href='signin.php'
-//             </script>";
-//     }
-// }
 
 //login Pengguna
 
@@ -50,7 +29,7 @@ if (isset($_POST['login'])) {
             } elseif ($role >= 2 && $role <= 8) {
                 header('Location:list_srt2dats.php');
             } elseif ($role == 9 || $role == 10) {
-                header('Location:list_srt3.php');
+                header('Location:list_srt3A.php');
             } elseif ($role == 11) {
                 header('Location:list_srt2dats.php');
             } else {

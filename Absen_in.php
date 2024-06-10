@@ -10,8 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $filename = time() . '-masuk' . '.jpg';
     $filepath = 'uploads/';
     date_default_timezone_set("Asia/Kuala_Lumpur");
-    $time = date("H:i:s");
-    // $time = date("16:30:00");
+    // $time = date("H:i:s");
+    // $time = date("07:00:00");
+    $time = date("19:30:00");
     $today = date("Y/m/d");
 
     // Decode JSON data received from the request
@@ -42,6 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      }    
     }
 
+    function jam_telat($time){
+      $currentTime = date('H:i:s', strtotime($time)); // Mengubah format waktu menjadi format 24 jam
+      $currentHour = date('H', strtotime($currentTime)); // Mendapatkan jam saat ini
+   
+      if ($currentHour >= 6 && $currentHour < 15) {
+          return '07:30:00';
+      } else {
+          return '18:00:00';
+      }
+      
+    }   
+
+    $waktu_telat = jam_telat($time);
     $bagian_waktu = bagian($time);
     // Convert the base64 image data to a file
     $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
@@ -56,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Send a response to the client
     echo json_encode(['message' => 'Image uploaded successfully']);
-    $sql = "INSERT into snap(id_snap, nama, snap_in, jam_in, today, bagian) values( NULL, '$nama', '$filename', '$time', '$today', '$bagian_waktu')";
+    $sql = "INSERT into snap(id_snap, nama, snap_in, jam_in, telat, today, bagian) values( NULL, '$nama', '$filename', '$time', TIMEDIFF('$time', '$waktu_telat'), '$today', '$bagian_waktu')";
     $res = mysqli_query($konek, $sql);
 	if ($res) {
       echo "Foto berhasil disimpan";

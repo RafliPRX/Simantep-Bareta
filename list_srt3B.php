@@ -1,6 +1,7 @@
 <?php
 include 'konek.php';
 session_start();
+date_default_timezone_set('Asia/Kuala_Lumpur');
 ?>
 <!doctype html>
 <html lang="en">
@@ -159,203 +160,205 @@ session_start();
                     <th width="10%" rowspan="2" >TANGGAL</th>
                     <th width="10%" rowspan="2" >NAMA</th>
                     <th width="20%" colspan="2" >JAM KEHADIRAN</th>
-                    <th width="20%" rowspan="2" >KWK</th>
+                    <th width="10%" rowspan="2" >KWK</th>
                     <th width="10%" rowspan="2" >JWK</th>
                     <th width="10%" rowspan="2" >JWK REAL</th>
-                    <th width="10%" rowspan="2" >KETERANGAN</th>
+                    <th width="20%" rowspan="2" >KETERANGAN</th>
                 </tr>
                 <Tr>
                     <th width="10%" >Masuk</th>
                     <th width="10%" >Keluar</th>
                 </Tr>
-                <?php
-                include 'konek.php';
-                if (isset($_POST['switch_pagi'])) {
-                  $no=1;
-                  $kata=$_GET['nama'];
-                  $role=$_SESSION['id_jabatan_sup'];
-                  $query = "SELECT today, nama, jam_in, jam_out, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
-                  $hasil = mysqli_query($konek, $query);
-                  while($brs=mysqli_fetch_array($hasil)){
-                      $jam_selesai = $brs[4];
-                      $jam_masuk = $brs[2];
-                      $jam_pulang = $brs[3];
-                      $kwk_real = kwkReal($jam_selesai);
-                      $jwk_real = sisa($jam_selesai);
-                      $status1 = telat($jam_masuk);
-                      $status2 = cepat($jam_pulang);
-                        echo "<tr>";
-                        echo "<th align ='center'>".$no++."</th>";
-                        echo "<th align ='center'>".$brs[0]."</th>";
-                        echo "<th align ='center'>".$brs[1]."</th>";
-                        echo "<th>".$brs[2]."</th>";
-                        echo "<th>".$brs[3]."</th>";
-                        echo "<th>".$kwk_real."</th>";
-                        echo "<th>".$jwk_real."</th>";
-                        echo "<th>".$jam_selesai."</th>";
-                        echo "<th>".$status1. "  " .$status2."</th>";
-                        echo "</tr>";
-                  }  
-                } elseif (isset($_POST['switch_malam'])) {
-                  $no=1;
-                  $kata=$_GET['nama'];
-                  $role=$_SESSION['id_jabatan_sup'];
-                  $query = "SELECT today, nama, jam_in, jam_out, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'malam'";
-                  $hasil = mysqli_query($konek, $query);
-                  while($brs=mysqli_fetch_array($hasil)){
-                      $jam_selesai_malam = $brs[4];
-                      $jam_masuk_malam = $brs[2];
-                      $jam_pulang_malam = $brs[3];
-                      $kwk_real_malam = kwkRealmalam($jam_selesai_malam);
-                      $jwk_real_malam = sisaMalam($jam_selesai_malam);
-                      $status1_malam = telatMalam($jam_masuk_malam);
-                      $status2_malam  = cepatMalam($jam_pulang_malam);
-                        echo "<tr>";
-                        echo "<th align ='center'>".$no++."</th>";
-                        echo "<th align ='center'>".$brs[0]."</th>";
-                        echo "<th align ='center'>".$brs[1]."</th>";
-                        echo "<th>".$brs[2]."</th>";
-                        echo "<th>".$brs[3]."</th>";
-                        echo "<th>".$kwk_real_malam."</th>";
-                        echo "<th>".$jwk_real_malam."</th>";
-                        echo "<th>".$jam_selesai_malam."</th>";
-                        echo "<th>".$status1_malam. "  " .$status2_malam."</th>";
-                        echo "</tr>";
-                  }  
-                } else {
-                  $no=1;
-                  $kata=$_GET['nama'];
-                  $role=$_SESSION['id_jabatan_sup'];
-                  $query = "SELECT today, nama, jam_in, jam_out, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
-                  $hasil = mysqli_query($konek, $query);
-                  while($brs=mysqli_fetch_array($hasil)){
-                      $jam_selesai = $brs[4];
-                      $jam_masuk = $brs[2];
-                      $jam_pulang = $brs[3];
-                      $kwk_real = kwkReal($jam_selesai);
-                      $jwk_real = sisa($jam_selesai);
-                      $status1 = telat($jam_masuk);
-                      $status2 = cepat($jam_pulang);
-                        echo "<tr>";
-                        echo "<th align ='center'>".$no++."</th>";
-                        echo "<th align ='center'>".$brs[0]."</th>";
-                        echo "<th align ='center'>".$brs[1]."</th>";
-                        echo "<th>".$brs[2]."</th>";
-                        echo "<th>".$brs[3]."</th>";
-                        echo "<th>".$kwk_real."</th>";
-                        echo "<th>".$jwk_real."</th>";
-                        echo "<th>".$jam_selesai."</th>";
-                        echo "<th>".$status1. "  " .$status2."</th>";
-                        echo "</tr>";
-                  }  
+                  <?php
+                  if (isset($_POST['switch_pagi'])) {
+                    $no = 1;
+                    $kata = $_GET['nama'];
+                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
+                    $qry_total = "SELECT TIME_FORMAT(SEC_TO_TIME(SUM(IF(telat > '00:00:00', TIME_TO_SEC(telat), 0))), '%H:%i:%s') AS total_telat, TIME_FORMAT(SEC_TO_TIME(SUM(IF(cepat > '00:00:00', TIME_TO_SEC(cepat), 0))), '%H:%i:%s') AS total_cepat FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
+                    $res_total = mysqli_query($konek, $qry_total);
+                    $brs_total = mysqli_fetch_array($res_total);
+                    $res = mysqli_query($konek, $qry);
 
-                }
-                                  
-              function kwkReal($jam_selesai) {
-                $jwk_real_raw = strtotime("08:00:00");
-                $jam_selesai_raw = strtotime($jam_selesai);
-                $kwk_real_raw = strtotime("00:00:00"); 
-                if ($jam_selesai_raw < $jwk_real_raw ) {
-                  $kwk_raw = $jwk_real_raw - $jam_selesai_raw;
-                } else {
-                  $kwk_raw = $kwk_real_raw;
-                }
-                $kwk_real = date("H:i:s", $kwk_raw);
-                return $kwk_real;
-              }
-              function kwkRealmalam($jam_selesai_malam) {
-                $jwk_real_raw = strtotime("08:00:00");
-                $jam_selesai_raw = strtotime($jam_selesai_malam);
-                $kwk_real_raw = strtotime("00:00:00"); 
-                if ($jam_selesai_raw < $jwk_real_raw ) {
-                  $kwk_raw = $jwk_real_raw - $jam_selesai_raw;
-                } else {
-                  $kwk_raw = $kwk_real_raw;
-                }
-                $kwk_real = date("H:i:s", $kwk_raw);
-                return $kwk_real;
-              }
+                    while ($brs = mysqli_fetch_array($res)) {
+                      $total = $brs[8];
+                      $jam_masuk = $brs[3];
+                      $telat = $brs[4];
+                      $jam_pulang = $brs[6];
+                      $cepat = $brs[7];
+                      $kwk_real = kwkReal($total);
+                      $jwk_real = sisa($total);
+                      $status1 = telat($jam_masuk, $telat);
+                      $status2 = cepat($jam_pulang, $cepat);
+                      ?> 
+                      <tr>
+                        <th align ='center'><?php echo $no++ ?></th>
+                        <th align ='center'><?php echo $brs[0] ?></th>
+                        <th align ='center'><?php echo $brs[1] ?></th>
+                        <th align ='center'><?php echo $jam_masuk ?></th>
+                        <th align ='center'><?php echo $jam_pulang ?></th>
+                        <th align ='center'><?php echo $kwk_real ?></th>
+                        <th align ='center'><?php echo $jwk_real ?></th>
+                        <th align ='center'><?php echo $total ?></th>
+                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> </th>
+                      </tr>
+                      <?php
 
-              function telat($jam_masuk){
-                $telat = strtotime('07:31:00');
-                $waktuMasuk = strtotime($jam_masuk);
+                    }
+                    ?> 
+                      <tr>
+                        <th align ='center' colspan="8">Total Telat</th>
+                        <th align="center"> <?php echo $brs_total[0] ?> </th>
+                      </tr>
+                      <tr>
+                        <th align ='center' colspan="8">Total Pulang Cepat</th>
+                        <th align="center"> <?php echo $brs_total[1] ?> </th>
+                      </tr>
 
-                if ($waktuMasuk > $telat) {
-                  $terlambat = "Telat";
-                } else {
-                  $terlambat = false;
-                }
-                return $terlambat;
-              }
-              function telatMalam($jam_masuk_malam){
-                $telat = strtotime('17:00:00');
-                $waktuMasuk = strtotime($jam_masuk_malam);
+                    <?php
+                  } elseif (isset($_POST['switch_malam'])) {
+                    $no = 1;
+                    $kata = $_GET['nama'];
+                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'malam'";
+                    $qry_total = "SELECT TIME_FORMAT(SEC_TO_TIME(SUM(IF(telat > '00:00:00', TIME_TO_SEC(telat), 0))), '%H:%i:%s') AS total_telat, TIME_FORMAT(SEC_TO_TIME(SUM(IF(cepat > '00:00:00', TIME_TO_SEC(cepat), 0))), '%H:%i:%s') AS total_cepat FROM snap WHERE (nama like '%$kata%') AND bagian = 'malam'";
+                    $res_total = mysqli_query($konek, $qry_total);
+                    $brs_total = mysqli_fetch_array($res_total);
+                    $res = mysqli_query($konek, $qry);
 
-                if ($waktuMasuk > $telat) {
-                  $terlambat = "Telat";
-                } else {
-                  $terlambat = false;
-                }
-                return $terlambat;
-              }
+                    while ($brs = mysqli_fetch_array($res)) {
+                      $total = $brs[8];
+                      $jam_masuk = $brs[3];
+                      $telat = $brs[4];
+                      $jam_pulang = $brs[6];
+                      $cepat = $brs[7];
+                      $kwk_real = kwkReal($total);
+                      $jwk_real = sisa($total);
+                      $status1 = telat($jam_masuk, $telat);
+                      $status2 = cepat($jam_pulang, $cepat);
+                      ?> 
+                      <tr>
+                        <th align ='center'><?php echo $no++ ?></th>
+                        <th align ='center'><?php echo $brs[0] ?></th>
+                        <th align ='center'><?php echo $brs[1] ?></th>
+                        <th align ='center'><?php echo $jam_masuk ?></th>
+                        <th align ='center'><?php echo $jam_pulang ?></th>
+                        <th align ='center'><?php echo $kwk_real ?></th>
+                        <th align ='center'><?php echo $jwk_real ?></th>
+                        <th align ='center'><?php echo $total ?></th>
+                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> </th>
+                      </tr>
+                      <?php
 
-              function cepat($jam_pulang){
-                $jam_balik = strtotime('16:00:00');
-                $waktuSelesai = strtotime($jam_pulang);
-                if ($waktuSelesai <= $jam_balik) {
-                  $cepat = "Pulang Cepat";
-                } else {
-                  $cepat = false;
-                }
-                return $cepat;
-              }
+                    }
+                    ?> 
+                      <tr>
+                        <th align ='center' colspan="8">Total Telat</th>
+                        <th align="center"> <?php echo $brs_total[0] ?> </th>
+                      </tr>
+                      <tr>
+                        <th align ='center' colspan="8">Total Pulang Cepat</th>
+                        <th align="center"> <?php echo $brs_total[1] ?> </th>
+                      </tr>
 
-              function cepatMalam($jam_pulang_malam){
-                $jam_balik = strtotime('06:00:00');
-                $waktuSelesai = strtotime($jam_pulang_malam);
-                if ($waktuSelesai < $jam_balik) {
-                  $cepat = "Pulang Cepat";
-                } else {
-                  $cepat = false;
-                }
-                return $cepat;
-              }
+                    <?php
+                  } else {
+                    $no = 1;
+                    $kata = $_GET['nama'];
+                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
+                    $qry_total = "SELECT TIME_FORMAT(SEC_TO_TIME(SUM(IF(telat > '00:00:00', TIME_TO_SEC(telat), 0))), '%H:%i:%s') AS total_telat, TIME_FORMAT(SEC_TO_TIME(SUM(IF(cepat > '00:00:00', TIME_TO_SEC(cepat), 0))), '%H:%i:%s') AS total_cepat FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
+                    $res_total = mysqli_query($konek, $qry_total);
+                    $brs_total = mysqli_fetch_array($res_total);
+                    $res = mysqli_query($konek, $qry);
 
-               function sisa($jam_selesai) {
-                $jam_fin_modif = strtotime($jam_selesai);
-                $jwk = strtotime("08:00:00");
-                
-                if ($jam_fin_modif < $jwk) {
-                  $jwk_raw = $jam_fin_modif;
-                } else {
-                  $jwk_raw = $jwk;
-                }
-                $jwk_real = date("H:i:s", $jwk_raw);
+                    while ($brs = mysqli_fetch_array($res)) {
+                      $total = $brs[8];
+                      $jam_masuk = $brs[3];
+                      $telat = $brs[4];
+                      $jam_pulang = $brs[6];
+                      $cepat = $brs[7];
+                      $kwk_real = kwkReal($total);
+                      $jwk_real = sisa($total);
+                      $status1 = telat($jam_masuk, $telat);
+                      $status2 = cepat($jam_pulang, $cepat);
+                      ?> 
+                      <tr>
+                        <th align ='center'><?php echo $no++ ?></th>
+                        <th align ='center'><?php echo $brs[0] ?></th>
+                        <th align ='center'><?php echo $brs[1] ?></th>
+                        <th align ='center'><?php echo $jam_masuk ?></th>
+                        <th align ='center'><?php echo $jam_pulang ?></th>
+                        <th align ='center'><?php echo $kwk_real ?></th>
+                        <th align ='center'><?php echo $jwk_real ?></th>
+                        <th align ='center'><?php echo $total ?></th>
+                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> </th>
+                      </tr>
+                      <?php
 
-                return $jwk_real;
-              }
+                    }
+                    ?> 
+                      <tr>
+                        <th align ='center' colspan="8">Total Telat</th>
+                        <th align="center"> <?php echo $brs_total[0] ?> </th>
+                      </tr>
+                      <tr>
+                        <th align ='center' colspan="8">Total Pulang Cepat</th>
+                        <th align="center"> <?php echo $brs_total[1] ?> </th>
+                      </tr>
 
-              function sisaMalam($jam_selesai_malam) {
-                $jam_fin_modif = strtotime($jam_selesai_malam);
-                $jwk = strtotime("08:00:00");
-                
-                if ($jam_fin_modif < $jwk) {
-                  $jwk_raw = $jam_fin_modif;
-                } else {
-                  $jwk_raw = $jwk;
-                }
-                $jwk_real = date("H:i:s", $jwk_raw);
+                    <?php
+                  }
 
-                return $jwk_real;
-              }
-
-
+                    
+                  function kwkReal($total) {
+                    $jwk_real_raw = strtotime("08:00:00");
+                    $jam_selesai_raw = strtotime($total);
+                    $kwk_real_raw = strtotime("00:00:00"); 
+                    if ($jam_selesai_raw < $jwk_real_raw ) {
+                      $kwk_raw = $jwk_real_raw - $jam_selesai_raw;
+                    } else {
+                      $kwk_raw = $kwk_real_raw;
+                    }
+                    $kwk_real = gmdate("H:i:s", $kwk_raw);
+                    return $kwk_real;
+                  }
+                  function sisa($total) {
+                    $jam_fin_modif = strtotime($total);
+                    $jwk = strtotime("08:00:00");
+                    
+                    if ($jam_fin_modif < $jwk) {
+                      $jwk_raw = $jam_fin_modif;
+                    } else {
+                      $jwk_raw = $jwk;
+                    }
+                    $jwk_real = date("H:i:s", $jwk_raw);
+    
+                    return $jwk_real;
+                  }
+                  function telat($jam_masuk, $telat){
+                    $telat_raw = strtotime('07:30:00');
+                    $waktuMasuk = strtotime($jam_masuk);
+                    // $telat_real = date("H:i:s", $telat);
+                    if ($waktuMasuk > $telat_raw) {
+                      $terlambat = "Telat: ".$telat."<br>";
+                    } else {
+                      $terlambat = false;
+                    }
+                    return $terlambat;
+                  }
+                  function cepat($jam_pulang, $cepat){
+                    $jam_balik = strtotime('16:00:00');
+                    $waktuSelesai = strtotime($jam_pulang);
+                    if ($waktuSelesai <= $jam_balik) {
+                      $cepat = "Pulang Cepat :". $cepat;
+                    } else {
+                      $cepat = false;
+                    }
+                    return $cepat;
+                  }
                   ?>
                   <script>
                     console.log(<?php echo $jwk_ori ?>);
                   </script>
-            </table>
-      
+            </table><br>
           </div>
         </div>
       </div>

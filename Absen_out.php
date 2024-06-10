@@ -7,7 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $filename = time() . '-masuk' . '.jpg';
     $filepath = 'uploads/';
     date_default_timezone_set("Asia/Kuala_Lumpur");
-    $time = date("H:i:s");
+    // $time = date("H:i:s");
+    $time = date("04:00:00");
     $today = date("Y/m/d");
 
     // Decode JSON data received from the request
@@ -19,7 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['error' => 'Invalid JSON data']);
         return;
     }
+    function jam_cepat($time){
+        $currentTime = date('H:i:s', strtotime($time)); // Mengubah format waktu menjadi format 24 jam
+        $currentHour = date('H', strtotime($currentTime)); // Mendapatkan jam saat ini
 
+        if ($currentHour >= 8 && $currentHour < 18) {
+            return '16:00:00';
+        } else {
+            return '07:30:00';
+        }
+        
+      }   
+    $jam_cepat = jam_cepat($time);  
     // Get the image data from the request
     $imageData = $data->image;
 
@@ -52,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Send a response to the client
     echo json_encode(['message' => 'Image uploaded successfully']);
-    $sql = "UPDATE snap SET snap_out='$filename', jam_out='$time', total='$formattedTime' WHERE today = '$today'";
+    $sql = "UPDATE snap SET snap_out='$filename', jam_out='$time', total='$formattedTime', cepat = TIMEDIFF('$jam_cepat', '$time') WHERE today = '$today'";
     $res = mysqli_query($konek, $sql);
 	if ($res) {
       echo "Foto berhasil disimpan";

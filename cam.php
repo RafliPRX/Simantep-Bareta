@@ -50,7 +50,7 @@ if (!isset($_SESSION['login'])) {
           <ul id="sidebarnav">
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">S.I.A.B</span>
+              <span class="hide-menu">Absensi Pegawai</span>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="dashboard.php" aria-expanded="false">
@@ -74,24 +74,24 @@ if (!isset($_SESSION['login'])) {
             </li>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Sipecut</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="list_srt.php" aria-expanded="false">
-              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                  <path d="M4 13h3l3 3h4l3 -3h3" />
-                </svg>
-                <span class="hide-menu">Daftar Surat</span>
-              </a>
+              <span class="hide-menu">Pengajuan Cuti</span>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="add_surat.php" aria-expanded="false">
               <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
               <path d="M16 19h6" /><path d="M19 16v6" /><path d="M3 7l9 6l9 -6" /></svg>
-                <span class="hide-menu">Buat Surat</span>
+                <span class="hide-menu">Tambah Surat</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="list_srt.php" aria-expanded="false">
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                  <path d="M4 13h3l3 3h4l3 -3h3" />
+                </svg>
+                <span class="hide-menu">Progres Pengajuan Surat</span>
               </a>
             </li>
           </ul>
@@ -170,9 +170,6 @@ if (!isset($_SESSION['login'])) {
                <canvas id="canvas1" style="display: none;"></canvas>
                <div id="map"></div><br>
                <div class="form-control">
-
-               <input class="form-check-input primary" type="checkbox" name="" id="check_Malam">
-               <label class="form-check-label text-dark">Shift Malam</label><br><br>
                
                <?php  
                     include 'konek.php';
@@ -185,7 +182,7 @@ if (!isset($_SESSION['login'])) {
                     {
                       ?> <button align="right" class="btn btn-danger" onclick="snapshot_out()">Absen Keluar</button> <?php
                     } else {
-                      ?> <button align="left" class="btn btn-primary" onclick="handleButtonClick()">Absen Masuk</button> <?php
+                      ?> <button align="left" class="btn btn-primary" onclick="snapshot_in()">Absen Masuk</button> <?php
                     }
                 ?>
                 
@@ -219,14 +216,6 @@ if (!isset($_SESSION['login'])) {
 
               <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="crossorigin=""></script>  
                <script>
-                function handleButtonClick() {
-                  var checkbox = document.getElementById("check_Malam");
-                  if (checkbox.checked) {
-                    snapshot_in_malam();
-                  } else{
-                    snapshot_in_pagi();
-                  }
-                }
                 // Minta izin untuk mengakses kamera
                 function startVideo() {
                 navigator.mediaDevices.getUserMedia({ video: true })
@@ -240,7 +229,7 @@ if (!isset($_SESSION['login'])) {
                   });
                  }
                  
-                function snapshot_in_pagi() {
+                function snapshot_in() {
                 // Tampilkan video stream di elemen <video>
                 startVideo(); 
                 const video = document.querySelector('video');
@@ -281,62 +270,13 @@ if (!isset($_SESSION['login'])) {
                   .catch(function(error) {
                     console.error(error);
                   });
-                  alert("Berhasil Absen Pagi");
+                  alert("Absensi Berhasil");
                   location.reload();
                 } else {
                   alert("Location is not within radius");
                 }
 
                }
-               function snapshot_in_malam() {
-                // Tampilkan video stream di elemen <video>
-                startVideo(); 
-                const video = document.querySelector('video');
-                video.play();
-
-                // Tangkap foto saat tombol di klik
-                const canvas = document.querySelector('#canvas');
-                const context = canvas.getContext('2d');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageData = canvas.toDataURL('image/jpeg');
-                // uploadImage_in(imageData);
-                const url = 'Absen_in.php';
-                const data = {
-                  image: imageData
-                };
-                var currentLocation = map.getCenter();
-
-                if (circle.getBounds().contains(currentLocation)) {
-                  fetch(url, {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                  })
-                  .then(function(response) {
-                    if (response.ok) {
-                      return response.json();
-                    } else {
-                      throw new Error('Error uploading image');
-                    }
-                  })
-                  .then(function(data) {
-                    console.log(data.message);
-                  })
-                  .catch(function(error) {
-                    console.error(error);
-                  });
-                  alert("Berhasil Absen Malam");
-                  location.reload();
-                } else {
-                  alert("Location is not within radius");
-                }
-
-               }
-
                function snapshot_out() {
                 // Tampilkan video stream di elemen <video>
                 startVideo(); 

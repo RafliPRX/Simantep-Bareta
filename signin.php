@@ -150,7 +150,7 @@ include 'konek.php';
     
         $h_pass = password_hash($pass, PASSWORD_DEFAULT);
     
-        $daftar = mysqli_query($konek, "INSERT INTO user_bnn (id, nama, pass, nrk, id_jabatan_sup) VALUES (NULL, '$nama', '$h_pass', '$nrk', '1')");
+        $daftar = mysqli_query($konek, "INSERT INTO user_bnn (id, nama, pass, nrk, id_jabatan_sup, Locked) VALUES (NULL, '$nama', '$h_pass', '$nrk', '1', '1')");
     
         if ($daftar) {
                 echo "<script language ='JavaScript'> (window.alert('user baru telah terbuat'))

@@ -28,7 +28,7 @@ include 'konek.php';
                   <img src="image/logo sipecut 2.png" width="220" alt="">
                 </a>
                 <p class="text-center">Sistem Pengajuan Cuti</p>
-                <form action="indexADM.php" method="post">
+                <form action="function.php" method="post">
                   <div class="mb-3">
                     <input class="form-control" value="admin" type="hidden" name="nama" id="nama" class="form-control">
                   </div>
@@ -48,32 +48,4 @@ include 'konek.php';
   <script src="src/assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<?php
-if (isset($_POST['loginADM'])) {
-  $nama = $_POST['nama'];
-  $pass = $_POST['pass'];
-
-  $_SESSION['loginADM'] = $_POST['loginADM'];
-  // $cek = mysqli_query($konek, "SELECT a.nama, a.pass, a.nrk, b.id_jabatan, a.id_jabatan_sup, b.no_kelompok FROM user_bnn a, kelompok b WHERE a.nama = b.nama AND a.nama='$nama'");
-  $cek = mysqli_query($konek, "SELECT * FROM admin_bnn WHERE nama='$nama'");
-  // $cek = mysqli_query($konek, "SELECT * FROM user_bnn WHERE nama = '$nama'");
-  $hitung = mysqli_num_rows($cek);
-  $pw = mysqli_fetch_assoc($cek);
-
-  $passNow = $pw['pass'];
-
-  if ($hitung > 0) {
-      if (password_verify($pass, $passNow)) {
-          $_SESSION['nama'] = $pw['nama'];
-          header('Location:list_srtADM.php');
-      } else {
-          echo "<script language ='JavaScript'> (window.alert('Error: Invalid password'))</script>";
-          header('Location: indexADM.php');
-      }
-  } else {
-      echo "<script language ='JavaScript'> (window.alert('Error: User not found'))</script>";
-      header('Location: indexADM.php');
-  }
-}
-?>
 </html>

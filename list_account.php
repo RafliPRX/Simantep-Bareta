@@ -1,9 +1,5 @@
 <?php
 session_start();
-if (!isset($_SESSION['loginADM'])) {
-  header('Location:indexADM.php');
-    exit;
-}
 ?>
 <!doctype html>
 <html lang="en">
@@ -133,92 +129,41 @@ if (!isset($_SESSION['loginADM'])) {
       <div class="container-fluid">
         <div class="card">
           <div class="card-body">
-            <h5 align="center" class="card-title fw-semibold mb-4">Daftar Surat</h5>
+            <h5 align="center" class="card-title fw-semibold mb-4">Daftar Akun</h5>
             
             <table class="fl-table" border="1" width="100%" >
             <tr>
                 <th width="5%">NO.</th>
-                <th width="10%">ID SURAT</th>
-                <th width="20%">NAMA</th>
-                <th width="20%">KETERANGAN</th>
-                <th width="10%">JABATAN</th>
-                <th width="10%">PJ / PM / KOORDINATOR</th>
-                <th width="10%">KEPEGAWAIAN</th>
-                <th width="10%">KASUBAG TATA USAHA</th>
-                <th width="30%">SURAT</th>
+                <th width="20%"> NAMA </th>                
+                <th width="20%"> STATUS </th>
+                <th width="20%"> DETAIL </th>
             </tr>
         <?php
         include 'konek.php';
         $no=1;
-        $kata=$_POST['kata'];
         $role=$_SESSION['id_jabatan_sup'];
-        $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, a.veri_2, a.veri_3 from surat a,jabatan b where a.id_jabatan=b.id_jabatan and (a.nama like '%$kata%' or a.keterangan='%$kata%') AND a.veri_1 = 2 AND a.veri_2 = 2 AND a.veri_3 = 2";
+        $query="SELECT * FROM user_bnn WHERE id_jabatan_sup = '1'";
         $hasil=mysqli_query($konek,$query);
         while ($brs=mysqli_fetch_array($hasil))
         {
+            $status_raw = $brs[5];
+            $status = status($status_raw);
             echo "<tr>";
             echo "<th align ='center'>".$no++."</th>";
-            echo "<th align ='center'>".$brs[0]."</th>";
             echo "<th align ='center'>".$brs[1]."</th>";
-            echo "<th>".$brs[2]."</th>";
-            echo "<th>".$brs[3]."</th>";
-            if ($brs[4] == 2) {
-                echo "<td align ='center'>";
-                echo "<img src ='green.png' width ='25' height ='25'";
-                echo "</td>";
-            }else if ($brs[4] == 1){
-                echo "<td align ='center'>";
-                echo "<img src ='red.png' width ='25' height ='25'";
-                echo "</td>";
-            } else if ($brs[4] == 0){
-                echo "<td align ='center'>";
-                echo "belum dijawab";
-                echo "</td>";
-            } else {
-                echo "<td align ='center'>";
-                echo "undefined";
-                echo "</td>";
-            }
-            if ($brs[5] == 2) {
-                echo "<td align ='center'>";
-                echo "<img src ='green.png' width ='25' height ='25'";
-                echo "</td>";
-            }else if ($brs[5] == 1){
-                echo "<td align ='center'>";
-                echo "<img src ='red.png' width ='25' height ='25'";
-                echo "</td>";
-            }else if ($brs[5] == 0){
-                echo "<td align ='center'>";
-                echo "belum dijawab";
-                echo "</td>";
-            } else {
-                echo "<td align ='center'>";
-                echo "undefined";
-                echo "</td>";
-            } if ($brs[6] == 2) {
-                echo "<td align ='center'>";
-                echo "<img src ='green.png' width ='25' height ='25'";
-                echo "</td>";
-            }else if ($brs[6] == 1){
-                echo "<td align ='center'>";
-                echo "<img src ='red.png' width ='25' height ='25'";
-                echo "</td>";
-            }else if ($brs[6] == 0){
-                echo "<td align ='center'>";
-                echo "belum dijawab";
-                echo "</td>";
-            } else {
-                echo "<td align ='center'>";
-                echo "undefined";
-                echo "</td>";
-            }
-              echo "<td align ='center'><a href='liat_suratADM.php?id=$brs[0]'>Lihat Surat</a></td>";
-            
+            echo "<td align ='center'>".$status."</td>";
+            echo "<td align ='center'><a href='Detail_Account.php?id=$brs[0]'>Pengaturan Akun</a></td>";            
             echo "</tr>";
+        }
+        function status($status_raw){
+            if ($status_raw >= 2) {
+                return "Aktif";
+            } else {
+                return "Terkunci";
+            }
         }
         ?>
         </table> <br>
-        <a class="btn btn-secondary" href="excel_xls.php">Download Excel</a>
           </div>
         </div>
       </div>

@@ -43,7 +43,7 @@ session_start();
           <ul id="sidebarnav">
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">S.I.A.B</span>
+              <span class="hide-menu">Absensi Pegawai</span>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="dashboard.php" aria-expanded="false">
@@ -67,24 +67,24 @@ session_start();
             </li>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Sipecut</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="list_srt.php" aria-expanded="false">
-              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                  <path d="M4 13h3l3 3h4l3 -3h3" />
-                </svg>
-                <span class="hide-menu">Daftar Surat</span>
-              </a>
+              <span class="hide-menu">Pengajuan Cuti</span>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="add_surat.php" aria-expanded="false">
               <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
               <path d="M16 19h6" /><path d="M19 16v6" /><path d="M3 7l9 6l9 -6" /></svg>
-                <span class="hide-menu">Buat Surat</span>
+                <span class="hide-menu">Tambah Surat</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="list_srt.php" aria-expanded="false">
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                  <path d="M4 13h3l3 3h4l3 -3h3" />
+                </svg>
+                <span class="hide-menu">Progres Pengajuan Surat</span>
               </a>
             </li>
           </ul>
@@ -197,11 +197,164 @@ session_start();
                 </div>
               </div>
             </div>
-            <!--  Tanggal Cuti Kontrak -->
             <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Cuti Kontrak</h5>
+            <h2 align="center" class="card-title fw-semibold mb-1">Jenis Surat</h2>
               <div class="card">
                 <div class="card-body">
+                  <!--  Tanggal Cuti Kontrak -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Kontrak(this)">
+                        <label class="form-check-label text-dark">Cuti Kontrak</label>
+                        <div id="form-cuti-kontrak" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Cuti Kontrak</h5>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Cuti Kontrak</label>
+                            <input class="form-control" placeholder="hari" type="number" name="hari_kontrak1" id="hari_kontrak1"> 
+
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
+                            <input class="form-control" type="date" name="tgl_mulai1" id="tgl_mulai1"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">s.d </label>
+                            <input class="form-control" type="date" name="tgl_selesai1" id="tgl_selesai1"> 
+                          </div>
+                        </div>
+                            <script>
+                              function showForm_Kontrak(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-cuti-kontrak").style.display = "block";
+                                } else {
+                                  document.getElementById("form-cuti-kontrak").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                    <!--  Tanggal Cuti Kontrak -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Inportant(this)">
+                        <label class="form-check-label text-dark">Cuti Alasan Penting</label>
+                        <div id="form-cuti-alasan-penting" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Cuti Alasan Penting</h5>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Cuti Kontrak</label>
+                            <input class="form-control" placeholder="hari" type="number" name="hari_kontrak2" id="hari_kontrak2"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
+                            <input class="form-control" type="date" name="tgl_mulai2" id="tgl_mulai2"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">s.d </label>
+                            <input class="form-control" type="date" name="tgl_selesai2" id="tgl_selesai2"> 
+                          </div>
+                        </div>
+                            <script>
+                              function showForm_Inportant(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-cuti-alasan-penting").style.display = "block";
+                                } else {
+                                  document.getElementById("form-cuti-alasan-penting").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                    <!--  Tanggal Izin -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Izin(this)">
+                        <label class="form-check-label text-dark">Izin</label>
+                        <div id="form-izin" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Izin</h5>
+                          <div class="mb-3">
+                             <label for="Nama" class="form-label">Izin</label>
+                             <input class="form-control" placeholder="hari" type="number" name="izin" id="izin"> 
+                           </div>
+                           <div class="mb-3">
+                             <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                             <input class="form-control" type="date" name="izin_mulai" id="izin_mulai"> 
+                           </div>
+                           <div class="mb-3">
+                             <label for="Nama" class="form-label">s.d</label>
+                             <input class="form-control" type="date" name="izin_selesai" id="izin_selesai"> 
+                           </div>
+                        </div>
+                            <script>
+                              function showForm_Izin(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-izin").style.display = "block";
+                                } else {
+                                  document.getElementById("form-izin").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                    <!--  Tanggal hamil -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Hamil(this)">
+                        <label class="form-check-label text-dark">Cuti Hamil</label>
+                        <div id="form-cuti-hamil" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Cuti Hamil</h5>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Cuti Hamil</label>
+                            <input class="form-control" placeholder="hari" type="number" name="hamil" id="hamil"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                            <input class="form-control" type="date" name="hamil_mulai" id="hamil_mulai"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">s.d</label>
+                            <input class="form-control" type="date" name="hamil_selesai" id="hamil_selesai"> 
+                          </div>
+                        </div>
+                            <script>
+                              function showForm_Hamil(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-cuti-hamil").style.display = "block";
+                                } else {
+                                  document.getElementById("form-cuti-hamil").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                    <!--  Tanggal Sakit -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Sakit(this)">
+                        <label class="form-check-label text-dark">Cuti Sakit</label>
+                        <div id="form-cuti-sakit" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Sakit</h5>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Sakit</label>
+                            <input class="form-control" placeholder="hari" type="number" name="sakit" id="sakit"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                            <input class="form-control" type="date" name="sakit_mulai" id="sakit_mulai"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">s.d</label>
+                            <input class="form-control" type="date" name="sakit_selesai" id="sakit_selesai"> 
+                          </div>
+                        </div>
+                            <script>
+                              function showForm_Sakit(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-cuti-sakit").style.display = "block";
+                                } else {
+                                  document.getElementById("form-cuti-sakit").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <!--  Tanggal Cuti Kontrak -->
+            <!-- <div class="card-body">
+              <div class="card">
+                <div class="card-body">
+                <h5 align="center" class="card-title fw-semibold">Cuti Kontrak</h5>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Cuti Kontrak</label>
                       <input class="form-control" placeholder="hari" type="number" name="hari_kontrak1" id="hari_kontrak1"> 
@@ -217,9 +370,9 @@ session_start();
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  Tanggal Cuti Kontrak -->
-            <div class="card-body">
+            <!-- <div class="card-body">
              <h5 class="card-title fw-semibold mb-4">Sisa Cuti Kontrak</h5>
               <div class="card">
                 <div class="card-body">
@@ -229,9 +382,9 @@ session_start();
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  Tanggal Cuti Alasan Penting -->
-            <div class="card-body">
+            <!-- <div class="card-body">
              <h5 class="card-title fw-semibold mb-4">Cuti Alasan Penting</h5>
               <div class="card">
                 <div class="card-body">
@@ -249,9 +402,9 @@ session_start();
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  Tanggal Izin -->
-            <div class="card-body">
+            <!-- <div class="card-body">
              <h5 class="card-title fw-semibold mb-4">Izin</h5>
               <div class="card">
                 <div class="card-body">
@@ -269,9 +422,9 @@ session_start();
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  Tanggal hamil -->
-            <div class="card-body">
+            <!-- <div class="card-body">
              <h5 class="card-title fw-semibold mb-4">Cuti Hamil</h5>
               <div class="card">
                 <div class="card-body">
@@ -289,10 +442,10 @@ session_start();
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  Tanggal Sakit -->
             <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Sakit</h5>
+             <!-- <h5 class="card-title fw-semibold mb-4">Sakit</h5>
               <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
@@ -309,15 +462,23 @@ session_start();
                     </div>
                     <div class="mb-3">
                     <?php
+                      // $month = date('m');
+                      // $day = date('d');
+                      // $year = date('Y');
+                      // $today = $year . '-' . $month . '-' . $day;
+                      ?>
+                      <input class="form-control" value="<?php echo $today; ?>" type="hidden" name="date_now" id="date_now">
+                    </div>
+                </div>
+              </div> -->
+              <?php
                       $month = date('m');
                       $day = date('d');
                       $year = date('Y');
                       $today = $year . '-' . $month . '-' . $day;
                       ?>
                       <input class="form-control" value="<?php echo $today; ?>" type="hidden" name="date_now" id="date_now">
-                    </div>
-                </div>
-              </div>
+
               <button type="submit" class="btn btn-primary" value="buat surat" name="simpan">Tambahkan</button>
             </div>
            </form>           

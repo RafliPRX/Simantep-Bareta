@@ -1,7 +1,34 @@
 <?php
     session_start();
     include 'konek.php';
-
+//Login Admin
+if (isset($_POST['loginADM'])) {
+    $nama = $_POST['nama'];
+    $pass = $_POST['pass'];
+  
+    $_SESSION['loginADM'] = $_POST['loginADM'];
+    // $cek = mysqli_query($konek, "SELECT a.nama, a.pass, a.nrk, b.id_jabatan, a.id_jabatan_sup, b.no_kelompok FROM user_bnn a, kelompok b WHERE a.nama = b.nama AND a.nama='$nama'");
+    $cek = mysqli_query($konek, "SELECT * FROM admin_bnn WHERE nama='$nama'");
+    // $cek = mysqli_query($konek, "SELECT * FROM user_bnn WHERE nama = '$nama'");
+    $hitung = mysqli_num_rows($cek);
+    $pw = mysqli_fetch_assoc($cek);
+  
+    $passNow = $pw['pass'];
+  
+    if ($hitung > 0) {
+        if (password_verify($pass, $passNow)) {
+            $_SESSION['nama'] = $pw['nama'];
+            header('Location:list_srtADM.php');
+        } else {
+            echo "<script language ='JavaScript'> (window.alert('Error: Invalid password'))</script>";
+            header('Location: indexADM.php');
+        }
+    } else {
+        echo "<script language ='JavaScript'> (window.alert('Error: User not found'))</script>";
+        header('Location: indexADM.php');
+    }
+  }
+  
 //login Pengguna
 
 if (isset($_POST['login'])) {
@@ -9,40 +36,49 @@ if (isset($_POST['login'])) {
     $pass = $_POST['pass'];
 
     $_SESSION['login'] = $_POST['login'];
-    $cek = mysqli_query($konek, "SELECT a.nama, a.pass, a.nrk, b.id_jabatan, a.id_jabatan_sup, b.no_kelompok FROM user_bnn a, kelompok b WHERE a.nama = b.nama AND a.nama='$nama'");
+    $cek = mysqli_query($konek, "SELECT a.nama, a.pass, a.nrk, b.id_jabatan, a.id_jabatan_sup, b.no_kelompok, a.Locked FROM user_bnn a, kelompok b WHERE a.nama = b.nama AND a.nama='$nama'");
     // $cek = mysqli_query($konek, "SELECT * FROM user_bnn WHERE nama = '$nama'");
     $hitung = mysqli_num_rows($cek);
     $pw = mysqli_fetch_assoc($cek);
 
     $passNow = $pw['pass'];
     $role = $pw['id_jabatan_sup'];
-
-    if ($hitung > 0) {
-        if (password_verify($pass, $passNow)) {
-            $_SESSION['nama'] = $pw['nama'];
-            $_SESSION['nrk'] = $pw['nrk'];
-            $_SESSION['id_jabatan']= $pw['id_jabatan'];
-            $_SESSION['id_jabatan_sup'] = $pw['id_jabatan_sup'];
-            $_SESSION['no_kelompok'] = $pw['no_kelompok'];
-            if ($role == 1) {
-                header('Location:dashboard.php');
-            } elseif ($role >= 2 && $role <= 8) {
-                header('Location:list_srt2dats.php');
-            } elseif ($role == 9 || $role == 10) {
-                header('Location:list_srt3A.php');
-            } elseif ($role == 11) {
-                header('Location:list_srt2dats.php');
+    $lock = $pw['Locked'];
+    if ($hitung > 0) {   
+            if (password_verify($pass, $passNow)) {
+                if ($lock > 1) {
+                    $_SESSION['nama'] = $pw['nama'];
+                    $_SESSION['nrk'] = $pw['nrk'];
+                    $_SESSION['id_jabatan']= $pw['id_jabatan'];
+                    $_SESSION['id_jabatan_sup'] = $pw['id_jabatan_sup'];
+                    $_SESSION['no_kelompok'] = $pw['no_kelompok'];
+                    if ($role == 1) {
+                        header('Location:dashboard.php');
+                    } elseif ($role >= 2 && $role <= 8) {
+                        header('Location:list_srt2dats.php');
+                    } elseif ($role == 9 || $role == 10) {
+                        header('Location:list_srt3A.php');
+                    } elseif ($role == 11) {
+                        header('Location:list_srt2dats.php');
+                    } else {
+                        echo "<script language ='JavaScript'> (window.alert('Error: Invalid role'))
+                        location.href='index.php'
+                        </script>";
+                    }
+                } else {
+                  echo "<script language ='JavaScript'> (window.alert('Error: Akun Dikunci Silahkan Kontak Kepegawaian'))
+                  location.href='index.php'
+                  </script>";
+                }       
             } else {
-                echo "<script language ='JavaScript'> (window.alert('Error: Invalid role'))</script>";
-                header('Location: index.php');
-            }
-        } else {
-            echo "<script language ='JavaScript'> (window.alert('Error: Invalid password'))</script>";
-            header('Location: index.php');
-        }
+                echo "<script language ='JavaScript'> (window.alert('Error: Invalid password'))
+                location.href='index.php'
+                </script>";
+            }       
     } else {
-        echo "<script language ='JavaScript'> (window.alert('Error: User not found'))</script>";
-        header('Location: index.php');
+        echo "<script language ='JavaScript'> (window.alert('Error: User not found'))
+        location.href='index.php'
+        </script>";
     }
 }
 
@@ -241,5 +277,26 @@ if (isset($_POST['upload_pdf'])) {
         </script>";
     }
   }
+}
+
+//membuka dan mengunci akun
+if (isset($_POST['unlocked'])) {
+    $id = $_POST['id'];
+    $status = $_POST['status'];
+
+    $query = "UPDATE user_bnn SET Locked ='$status' WHERE id ='$id'";
+
+    $res = mysqli_query($konek, $query);
+
+    if ($res) {
+        echo "<script language='JavaScript'> (window.alert('akun status terubah'))
+        location.href='list_account.php'
+        </script>";
+        
+    } else {
+        echo "<script language='JavaScript'> (window.alert('akun status gagal terubah'))
+        location.href='list_account.php'
+        </script>";
+    }
 }
 ?>

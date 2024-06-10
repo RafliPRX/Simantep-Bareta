@@ -46,7 +46,7 @@ session_start();
           <ul id="sidebarnav">
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">S.I.A.B</span>
+              <span class="hide-menu">Absensi Pegawai</span>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="dashboard.php" aria-expanded="false">
@@ -70,24 +70,24 @@ session_start();
             </li>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Sipecut</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="list_srt.php" aria-expanded="false">
-              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                  <path d="M4 13h3l3 3h4l3 -3h3" />
-                </svg>
-                <span class="hide-menu">Daftar Surat</span>
-              </a>
+              <span class="hide-menu">Pengajuan Cuti</span>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="add_surat.php" aria-expanded="false">
               <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
               <path d="M16 19h6" /><path d="M19 16v6" /><path d="M3 7l9 6l9 -6" /></svg>
-                <span class="hide-menu">Buat Surat</span>
+                <span class="hide-menu">Tambah Surat</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="list_srt.php" aria-expanded="false">
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                  <path d="M4 13h3l3 3h4l3 -3h3" />
+                </svg>
+                <span class="hide-menu">Progres Pengajuan Surat</span>
               </a>
             </li>
           </ul>

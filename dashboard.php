@@ -25,8 +25,8 @@ $nama = $_SESSION['nama'];
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
-    <!-- Sidebar Start -->
-    <aside class="left-sidebar">
+     <!-- Sidebar Start -->
+     <aside class="left-sidebar">
       <!-- Sidebar scroll-->
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
@@ -81,7 +81,7 @@ $nama = $_SESSION['nama'];
               <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
               <path d="M16 19h6" /><path d="M19 16v6" /><path d="M3 7l9 6l9 -6" /></svg>
-                <span class="hide-menu">Tambah Surat</span>
+                <span class="hide-menu">Buat Surat</span>
               </a>
             </li>
             <li class="sidebar-item">
@@ -142,7 +142,7 @@ $nama = $_SESSION['nama'];
                       <p class="mb-0 fs-3">My Task</p>
                     </a>
                     <form action="logout.php" method="post">
-                        <input type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="logout" value="logout">
+                        <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="logout" ><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>Logout</button>
                     </form>
                     <!-- <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a> -->
                   </div>
@@ -177,11 +177,9 @@ $nama = $_SESSION['nama'];
                       <p class="card-text">Anda masuk pada jam <?php echo $jam_masuk; ?></p>
                       <?php
                         if ($jam_masuk == null ) {
-                          echo "<p align='center' class='btn btn-warning'>Belum Absens</p>";
-                        } elseif($jam_masuk > $jam_wajib_masuk) {
-                          echo "<p align='center' class='btn btn-danger'>Terlambat</p>";
+                          ?> <p align='center' class='btn btn-warning'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg> Belum Absens</p> <?php
                         } else {
-                          echo "<p align='center' class='btn btn-success'>Tepat Waktu</p>";
+                          ?> <p align='center' class='btn btn-success'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M9 14l2 2l4 -4" /></svg> Berhasil</p> <?php
                         }
                       ?>
                     </div>
@@ -192,18 +190,17 @@ $nama = $_SESSION['nama'];
                 </div>
                 <div class="col-md-4">
                   <div class="card">
-                    <img src="<?php echo $hasil[5]; ?>" class="card-img-top" alt="...">
+                    <img src="<?php echo $hasil[6]; ?>" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">Absen Keluar</h5>
-                      <p class="card-text">Anda keluar pada jam <?php echo $hasil[6]; ?></p>
+                      <p class="card-text">Anda keluar pada jam <?php echo $hasil[7]; ?></p>
                       <?php
                           if ($jam_keluar == null ) {
-                          echo "<p align='center' class='btn btn-warning'>Belum Absens</p>";
-                        } elseif($jam_keluar > $jam_wajib_keluar) {
-                          echo "<p align='center' class='btn btn-success'>Tepat Waktu</p>";
+                           ?> <p align='center' class='btn btn-warning'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg> Belum Absens</p> <?php
                         } else {
-                          echo "<p align='center' class='btn btn-danger'>Pulang Cepat</p>";
+                           ?> <p align='center' class='btn btn-success'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M9 14l2 2l4 -4" /></svg> Berhasil</p> <?php
                         }
+                    
                       ?>
                     </div>
                   </div>

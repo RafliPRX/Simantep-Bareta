@@ -114,7 +114,7 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                       <p class="mb-0 fs-3">My Task</p>
                     </a>
                     <form action="logout.php" method="post">
-                        <input type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="logout" value="logout">
+                        <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="logout" ><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>Logout</button>
                     </form>
                     <!-- <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a> -->
                   </div>
@@ -130,8 +130,8 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
           <div class="card-body">
             <h5 align="center" class="card-title fw-semibold mb-4">Rekapitulasi Absensi Harian</h5>
             <div class="card-body">
-              <div class="card">
-              <form action="list_srt3B.php" method="GET">
+              <div class="card mb-0">
+              <form action="list_srt3B.php" method="GET" class="" >
                 <select class="form-control" name="nama" id="nama">
                   <option value="">Nama</option>
                   <?php
@@ -143,17 +143,21 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                     }
                   ?>
                 </select>
-                <input type="submit" class="btn btn-outline-primary mt-2 d-block" name="kirim" value="Cari">
+                <div class="d-flex justify" >
+                <button type="submit" class="btn btn-outline-primary m-1" name="kirim" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                  <path d="M21 21l-6 -6" />
+                </svg> Cari </button>  
                 <?php if (isset($_GET['nama'])) : ?>
-                  <a href="excel_kepeg_xls.php?nama=<?php echo $_GET['nama'] ?>" class="btn btn-outline-primary mt-2">Cetak</a>
+                  <a href="excel_kepeg_xls.php?nama=<?php echo $_GET['nama'] ?>" class="btn btn-outline-primary m-1"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-printer"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" /><path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" /><path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" /></svg> Cetak </a>
                 <?php endif; ?>
-              </form>
-              <form method="post">
-                <Button type="submit" class="btn btn-outline-primary mt-2 d-block" name="switch_malam" > Shift Malam  </Button>
-              </form>
-              <form method="post">
-                <Button type="submit" class="btn btn-outline-primary mt-2 d-block" name="switch_pagi" > Shift Pagi  </Button>
-              </form><br>
+                </form>
+                <form method="post" class="d-flex">
+                  <Button type="submit" class="btn btn-outline-primary m-1" name="switch_malam" > <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-moon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg> Shift Malam  </Button>
+                  <Button type="submit" class="btn btn-outline-primary m-1" name="switch_pagi" > <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg> Shift Pagi  </Button>
+                </form>
+                </div><br>
               <table class="fl-table" border="1" width="100%" >
                 <tr>
                     <th width="5%" rowspan="2" >NO.</th>

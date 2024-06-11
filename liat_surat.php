@@ -4,14 +4,11 @@ session_start();
 ?>
 <!doctype html>
 <html lang="en">
-    <?php
-        session_start();
-    ?>
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lihat Surat <?php echo $_SESSION['nama'] ?> </title>
+  <title>Form Tambah Surat</title>
   <link rel="shortcut icon" type="image/png" href="image/bnn.png" />
   <link rel="stylesheet" href="src/assets/css/styles.min.css" />
   <link rel="stylesheet" href="src/assets/css/table.css">
@@ -77,7 +74,7 @@ session_start();
               <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
               <path d="M16 19h6" /><path d="M19 16v6" /><path d="M3 7l9 6l9 -6" /></svg>
-                <span class="hide-menu">Tambah Surat</span>
+                <span class="hide-menu">Buat Surat</span>
               </a>
             </li>
             <li class="sidebar-item">
@@ -138,7 +135,7 @@ session_start();
                       <p class="mb-0 fs-3">My Task</p>
                     </a>
                     <form action="logout.php" method="post">
-                        <input type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="logout" value="logout">
+                        <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="logout" ><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>Logout</button>
                     </form>
                     <!-- <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a> -->
                   </div>
@@ -149,71 +146,33 @@ session_start();
         </nav>
       </header>
       <!--  Header End -->
-      <?php
-        include 'konek.php';
-        session_start();
-        $id=$_GET['id'];
-        $qry = "SELECT id_surat, nama, nrk, Keterangan, alamat, no_hp, id_jabatan, cuti1, cuti_date, cuti_date_fin, sisa_k, cuti_imp, cuti_imp_date, cuti_imp_date_fin, izin, izin_date, izin_date_fin, sakit, sakit_date, sakit_date_fin, veri_1, veri_2, veri_3, alasan, gambar FROM surat WHERE id_surat='$id'";
-        $res = mysqli_query($konek, $qry);
-        while ($brs = mysqli_fetch_array($res)) {
-      ?>
         <div class="container-fluid">
           <div class="card">
            <div class="card-body">
-            <form action="function.php" method="post" enctype="multipart/form-data">
-            <h2 align="center" class="card-title fw-semibold mb-0">Data Diri</h2>
-            <?php
-               if ($brs[20] == 0 || $brs[21] == 0 || $brs[22] == 0) {
-                ?> <h2 align="center" class="card-title fw-semibold mb-1">Status Surat : menunggu persetujuan</h2> <?php
-              } elseif ($brs[20] == 1 || $brs[21] == 1 || $brs[22] == 1) {
-                ?> <h2 align="center" class="card-title fw-semibold mb-1">Status Surat : Di tunda</h2> <?php
-              } elseif ($brs[20] == 2 || $brs[21] == 2 || $brs[22] == 2) {
-                ?> <h2 align="center" class="card-title fw-semibold mb-1">Status Surat : Disetujui</h2> <?php
-              } 
-            ?>
+            <form action="function.php" method="post">
+            <h2 align="center" class="card-title fw-semibold mb-1">Data Diri</h2>
               <div class="card">
                 <div class="card-body">
                   <!--  Data Diri -->
+                  <?php 
+                   $sql = "SELECT "
+                  ?>  
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Nama</label>
-                      <input class="form-control" type="text" name="nama" id="nama" value="<?php echo $brs[1]; ?>" readonly>
+                      <input class="form-control" type="text" name="nama" id="nama" value="<?php echo $_SESSION['nama'] ?>" readonly>
                     </div>
                     <div class="mb-3">
                       <label for="exampleInputPassword1" class="form-label">NRK</label>
-                      <input class="form-control" type="text" name="nrk" id="nrk" readonly value="<?php echo $brs[2]; ?>">
+                      <input class="form-control" type="text" name="nrk" id="nrk" readonly value="<?php echo $_SESSION['nrk'] ?>">
                     </div>
-                    <!-- <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Jabatan</label>
-                      <input type="hidden" class="form-control" name="jabatan" id="jabatan" readonly value="<?php echo $brs[6]; ?>">
-                    </div> -->
+                    <div class="mb-3">
+                      <!-- <label for="exampleInputPassword1" class="form-label">Jabatan</label> -->
+                      <input type="hidden" class="form-control" name="jabatan" id="jabatan" readonly value="<?php echo $_SESSION['id_jabatan'] ?>">
+                    </div>
                     <div class="mb-3">
                       <label for="exampleInputPassword1" class="form-label">No-HandPhone</label>
-                      <input class="form-control" placeholder="no_HP" type="number" readonly value="<?php echo $brs[5]; ?>" name="no_hp" id="no_hp">
+                      <input class="form-control" placeholder="no_HP" type="number" name="no_hp" id="no_hp">
                     </div>
-                    <?php 
-                      if ($brs[20] == 1) {
-                    ?>
-                    <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Alasan PJ Menolak</label>
-                      <textarea readonly class="form-control" name="alasan" id="alasan" cols="30" rows="5"><?php echo $brs[23]; ?></textarea>
-                    </div>
-                    <?php } ?>
-                    <?php 
-                      if ($brs[21] == 1) {
-                    ?>
-                    <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Alasan Kepegawaian Menolak</label>
-                      <textarea class="form-control" name="alasan" id="alasan" cols="30" rows="5" readonly><?php echo $brs[23]; ?></textarea>
-                    </div>
-                    <?php } ?>
-                    <?php 
-                      if ($brs[22] == 1) {
-                    ?>
-                    <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Alasan Kasubag Menolak</label>
-                      <textarea readonly class="form-control" name="alasan" id="alasan" cols="30" rows="5"><?php echo $brs[23]; ?></textarea>
-                    </div>
-                    <?php } ?>
                 </div>
               </div>
             </div>
@@ -224,7 +183,7 @@ session_start();
                 <div class="card-body">
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Alasan Cuti/Sakit/Izin</label>
-                      <textarea class="form-control" name="ket" id="ket" cols="30" rows="5" readonly><?php echo $brs[3]; ?></textarea> 
+                      <textarea class="form-control" name="ket" id="ket" cols="30" rows="5"></textarea> 
                     </div>
                 </div>
               </div>
@@ -236,181 +195,289 @@ session_start();
                 <div class="card-body">
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Alamat Selama Cuti/Sakit/Izin</label>
-                      <textarea class="form-control" name="ket" id="ket" cols="30" rows="5" readonly><?php echo $brs[4]; ?></textarea> 
+                      <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="5"></textarea> 
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+            <h2 align="center" class="card-title fw-semibold mb-1">Jenis Surat</h2>
+              <div class="card">
+                <div class="card-body">
+                  <!--  Tanggal Cuti Kontrak -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Kontrak(this)">
+                        <label class="form-check-label text-dark">Cuti Kontrak</label>
+                        <div id="form-cuti-kontrak" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Cuti Kontrak</h5>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Cuti Kontrak</label>
+                            <input class="form-control" placeholder="hari" type="number" name="hari_kontrak1" id="hari_kontrak1"> 
+
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
+                            <input class="form-control" type="date" name="tgl_mulai1" id="tgl_mulai1"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">s.d </label>
+                            <input class="form-control" type="date" name="tgl_selesai1" id="tgl_selesai1"> 
+                          </div>
+                        </div>
+                            <script>
+                              function showForm_Kontrak(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-cuti-kontrak").style.display = "block";
+                                } else {
+                                  document.getElementById("form-cuti-kontrak").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                    <!--  Tanggal Cuti Kontrak -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Inportant(this)">
+                        <label class="form-check-label text-dark">Cuti Alasan Penting</label>
+                        <div id="form-cuti-alasan-penting" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Cuti Alasan Penting</h5>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Cuti Kontrak</label>
+                            <input class="form-control" placeholder="hari" type="number" name="hari_kontrak2" id="hari_kontrak2"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
+                            <input class="form-control" type="date" name="tgl_mulai2" id="tgl_mulai2"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">s.d </label>
+                            <input class="form-control" type="date" name="tgl_selesai2" id="tgl_selesai2"> 
+                          </div>
+                        </div>
+                            <script>
+                              function showForm_Inportant(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-cuti-alasan-penting").style.display = "block";
+                                } else {
+                                  document.getElementById("form-cuti-alasan-penting").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                    <!--  Tanggal Izin -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Izin(this)">
+                        <label class="form-check-label text-dark">Izin</label>
+                        <div id="form-izin" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Izin</h5>
+                          <div class="mb-3">
+                             <label for="Nama" class="form-label">Izin</label>
+                             <input class="form-control" placeholder="hari" type="number" name="izin" id="izin"> 
+                           </div>
+                           <div class="mb-3">
+                             <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                             <input class="form-control" type="date" name="izin_mulai" id="izin_mulai"> 
+                           </div>
+                           <div class="mb-3">
+                             <label for="Nama" class="form-label">s.d</label>
+                             <input class="form-control" type="date" name="izin_selesai" id="izin_selesai"> 
+                           </div>
+                        </div>
+                            <script>
+                              function showForm_Izin(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-izin").style.display = "block";
+                                } else {
+                                  document.getElementById("form-izin").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                    <!--  Tanggal hamil -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Hamil(this)">
+                        <label class="form-check-label text-dark">Cuti Hamil</label>
+                        <div id="form-cuti-hamil" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Cuti Hamil</h5>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Cuti Hamil</label>
+                            <input class="form-control" placeholder="hari" type="number" name="hamil" id="hamil"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                            <input class="form-control" type="date" name="hamil_mulai" id="hamil_mulai"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">s.d</label>
+                            <input class="form-control" type="date" name="hamil_selesai" id="hamil_selesai"> 
+                          </div>
+                        </div>
+                            <script>
+                              function showForm_Hamil(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-cuti-hamil").style.display = "block";
+                                } else {
+                                  document.getElementById("form-cuti-hamil").style.display = "none";
+                                }
+                              }
+                            </script>
+                    </div>
+                    <!--  Tanggal Sakit -->
+                    <div class="mb-3">   
+                        <input type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_Sakit(this)">
+                        <label class="form-check-label text-dark">Cuti Sakit</label>
+                        <div id="form-cuti-sakit" style="display: none;">
+                          <h5 align="center" class="card-title fw-semibold">Sakit</h5>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Sakit</label>
+                            <input class="form-control" placeholder="hari" type="number" name="sakit" id="sakit"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                            <input class="form-control" type="date" name="sakit_mulai" id="sakit_mulai"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">s.d</label>
+                            <input class="form-control" type="date" name="sakit_selesai" id="sakit_selesai"> 
+                          </div>
+                        </div>
+                            <script>
+                              function showForm_Sakit(checkbox) {
+                                if (checkbox.checked) {
+                                  document.getElementById("form-cuti-sakit").style.display = "block";
+                                } else {
+                                  document.getElementById("form-cuti-sakit").style.display = "none";
+                                }
+                              }
+                            </script>
                     </div>
                 </div>
               </div>
             </div>
             <!--  Tanggal Cuti Kontrak -->
-            <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Cuti Tahunan</h5>
+            <!-- <div class="card-body">
               <div class="card">
                 <div class="card-body">
+                <h5 align="center" class="card-title fw-semibold">Cuti Kontrak</h5>
                     <div class="mb-3">
-                      <label for="Nama" class="form-label">Cuti Tahunan</label>
-                      <input class="form-control" placeholder="hari" type="number" name="hari_kontrak1" id="hari_kontrak1" readonly value="<?php echo $brs[7]; ?>"> 
+                      <label for="Nama" class="form-label">Cuti Kontrak</label>
+                      <input class="form-control" placeholder="hari" type="number" name="hari_kontrak1" id="hari_kontrak1"> 
+                                         
                     </div>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
-                      <input class="form-control" type="date" name="tgl_mulai1" id="tgl_mulai1" readonly value="<?php echo $brs[8]; ?>"> 
+                      <input class="form-control" type="date" name="tgl_mulai1" id="tgl_mulai1"> 
                     </div>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">s.d </label>
-                      <input class="form-control" type="date" name="tgl_selesai1" id="tgl_selesai1" readonly value="<?php echo $brs[9]; ?>"> 
+                      <input class="form-control" type="date" name="tgl_selesai1" id="tgl_selesai1"> 
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  Tanggal Cuti Kontrak -->
-            <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Sisa Cuti Tahunan</h5>
+            <!-- <div class="card-body">
+             <h5 class="card-title fw-semibold mb-4">Sisa Cuti Kontrak</h5>
               <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                      <label for="Nama" class="form-label">Sisa Cuti Tahunan</label>
-                      <input class="form-control" placeholder="hari" type="number" name="sisa_n" id="sisa_n" readonly value="<?php echo $brs[10]; ?>">
+                      <label for="Nama" class="form-label">Sisa Cuti Kontrak</label>
+                      <input class="form-control" placeholder="hari" type="number" name="sisa_n" id="sisa_n">
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  Tanggal Cuti Alasan Penting -->
-            <div class="card-body">
+            <!-- <div class="card-body">
              <h5 class="card-title fw-semibold mb-4">Cuti Alasan Penting</h5>
               <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                      <label for="Nama" class="form-label">Cuti Alasan Penting</label>
-                      <input class="form-control" placeholder="hari" type="number" name="hari_kontrak2" id="hari_kontrak2" readonly value="<?php echo $brs[11]; ?>"> 
+                      <label for="Nama" class="form-label">Cuti Kontrak</label>
+                      <input class="form-control" placeholder="hari" type="number" name="hari_kontrak2" id="hari_kontrak2"> 
                     </div>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
-                      <input class="form-control" type="date" name="tgl_mulai2" id="tgl_mulai2" readonly value="<?php echo $brs[12]; ?>"> 
+                      <input class="form-control" type="date" name="tgl_mulai2" id="tgl_mulai2"> 
                     </div>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">s.d </label>
-                      <input class="form-control" type="date" name="tgl_selesai2" id="tgl_selesai2" readonly value="<?php echo $brs[13]; ?>"> 
+                      <input class="form-control" type="date" name="tgl_selesai2" id="tgl_selesai2"> 
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  Tanggal Izin -->
-            <div class="card-body">
+            <!-- <div class="card-body">
              <h5 class="card-title fw-semibold mb-4">Izin</h5>
               <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Izin</label>
-                      <input class="form-control" placeholder="hari" type="number" name="izin" id="izin" readonly value="<?php echo $brs[14]; ?>"> 
+                      <input class="form-control" placeholder="hari" type="number" name="izin" id="izin"> 
                     </div>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                      <input class="form-control" type="date" name="izin_mulai" id="izin_mulai" readonly value="<?php echo $brs[15]; ?>"> 
+                      <input class="form-control" type="date" name="izin_mulai" id="izin_mulai"> 
                     </div>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">s.d</label>
-                      <input class="form-control" type="date" name="izin_selesai" id="izin_selesai" readonly value="<?php echo $brs[16]; ?>"> 
+                      <input class="form-control" type="date" name="izin_selesai" id="izin_selesai"> 
                     </div>
                 </div>
               </div>
-            </div>
-            <!--  Tanggal Sakit -->
-            <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Sakit</h5>
-              <div class="card">
-                <div class="card-body">
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Sakit</label>
-                      <input class="form-control" placeholder="hari" type="number" name="sakit" id="sakit" readonly value="<?php echo $brs[17]; ?>"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                      <input class="form-control" type="date" name="sakit_mulai" id="sakit_mulai" readonly value="<?php echo $brs[18]; ?>"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">s.d</label>
-                      <input class="form-control" type="date" name="sakit_selesai" id="sakit_selesai" readonly value="<?php echo $brs[19]; ?>"> 
-                    </div>
-                </div>
-              </div>
-            </div>
+            </div> -->
             <!--  Tanggal hamil -->
-            <?php 
-              $hari = "SELECT hamil, hamil_date, hamil_date_fin FROM surat WHERE id_surat='$id'";
-              $hasil = mysqli_query($konek, $hari);
-              $brs = mysqli_fetch_array($hasil);
-            ?>
-            <div class="card-body">
+            <!-- <div class="card-body">
              <h5 class="card-title fw-semibold mb-4">Cuti Hamil</h5>
               <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Cuti</label>
-                      <input class="form-control" placeholder="hari" type="number" name="hamil" id="hamil" readonly value="<?php echo $brs['hamil']; ?>"> 
+                      <input class="form-control" placeholder="hari" type="number" name="hamil" id="hamil"> 
                     </div>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                      <input class="form-control" type="date" name="hamil_mulai" id="hamil_mulai" readonly value="<?php echo $brs['hamil_date']; ?>"> 
+                      <input class="form-control" type="date" name="hamil_mulai" id="hamil_mulai"> 
                     </div>
                     <div class="mb-3">
                       <label for="Nama" class="form-label">s.d</label>
-                      <input class="form-control" type="date" name="hamil_selesai" id="hamil_selesai" readonly value="<?php echo $brs['hamil_date_fin']; ?>"> 
+                      <input class="form-control" type="date" name="hamil_selesai" id="hamil_selesai"> 
                     </div>
                 </div>
               </div>
-            </div>
-            <!--  Upload Gambar -->
+            </div> -->
+            <!--  Tanggal Sakit -->
             <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Upload Gambar</h5>
+             <!-- <h5 class="card-title fw-semibold mb-4">Sakit</h5>
               <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <input class="form-control" type="file" name="gambar" id="gambar">
-                        <input class="form-control" type="hidden" name="id" value="<?php echo "$id" ?>"><br>
-                        <?php 
-                            include 'konek.php';
-                            $qry = "SELECT gambar FROM surat WHERE id_surat='$id'";
-                            $res = mysqli_query($konek, $qry);
-                            while ($brs = mysqli_fetch_array($res)) {
-                            ?>
-                            
-                            <img  src="Image/<?php echo $brs[0] ?>">
-                            <!-- <label for="Nama" class="form-label"><?php echo $brs[1] ?></label> -->
-                            <?php }?>
-                            <input class="form-control" type = "hidden" id="id" name="id" value="<?php echo "$id" ?>">  
+                      <label for="Nama" class="form-label">Sakit</label>
+                      <input class="form-control" placeholder="hari" type="number" name="sakit" id="sakit"> 
                     </div>
-                    <button type="submit" class="btn btn-primary" value="upload" name="upload">Upload Gambar</button>
-                </div>
-                 <!--  Download -->
-                <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Download</h5>
-                  <div class="card">
-                    <div class="card-body">
-                        <div >
-                        <?php
-                          $cek = "SELECT id_surat, pdf, veri_1, veri_2, veri_3 FROM surat WHERE id_surat='$id'";
-                          $res1 = mysqli_query($konek, $cek);
-                          while ($file = mysqli_fetch_array($res1)) {
-                           if ($file[2] == 1 ||$file[3] == 1 ||$file[4] == 1 ) {
-                            ?> <a href="#" class="btn btn-danger">Surat Ditunda</a> <?php
-                            } else {
-                              if ($file[1] > 0 ) {
-                                ?> <a href="PDF/<?php echo $file[1] ?>" class="btn btn-success">Surat Selesai dan disetujui</a> <?php
-                              } else {
-                                ?> <a href="#" class="btn btn-warning">Surat Masih Di Proses</a> <?php
-                              }
-                            }
-                          }
+                    <div class="mb-3">
+                      <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                      <input class="form-control" type="date" name="sakit_mulai" id="sakit_mulai"> 
+                    </div>
+                    <div class="mb-3">
+                      <label for="Nama" class="form-label">s.d</label>
+                      <input class="form-control" type="date" name="sakit_selesai" id="sakit_selesai"> 
+                    </div>
+                    <div class="mb-3">
+                    <?php
+                      // $month = date('m');
+                      // $day = date('d');
+                      // $year = date('Y');
+                      // $today = $year . '-' . $month . '-' . $day;
                       ?>
-                        </div>
+                      <input class="form-control" value="<?php echo $today; ?>" type="hidden" name="date_now" id="date_now">
                     </div>
-              </div>
+                </div>
+              </div> -->
             </div>
            </form>           
           </div>
         </div>
-        <?php
-        }
-        ?>
     </div>
   </div>
   <script src="src/assets/libs/jquery/dist/jquery.min.js"></script>

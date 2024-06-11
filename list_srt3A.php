@@ -117,7 +117,7 @@ if (!isset($_SESSION['login'])) {
                       <p class="mb-0 fs-3">My Task</p>
                     </a>
                     <form action="logout.php" method="post">
-                        <input type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="logout" value="logout">
+                        <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block" name="logout" ><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>Logout</button>
                     </form>
                     <!-- <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a> -->
                   </div>
@@ -134,7 +134,7 @@ if (!isset($_SESSION['login'])) {
             <h5 align="center" class="card-title fw-semibold mb-4">Daftar Surat</h5>
             <div class="card-body">
               <div class="card">
-              <form action="list_srt3.php" method="GET">
+              <form action="list_srt3A.php" method="GET">
                 <select class="form-control" name="nama" id="nama">
                   <option value="">Nama</option>
                   <?php
@@ -146,9 +146,13 @@ if (!isset($_SESSION['login'])) {
                     }
                   ?>
                 </select>
-                <input type="submit" class="btn btn-outline-primary mt-2 d-block" name="kirim" value="Cari">
+                <button type="submit" class="btn btn-outline-primary m-1" name="kirim" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                  <path d="M21 21l-6 -6" />
+                </svg> Cari </button>  
                 <?php if (isset($_GET['nama'])) : ?>
-                  <a href="excel_kepeg_xls.php?nama=<?php echo $_GET['nama'] ?>" class="btn btn-outline-primary mt-2">Cetak</a>
+                  <a href="excel_kepeg_xls.php?nama=<?php echo $_GET['nama'] ?>" class="btn btn-outline-primary mt-2"> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-printer"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" /><path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" /><path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" /></svg> Cetak</a>
                 <?php endif; ?>
               </form>
               <table class="fl-table" border="1" width="100%" >

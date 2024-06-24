@@ -36,7 +36,7 @@ if (isset($_POST['login'])) {
     $pass = $_POST['pass'];
 
     $_SESSION['login'] = $_POST['login'];
-    $cek = mysqli_query($konek, "SELECT a.nama, a.pass, a.nrk, b.id_jabatan, a.id_jabatan_sup, b.no_kelompok, a.Locked FROM user_bnn a, kelompok b WHERE a.nama = b.nama AND a.nama='$nama'");
+    $cek = mysqli_query($konek, "SELECT a.id, a.nama, a.pass, a.nrk, b.id_jabatan, a.id_jabatan_sup, b.no_kelompok, a.Locked, a.f_profile, a.sisa_cuti FROM user_bnn a, kelompok b WHERE a.nama = b.nama AND a.nama='$nama'");
     // $cek = mysqli_query($konek, "SELECT * FROM user_bnn WHERE nama = '$nama'");
     $hitung = mysqli_num_rows($cek);
     $pw = mysqli_fetch_assoc($cek);
@@ -52,6 +52,9 @@ if (isset($_POST['login'])) {
                     $_SESSION['id_jabatan']= $pw['id_jabatan'];
                     $_SESSION['id_jabatan_sup'] = $pw['id_jabatan_sup'];
                     $_SESSION['no_kelompok'] = $pw['no_kelompok'];
+                    $_SESSION['f_profile'] = $pw['f_profile'];
+                    $_SESSION['id'] = $pw['id'];
+                    $_SESSION['sisa_cuti'] = $pw['sisa_cuti'];
                     if ($role == 1) {
                         header('Location:dashboard.php');
                     } elseif ($role >= 2 && $role <= 8) {
@@ -85,6 +88,7 @@ if (isset($_POST['login'])) {
 
 // Membuat surat
 if (isset($_POST['simpan'])) {
+    //Upload data surat
     $nama = $_POST['nama'];
     $nrk = $_POST['nrk'];
     $no_hp= $_POST['no_hp'];
@@ -109,17 +113,36 @@ if (isset($_POST['simpan'])) {
     $hamil_e = $_POST['hamil_selesai'];
     $date_now = $_POST['date_now'];
     
-    $query="INSERT INTO surat (id_surat, nama, nrk, Keterangan, alamat, no_hp, id_jabatan, cuti1, cuti_date, cuti_date_fin, sisa_k, cuti_imp, cuti_imp_date, cuti_imp_date_fin, izin, izin_date, izin_date_fin, sakit, sakit_date, sakit_date_fin, hamil, hamil_date, hamil_date_fin, veri_1, veri_2, veri_3, date_now) VALUES (NULL, '$nama', '$nrk', '$ket', '$alamat', '$no_hp', '$jabatan', '$c_kontrak', '$c_kontrak_s_date', '$c_kontrak_s_date', '$sc_kontrak', '$cap_kontrak', '$cap_kontrak_s_date', '$cap_kontrak_e_date', '$izin', '$izin_s', '$izin_e', '$sakit', '$sakit_s', '$sakit_e', '$hamil', '$hamil_s', '$hamil_e', '0', '0', '0', '$date_now')";
+    //upload gambar
+    $gambar = $_FILES['gambar']['name'];
+    $tempname = $_FILES['gambar']['tmp_name'];
+    $validExtention = ['jpg', 'jpeg', 'png'];
+    $gambarExtend = explode('.', $gambar);
+    $gambarExtend = strtolower(end($gambarExtend));
+
+    // var_dump($_POST);
+    // var_dump($_FILES); 
+    // die;
+
+    $query="INSERT INTO surat (id_surat, nama, nrk, Keterangan, alamat, no_hp, id_jabatan, cuti1, cuti_date, cuti_date_fin, sisa_k, cuti_imp, cuti_imp_date, cuti_imp_date_fin, izin, izin_date, izin_date_fin, sakit, sakit_date, sakit_date_fin, hamil, hamil_date, hamil_date_fin, veri_1, veri_2, veri_3, date_now, gambar) VALUES (NULL, '$nama', '$nrk', '$ket', '$alamat', '$no_hp', '$jabatan', '$c_kontrak', '$c_kontrak_s_date', '$c_kontrak_s_date', '$sc_kontrak', '$cap_kontrak', '$cap_kontrak_s_date', '$cap_kontrak_e_date', '$izin', '$izin_s', '$izin_e', '$sakit', '$sakit_s', '$sakit_e', '$hamil', '$hamil_s', '$hamil_e', '0', '0', '0', '$date_now', '$gambar')";
     $hasil=mysqli_query($konek, $query);
-    if($hasil) 
-	echo "<script language='JavaScript'> (window.alert('surat telah dibuat')) 
-		  location.href='list_srt.php'
-		  </script>";
-    else 
-	echo "<script language='JavaScript'>
-          (window.alert('surat gagal terbuat'))
-          location.href='add_surat.php' 
-          </script>";
+    if ($hasil) {
+        if (in_array($gambarExtend, $validExtention)) {
+            if (move_uploaded_file($tempname, 'Image/'. $gambar)) {
+                echo "<script language='JavaScript'> (window.alert('Surat terkirim')) 
+                location.href='list_srt.php'
+                </script>";
+            } else {
+                echo "<script language='JavaScript'> (window.alert('Surat tidak terkirim')) 
+                location.href='list_srt.php'
+                </script>";
+            }
+        } else {
+            echo "<script language='JavaScript'> (window.alert('ekstensi Gambar tidak valid')) 
+                location.href='list_srt.php'
+                </script>";
+        }
+    }
 }
 
 // menjawab surat
@@ -127,9 +150,10 @@ if (isset($_POST['createPJdats'])) {
     $jawab = $_POST['jawab'];
     $id = $_POST['id'];
     $alasan = $_POST['alasan'];
-
-    $query="UPDATE surat set veri_1 = '$jawab', alasan = '$alasan' WHERE id_surat = '$id'";
+    $query="UPDATE surat SET veri_1 = '$jawab', alasan = '$alasan' WHERE id_surat = '$id' ";
     $hasil=mysqli_query($konek, $query);
+    // var_dump($query);
+    // die;
     if($hasil) 
 	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
 		  location.href='list_srt2dats.php'
@@ -186,37 +210,77 @@ if (isset($_POST['post_a'])) {
 
     $query="UPDATE surat set veri_2 = '$jawab',alasan = '$alasan'  WHERE id_surat = '$id'";
     $hasil=mysqli_query($konek, $query);
+    // var_dump($query);
+    // die;
     if($hasil) 
 	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
-		  location.href='list_srt3.php'
+		  location.href='list_srt3A.php'
 		  </script>";
     else 
 	echo "<script language='JavaScript'>
           (window.alert('surat gagal terjawab'))
-          location.href='list_srt3.php' 
+          location.href='list_srt3A.php' 
           </script>";
 }
 
 if (isset($_POST['post_b'])) {
     $jawab = $_POST['jawab'];
     $alasan = $_POST['alasan'];
+    // $sisa_cuti = $_POST['sisa'];
+    $cuti = $_POST['hari_kontrak1'];
+    $cuti_imp = $_POST['hari_kontrak2'];
+    $sakit = $_POST['sakit'];
+    $izin = $_POST['izin'];
+    $hamil = $_POST['hamil'];
     $id = $_POST['id'];
 
-    $query="UPDATE surat set veri_3 = '$jawab', alasan = '$alasan' WHERE id_surat = '$id'";
+    function kurang_kontrak($cuti, $jawab){
+        if($jawab == 1){
+            return false;
+        } else {
+            return $cuti;
+        }
+    }
+
+    if($cuti > 0){
+    $kontrak_hitung = kurang_kontrak($cuti, $jawab);
+    $query="UPDATE surat 
+            INNER JOIN user_bnn ON surat.nama = user_bnn.nama 
+            SET surat.veri_3 = '$jawab', surat.alasan = '$alasan', user_bnn.sisa_cuti = user_bnn.sisa_cuti - '$kontrak_hitung' 
+            WHERE surat.id_surat = '$id'";
     $hasil=mysqli_query($konek, $query);
+
+    // var_dump($query);
+    // die;
     if($hasil) 
 	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
-		  location.href='list_srt3.php'
+		  location.href='list_srt3A.php'
 		  </script>";
     else 
 	echo "<script language='JavaScript'>
           (window.alert('surat gagal terjawab'))
-          location.href='list_srt3.php' 
+          location.href='list_srt3A.php' 
           </script>";
+    } else {
+        $query="UPDATE surat SET veri_3 = '$jawab', alasan = '$alasan' WHERE id_surat = '$id'";
+        $hasil=mysqli_query($konek, $query);
+        // var_dump($query);
+        // die;
+        if($hasil) 
+        echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
+              location.href='list_srt3A.php'
+              </script>";
+        else 
+        echo "<script language='JavaScript'>
+              (window.alert('surat gagal terjawab'))
+              location.href='list_srt3A.php' 
+              </script>";
+    
+    }
 }
 
-// upload gambar
-if (isset($_POST['upload'])) {
+// upload gambar profile
+if (isset($_POST['simpan_profile'])) {
 
     // var_dump($_POST);
     // var_dump($_FILES); 
@@ -231,12 +295,12 @@ if (isset($_POST['upload'])) {
     
     
 
-    $query = "UPDATE surat SET gambar ='$gambar' WHERE id_surat ='$id'";
+    $query = "UPDATE user_bnn SET f_profile ='$gambar' WHERE id ='$id'";
     
     $res = mysqli_query($konek, $query);
     if ($res) {
         if (in_array($gambarExtend, $validExtention)) {
-            if (move_uploaded_file($tempname, 'Image/'. $gambar)) {
+            if (move_uploaded_file($tempname, 'profile/'. $gambar)) {
                 echo "<script language='JavaScript'> (window.alert('gambar terkirim')) 
                 location.href='list_srt.php'
                 </script>";
@@ -259,15 +323,15 @@ if (isset($_POST['upload_pdf'])) {
     // var_dump($_POST);
     // var_dump($_FILES); 
     // die;
-    $file_name = $_FILES['pdf']['name'];
+    $filename = $_FILES['pdf']['name'];
     $tempname = $_FILES['pdf']['tmp_name'];
     $id = $_POST['id'];
 
-    $query = "UPDATE surat SET pdf ='$file_name' WHERE id_surat ='$id'";
+    $query = "UPDATE surat SET pdf ='$filename' WHERE id_surat ='$id'";
     $res = mysqli_query($konek, $query);
 
  if ($res) {
-    if (move_uploaded_file($tempname, 'PDF/'. $file_name)) {
+    if (move_uploaded_file($tempname, 'PDF/'. $filename)) {
         echo "<script language='JavaScript'> (window.alert('surat ter-Upload')) 
         location.href='list_srtADM.php'
         </script>";

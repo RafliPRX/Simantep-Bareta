@@ -122,14 +122,24 @@ $nama = $_SESSION['nama'];
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               <li class="nav-item dropdown">
+              <?php
+               if (empty($_SESSION['f_profile'])) {
+              ?>
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
                   <img src="src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
-                  <h6 class="mb-0"><?php echo $nama; ?></h6>
+                  <h6 class="mb-0"><?php echo $_SESSION['nama'] ?></h6>
+                </a> 
+                <?php } else { ?>
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="./profile/<?php echo $_SESSION['f_profile'] ?>" alt="" width="35" height="35" class="rounded-circle">
+                  <h6 class="mb-0"><?php echo $_SESSION['nama'] ?></h6>
                 </a>
+                <?php } ?>    
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="user_profile.php" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>

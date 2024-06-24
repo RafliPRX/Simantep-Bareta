@@ -115,14 +115,24 @@ session_start();
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               <li class="nav-item dropdown">
+              <?php
+               if (empty($_SESSION['f_profile'])) {
+              ?>
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
                   <img src="src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
                   <h6 class="mb-0"><?php echo $_SESSION['nama'] ?></h6>
+                </a> 
+                <?php } else { ?>
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="./profile/<?php echo $_SESSION['f_profile'] ?>" alt="" width="35" height="35" class="rounded-circle">
+                  <h6 class="mb-0"><?php echo $_SESSION['nama'] ?></h6>
                 </a>
+                <?php } ?>    
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="user_profile.php" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
@@ -149,7 +159,7 @@ session_start();
         <div class="container-fluid">
           <div class="card">
            <div class="card-body">
-            <form action="function.php" method="post">
+            <form action="function.php" method="post" enctype="multipart/form-data">
             <h2 align="center" class="card-title fw-semibold mb-1">Data Diri</h2>
               <div class="card">
                 <div class="card-body">
@@ -350,127 +360,18 @@ session_start();
                 </div>
               </div>
             </div>
-            <!--  Tanggal Cuti Kontrak -->
-            <!-- <div class="card-body">
-              <div class="card">
-                <div class="card-body">
-                <h5 align="center" class="card-title fw-semibold">Cuti Kontrak</h5>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Cuti Kontrak</label>
-                      <input class="form-control" placeholder="hari" type="number" name="hari_kontrak1" id="hari_kontrak1"> 
-                                         
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
-                      <input class="form-control" type="date" name="tgl_mulai1" id="tgl_mulai1"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">s.d </label>
-                      <input class="form-control" type="date" name="tgl_selesai1" id="tgl_selesai1"> 
-                    </div>
-                </div>
-              </div>
-            </div> -->
-            <!--  Tanggal Cuti Kontrak -->
-            <!-- <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Sisa Cuti Kontrak</h5>
-              <div class="card">
-                <div class="card-body">
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Sisa Cuti Kontrak</label>
-                      <input class="form-control" placeholder="hari" type="number" name="sisa_n" id="sisa_n">
-                    </div>
-                </div>
-              </div>
-            </div> -->
-            <!--  Tanggal Cuti Alasan Penting -->
-            <!-- <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Cuti Alasan Penting</h5>
-              <div class="card">
-                <div class="card-body">
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Cuti Kontrak</label>
-                      <input class="form-control" placeholder="hari" type="number" name="hari_kontrak2" id="hari_kontrak2"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
-                      <input class="form-control" type="date" name="tgl_mulai2" id="tgl_mulai2"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">s.d </label>
-                      <input class="form-control" type="date" name="tgl_selesai2" id="tgl_selesai2"> 
-                    </div>
-                </div>
-              </div>
-            </div> -->
-            <!--  Tanggal Izin -->
-            <!-- <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Izin</h5>
-              <div class="card">
-                <div class="card-body">
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Izin</label>
-                      <input class="form-control" placeholder="hari" type="number" name="izin" id="izin"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                      <input class="form-control" type="date" name="izin_mulai" id="izin_mulai"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">s.d</label>
-                      <input class="form-control" type="date" name="izin_selesai" id="izin_selesai"> 
-                    </div>
-                </div>
-              </div>
-            </div> -->
-            <!--  Tanggal hamil -->
-            <!-- <div class="card-body">
-             <h5 class="card-title fw-semibold mb-4">Cuti Hamil</h5>
-              <div class="card">
-                <div class="card-body">
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Cuti</label>
-                      <input class="form-control" placeholder="hari" type="number" name="hamil" id="hamil"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                      <input class="form-control" type="date" name="hamil_mulai" id="hamil_mulai"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">s.d</label>
-                      <input class="form-control" type="date" name="hamil_selesai" id="hamil_selesai"> 
-                    </div>
-                </div>
-              </div>
-            </div> -->
-            <!--  Tanggal Sakit -->
+            <!--  Upload Gambar -->
             <div class="card-body">
-             <!-- <h5 class="card-title fw-semibold mb-4">Sakit</h5>
+            <h2 align="center" class="card-title fw-semibold mb-1">Upload Bukti Gambar</h2>
               <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                      <label for="Nama" class="form-label">Sakit</label>
-                      <input class="form-control" placeholder="hari" type="number" name="sakit" id="sakit"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                      <input class="form-control" type="date" name="sakit_mulai" id="sakit_mulai"> 
-                    </div>
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">s.d</label>
-                      <input class="form-control" type="date" name="sakit_selesai" id="sakit_selesai"> 
-                    </div>
-                    <div class="mb-3">
-                    <?php
-                      // $month = date('m');
-                      // $day = date('d');
-                      // $year = date('Y');
-                      // $today = $year . '-' . $month . '-' . $day;
-                      ?>
-                      <input class="form-control" value="<?php echo $today; ?>" type="hidden" name="date_now" id="date_now">
+                      <input class="form-control" type="file" name="gambar" id="gambar"> 
                     </div>
                 </div>
-              </div> -->
+              </div>
+            </div>
+            <div class="card-body" style="display: flex; justify-content: center;" >
               <?php
                       $month = date('m');
                       $day = date('d');
@@ -478,8 +379,7 @@ session_start();
                       $today = $year . '-' . $month . '-' . $day;
                       ?>
                       <input class="form-control" value="<?php echo $today; ?>" type="hidden" name="date_now" id="date_now">
-
-              <button type="submit" class="btn btn-primary" value="buat surat" name="simpan">Tambahkan</button>
+              <button type="submit" class="btn btn-primary" value="buat surat" name="simpan"> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-send"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></svg> Tambahkan</button>
             </div>
            </form>           
           </div>

@@ -1,21 +1,14 @@
 <?php
 include 'konek.php';
 session_start();
-
-if (!isset($_SESSION['login'])) {
-    header('Location:index.php');
-    exit;
-}
-
 ?>
-
 <!doctype html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>List Surat <?php echo $_SESSION['nama'] ?></title>
+  <title>Profile</title>
   <link rel="shortcut icon" type="image/png" href="image/bnn.png" />
   <link rel="stylesheet" href="src/assets/css/styles.min.css" />
   <link rel="stylesheet" href="src/assets/css/table.css">
@@ -25,8 +18,8 @@ if (!isset($_SESSION['login'])) {
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
-     <!-- Sidebar Start -->
-     <aside class="left-sidebar">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
       <!-- Sidebar scroll-->
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
@@ -163,96 +156,74 @@ if (!isset($_SESSION['login'])) {
         </nav>
       </header>
       <!--  Header End -->
-      <div class="container-fluid">
-        <div class="card">
-          <div class="card-body">
-            <h5 align="center" class="card-title fw-semibold mb-4">Daftar Surat</h5>
-            
-            <table class="fl-table" border="1" width="100%" >
-            <tr>
-                <th width="5%">NO.</th>
-                <th width="10%">ID SURAT</th>
-                <th width="20%">NAMA</th>
-                <th width="20%">KETERANGAN</th>
-                <th width="10%">JABATAN</th>
-                <th width="10%">PJ / PM / KOORDINATOR</th>
-                <th width="10%">KEPEGAWAIAN</th>
-                <th width="10%">KASUBAG TATA USAHA</th>
-                <th width="30%">SURAT</th>
-            </tr>
-        <?php
-        include 'konek.php';
-        $no=1;
-        $nama = $_SESSION['nama'];
-        $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, a.veri_2, a.veri_3 from surat a,jabatan b where a.id_jabatan=b.id_jabatan AND a.nama = '$nama'";
-        $hasil=mysqli_query($konek,$query);
-        while ($brs=mysqli_fetch_array($hasil))
-        {
-            echo "<tr>";
-            echo "<th align ='center'>".$no++."</td>";
-            echo "<th align ='center'>".$brs[0]."</td>";
-            echo "<th align ='center'>".$brs[1]."</td>";
-            echo "<th>".$brs[2]."</td>";
-            echo "<th>".$brs[3]."</td>";
-            if ($brs[4] == 2) {
-                echo "<td align ='center'>";
-                echo "<img src ='green.png' width ='25' height ='25'";
-                echo "</td>";
-            }else if ($brs[4] == 1){
-                echo "<td align ='center'>";
-                echo "<img src ='red.png' width ='25' height ='25'";
-                echo "</td>";
-            }elseif ($brs[4] == 0) {
-                echo "<th align ='center'>";
-                echo "BELUM DIJAWAB";
-                echo "</th>";
-            } else {
-                echo "<td align ='center'>";
-                echo "undefined";
-                echo "</td>";
-            }
-            if ($brs[5] == 2) {
-                echo "<th align ='center'>";
-                echo "<img src ='green.png' width ='25' height ='25'";
-                echo "</th>";
-            }else if ($brs[5] == 1){
-                echo "<th align ='center'>";
-                echo "<img src ='red.png' width ='25' height ='25'";
-                echo "</th>";
-            }elseif ($brs[5] == 0) {
-                echo "<th align ='center'>";
-                echo "BELUM DIJAWAB";
-                echo "</th>";
-            } else {
-                echo "<th align ='center'>";
-                echo "undefined";
-                echo "</th>";
-            }
-            if ($brs[6] == 2) {
-                echo "<th align ='center'>";
-                echo "<img src ='green.png' width ='25' height ='25'";
-                echo "</th>";
-            }else if ($brs[6] == 1){
-                echo "<th align ='center'>";
-                echo "<img src ='red.png' width ='25' height ='25'";
-                echo "</th>";
-            } elseif ($brs[6] == 0) {
-                echo "<th align ='center'>";
-                echo "BELUM DIJAWAB";
-                echo "</th>";
-            }else {
-                echo "<th align ='center'>";
-                echo "undefined";
-                echo "</th>";
-            }
-            echo "<td align ='center'><a href='liat_surat.php?id=$brs[0]'>lihat surat</a></td>";
-        }
-        ?>
-        </table>
-      
+        <div class="container-fluid">
+          <div class="card">
+           <div class="card-body">
+            <form action="function.php" method="post" enctype="multipart/form-data">
+              <?php
+              $id = $_SESSION['id'];
+              $sisa_qry = "SELECT sisa_cuti FROM user_bnn WHERE id = '$id'";
+              $hasil = mysqli_query($konek, $sisa_qry);
+              $sisa_cuti = mysqli_fetch_array($hasil);
+               if (empty($_SESSION['f_profile'])) {
+              ?>
+              <div class="mb-3">
+                <div class="position-relative d-flex justify-content-center align-items-center">
+                  <img src="src/assets/images/profile/user-1.jpg" alt="Foto Profil" class="img-thumbnail rounded" width="150" height="150"> 
+                </div><br>
+                <?php } else { ?>
+                <div class="position-relative d-flex justify-content-center align-items-center">
+                  <img src="./profile/<?php echo $_SESSION['f_profile'] ?>" alt="Foto Profil" class="img-thumbnail rounded" width="150" height="150"> 
+                </div><br>
+                <?php } ?>
+                <div class="position-relative">
+                  <label class="form-label" for="">Upload foto Profile</label> 
+                  <input class="form-control" type="file" name="gambar" id="gambar">
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                <h2 align="center" class="card-title fw-semibold mb-1">Data Diri</h2>
+                  <!--  Data Diri -->
+                    <div class="mb-3">
+                      <label for="Nama" class="form-label">Nama</label>
+                      <input class="form-control" type="text" name="nama" id="nama" value="<?php echo $_SESSION['nama'] ?>" readonly>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputPassword1" class="form-label">NRK</label>
+                      <input class="form-control" type="text" name="nrk" id="nrk" readonly value="<?php echo $_SESSION['nrk'] ?>">
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputPassword1" class="form-label">Sisa Cuti</label>
+                      <input type="number" class="form-control" name="jabatan" id="jabatan" readonly value="<?php echo $sisa_cuti['sisa_cuti'] ?>">
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputPassword1" class="form-label">No-HandPhone</label>
+                      <input class="form-control" disabled placeholder="Coming Soon" type="number" name="no_hp" id="no_hp">
+                    </div>
+                </div>
+              </div>
+            </div>
+            <!--  alamat  -->
+            <div class="card-body">
+              <div class="card">
+                <div class="card-body">
+                    <div class="mb-3" style="display: flex; justify-content: center;">
+                      <h4 for="Nama" class="form-label">Alamat</h4> 
+                    </div>
+                    <div class="mb-3" >
+                        <textarea class="form-control" name="alamat" disabled id="alamat" cols="30" rows="5">Coming Soon</textarea>
+                    </div>
+                </div>
+              </div>
+              <div class="position-relative d-flex justify-content-center align-items-center" >
+                <input type="hidden" value="<?php echo $_SESSION['id'] ?>" name="id" id="id">
+                <button type="submit" class="btn btn-primary" name="simpan_profile">simpan</button>
+              </div>
+            </div>
+           </form>           
           </div>
         </div>
-      </div>
     </div>
   </div>
   <script src="src/assets/libs/jquery/dist/jquery.min.js"></script>

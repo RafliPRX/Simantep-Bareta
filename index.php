@@ -51,8 +51,14 @@ include 'konek.php';
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <input placeholder="Password" type="password" name="pass" id="pass" class="form-control">
                   </div>
-                  <div class="d-flex align-items-center justify-content-between mb-4">
-                  </div>
+                  <!-- <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="form-check">
+                      <input class="form-check-input primary" type="checkbox" value="" name="check">
+                      <label class="form-check-label text-dark" for="flexCheckChecked">
+                        Akun PJ 
+                      </label>
+                    </div>
+                  </div> -->
                   <button type="submit" name="login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
                   <!-- <button href="index.php" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button> -->
                   <div class="d-flex align-items-center justify-content-center">

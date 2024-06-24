@@ -10,9 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $filename = time() . '-masuk' . '.jpg';
     $filepath = 'uploads/';
     date_default_timezone_set("Asia/Kuala_Lumpur");
-    // $time = date("H:i:s");
+    $time = date("H:i:s");
     // $time = date("07:00:00");
-    $time = date("19:30:00");
+    // $time = date("19:30:00");
     $today = date("Y/m/d");
 
     // Decode JSON data received from the request

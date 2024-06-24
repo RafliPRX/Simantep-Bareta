@@ -122,14 +122,24 @@ if (!isset($_SESSION['login'])) {
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               <li class="nav-item dropdown">
+              <?php
+               if (empty($_SESSION['f_profile'])) {
+              ?>
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
                   <img src="src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
                   <h6 class="mb-0"><?php echo $_SESSION['nama'] ?></h6>
+                </a> 
+                <?php } else { ?>
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="./profile/<?php echo $_SESSION['f_profile'] ?>" alt="" width="35" height="35" class="rounded-circle">
+                  <h6 class="mb-0"><?php echo $_SESSION['nama'] ?></h6>
                 </a>
+                <?php } ?>    
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="user_profile.php" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
@@ -180,9 +190,9 @@ if (!isset($_SESSION['login'])) {
                     $brs = mysqli_fetch_array($result);
                     if ($brs['today'] == $today) 
                     {
-                      ?> <button align="right" class="btn btn-danger" onclick="snapshot_out()">Absen Keluar</button> <?php
+                      ?> <button align="right" class="btn btn-danger" onclick="snapshot_out()"> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-door-exit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 12v.01" /><path d="M3 21h18" /><path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5" /><path d="M14 7h7m-3 -3l3 3l-3 3" /></svg> Absen Keluar</button> <?php
                     } else {
-                      ?> <button align="left" class="btn btn-primary" onclick="snapshot_in()">Absen Masuk</button> <?php
+                      ?> <button align="left" class="btn btn-primary" onclick="snapshot_in()"> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-door-enter"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 12v.01" /><path d="M3 21h18" /><path d="M5 21v-16a2 2 0 0 1 2 -2h6m4 10.5v7.5" /><path d="M21 7h-7m3 -3l-3 3l3 3" /></svg> Absen Masuk</button> <?php
                     }
                 ?>
                 

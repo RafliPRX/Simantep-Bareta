@@ -142,17 +142,17 @@ session_start();
         include 'konek.php';
         $no=1;
         $role=$_SESSION['id_jabatan_sup'];
-        $query="SELECT * FROM user_bnn WHERE id_jabatan_sup = '1'";
+        $query="SELECT Locked, nama, id FROM user_bnn WHERE id_jabatan_sup = '1'";
         $hasil=mysqli_query($konek,$query);
         while ($brs=mysqli_fetch_array($hasil))
         {
-            $status_raw = $brs[5];
+            $status_raw = $brs[0];
             $status = status($status_raw);
             echo "<tr>";
             echo "<th align ='center'>".$no++."</th>";
             echo "<th align ='center'>".$brs[1]."</th>";
             echo "<td align ='center'>".$status."</td>";
-            echo "<td align ='center'><a href='Detail_Account.php?id=$brs[0]'>Pengaturan Akun</a></td>";            
+            echo "<td align ='center'><a href='Detail_Account.php?id=$brs[2]'>Pengaturan Akun</a></td>";            
             echo "</tr>";
         }
         function status($status_raw){

@@ -1,10 +1,9 @@
-<?php
-session_start();
-include ('konek.php');
-?>
 <!doctype html>
 <html lang="en">
-
+<?php
+include ('konek.php');
+session_start();
+?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -133,7 +132,7 @@ include ('konek.php');
             <h5 align="center" class="card-title fw-semibold mb-4">Detail Akun</h5>
             <?php 
               $id = $_GET['id'];
-              $sql = "SELECT * FROM user_bnn WHERE id = $id";
+              $sql = "SELECT * FROM user_bnn WHERE id = '$id'";
               $query = mysqli_query($konek, $sql);
               while($data = mysqli_fetch_array($query)){
             ?>

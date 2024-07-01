@@ -28,9 +28,33 @@
     // $pdf->Cell(25,5,'',0,0,'C');
     // $pdf->Cell(150,5,'email: balairehab_tanahmerah@bnn.go.idWebsite : https://balairehabtanahmerah.bnn.go.id/',0,0,'C');
     // $pdf->Cell(15,5,'',0,1,'C');
-    $print = "SELECT a.id_surat, a.nama, a.nrk, b.nama_jabatan, alamat, a.cuti1, a.cuti_date, a.cuti_date_fin FROM surat a, jabatan b WHERE a.id_jabatan=b.id_jabatan AND a.id_surat='$id'";
+    $print = "SELECT a.id_surat, a.nama, a.nrk, b.nama_jabatan, alamat, a.cuti1, a.cuti_date, a.cuti_date_fin, a.date_now FROM surat a, jabatan b WHERE a.id_jabatan=b.id_jabatan AND a.id_surat='$id'";
     $res = mysqli_query($konek, $print);
     $row = mysqli_fetch_array($res);
+    $tanggal_awal = $row['cuti_date'];
+    $awal = date('d', strtotime($tanggal_awal));
+    $tanggal_akhir = $row['cuti_date_fin'];
+    $tanggal_sekarang = $row['date_now'];
+    $bulan = array (
+        1 =>   'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember'
+    );
+    $tanggal_akhir1 = $bulan[date('n', strtotime($tanggal_akhir))];
+    $akhir = date('d', strtotime($tanggal_akhir)) . ' ' . $tanggal_akhir1;
+    $bulan_akhir = $bulan[date('n', strtotime($tanggal_sekarang))];
+    $sekarang = date('d', strtotime($tanggal_sekarang)) . ' ' . $bulan_akhir . ' ' . date('Y', strtotime($tanggal_sekarang));
+    // var_dump($sekarang);
+    // die;
     $pdf->Cell(25,7,'',0,1);
     $pdf->Cell(25,7,'',0,0);
     $pdf->SetFont('Arial','B',12);
@@ -62,7 +86,7 @@
     $pdf->Cell(4,7,':',0,0);
     $pdf->Cell(40,7,$row['alamat'],0,1);
     $pdf->Cell(10,7,'',0,0);
-    $pdf->Cell(180,7,'Selama '.$row['cuti1'].' hari kerja, terhitung mulai tanggal '.$row['cuti_date'].' dengan ketentuan sebagai berikut :',0,1);
+    $pdf->Cell(180,7,'Selama '.$row['cuti1'].' hari kerja, terhitung mulai tanggal '.$awal.' sampai '.$akhir.' dengan ketentuan sebagai berikut :',0,1);
     $pdf->Cell(10,7,'',0,0);
     $pdf->Cell(10,7,'',0,1);
     $pdf->Cell(10,7,'',0,0);
@@ -84,7 +108,7 @@
     $pdf->Cell(100,7,'',0,1);
     $pdf->Cell(50,7,'',0,0);
     $pdf->Cell(50,7,'',0,0);
-    $pdf->Cell(90,7,'Tanggal, ${tanggal}',0,0,'C');
+    $pdf->Cell(90,7,'Tanggal, '.$sekarang. '',0,0,'C');
     $pdf->Cell(90,7,'',0,1,'C');
     $pdf->Cell(90,7,'',0,1,'C');
     $pdf->Cell(190,18,'${qrcode}',0,1,'C');

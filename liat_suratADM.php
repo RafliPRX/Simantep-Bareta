@@ -167,18 +167,6 @@ session_start();
                 </div>
               </div>
             </div>
-            <!--  Alasan Cuti/izin/sakit -->
-            <div class="card-body">
-            <h2 align="center" class="card-title fw-semibold mb-1">Alasan Cuti/Sakit/Izin</h2>
-              <div class="card">
-                <div class="card-body">
-                    <div class="mb-3">
-                      <label for="Nama" class="form-label">Alasan Cuti/Sakit/Izin</label>
-                      <textarea class="form-control"  name="ket" id="ket" cols="30" rows="5"> <?php echo $row['keterangan'] ?> </textarea> 
-                    </div>
-                </div>
-              </div>
-            </div>
             <!--  alamat Cuti/izin/sakit -->
             <div class="card-body">
             <h2 align="center" class="card-title fw-semibold mb-1">Alamat Selama Cuti/Sakit/Izin</h2>
@@ -191,60 +179,10 @@ session_start();
                 </div>
               </div>
             </div>
-            <?php 
-              $check = "SELECT cuti1, cuti_imp, izin, sakit, hamil FROM surat WHERE id_surat = '$id'";
-              $hasil_check = mysqli_query($konek, $check);
-              $row1 = mysqli_fetch_array($hasil_check);
-
-              $cuti = $row1['cuti1'];
-              $cuti_imp = $row1['cuti_imp'];
-              $izin = $row1['izin'];
-              $sakit = $row1['sakit'];
-              $hamil = $row1['hamil'];
-              function check_cuti($cuti) {
-                if ($cuti > 0) {
-                    return "checked";
-                } else {
-                    return "";
-                }              
-              }
-              function check_cuti_imp($cuti_imp) {
-                if ($cuti_imp > 0) {
-                    return "checked";
-                } else {
-                    return "";
-                }              
-              }
-              function check_izin($izin) {
-                if ($izin > 0) {
-                    return "checked";
-                } else {
-                    return "";
-                }              
-              }
-              function check_hamil($hamil) {
-                if ($hamil > 0) {
-                    return "checked";
-                } else {
-                    return "";
-                }              
-              }
-              function check_sakit($sakit) {
-                if ($sakit > 0) {
-                    return "checked";
-                } else {
-                    return "";
-                }              
-              }
-
-              $check_cuti = check_cuti($cuti);
-              $check_cuti_imp = check_cuti_imp($cuti_imp);
-              $check_izin = check_izin($izin);
-              $check_hamil = check_hamil($hamil);
-              $check_sakit = check_sakit($sakit);
-            ?>
+            <!--  Jenis surat Cuti/izin/sakit -->
             <div class="card-body">
             <h2 align="center" class="card-title fw-semibold mb-1">Jenis Surat</h2>
+            <br>
               <div class="card">
                 <div class="card-body">
                   <!--  Tanggal Cuti Kontrak -->
@@ -252,11 +190,12 @@ session_start();
                       $cuti1 = "SELECT cuti1, cuti_date, cuti_date_fin FROM surat WHERE id_surat = '$id'";
                       $res1 = mysqli_query($konek,$cuti1);
                       $row_cuti = mysqli_fetch_array($res1);
+                      if ($row_cuti['cuti1'] == 0) {
                     ?>
-                    <div class="mb-3">   
-                        <input type="checkbox" class="form-check-input primary" <?php echo $check_cuti ?> name="jenis_surat" id="jenis_surat" onclick="showForm_Kontrak(this)">
-                        <label class="form-check-label text-dark">Cuti Kontrak</label>
-                        <div id="form-cuti-kontrak" style="display: none;">
+                    <div class="mb-3" style="display: none;" ></div>
+                    <?php } else { ?>
+                    <div style="display: block;" >
+                        <div id="form-cuti-kontrak">
                           <h5 align="center" class="card-title fw-semibold">Cuti Kontrak</h5>
                           <div class="mb-3">
                             <label for="Nama" class="form-label">Cuti Kontrak</label>
@@ -271,168 +210,120 @@ session_start();
                             <input class="form-control" type="date" value="<?php echo $row_cuti['cuti_date_fin'] ?>" name="tgl_selesai1" id="tgl_selesai1"> 
                           </div>
                         </div>
-                            <script>
-                              function showForm_Kontrak(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-cuti-kontrak").style.display = "block";
-                                } else {
-                                  document.getElementById("form-cuti-kontrak").style.display = "none";
-                                }
-                              }
-                            </script>
                     </div>
+                    <?php } ?>
                     <!--  Tanggal Cuti alasan penting -->
                     <?php 
                       $cuti_imp1 = "SELECT cuti_imp, cuti_imp_date, cuti_imp_date_fin FROM surat WHERE id_surat = '$id'";
                       $res2 = mysqli_query($konek,$cuti_imp1);
-                      $row_cuti_imp = mysqli_fetch_array($res1);
+                      $row_cuti_imp = mysqli_fetch_array($res2);
+                      if ($row_cuti_imp['cuti_imp'] == 0) {
                     ?>
-                    <div class="mb-3">   
-                        <input type="checkbox"  class="form-check-input primary" name="jenis_surat" <?php echo $check_cuti_imp ?> id="jenis_surat" onclick="showForm_Inportant(this)">
-                        <label class="form-check-label text-dark">Cuti Alasan Penting</label>
-                        <div id="form-cuti-alasan-penting" style="display: none;">
-                          <h5 align="center" class="card-title fw-semibold">Cuti Alasan Penting</h5>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">Cuti Kontrak</label>
-                            <input class="form-control" value="<?php echo $row_cuti_imp['cuti_imp']  ?>" type="number" name="hari_kontrak2" id="hari_kontrak2"> 
-                          </div>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
-                            <input class="form-control" type="date" value="<?php echo $row_cuti_imp['cuti_imp_date']  ?>" name="tgl_mulai2" id="tgl_mulai2"> 
-                          </div>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">s.d </label>
-                            <input class="form-control" type="date" value="<?php echo $row_cuti_imp['cuti_imp_date_fin']  ?>" name="tgl_selesai2" id="tgl_selesai2"> 
-                          </div>
+                    <div class="mb-3" style="display: none;" >   
+                    </div> <?php } else { ?>
+                    <div style="display: block;" >
+                      <div id="form-cuti-alasan-penting">
+                        <h5 align="center" class="card-title fw-semibold">Cuti Alasan Penting</h5>
+                        <div class="mb-3">
+                          <label for="Nama" class="form-label">Cuti Kontrak</label>
+                          <input class="form-control" value="<?php echo $row_cuti_imp['cuti_imp']  ?>" type="number" name="hari_kontrak2" id="hari_kontrak2"> 
                         </div>
-                            <script>
-                              function showForm_Inportant(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-cuti-alasan-penting").style.display = "block";
-                                } else {
-                                  document.getElementById("form-cuti-alasan-penting").style.display = "none";
-                                }
-                              }
-                            </script>
-                    </div>
+                        <div class="mb-3">
+                          <label for="Nama" class="form-label">Dimulai Dari Tanggal </label>
+                          <input class="form-control" type="date" value="<?php echo $row_cuti_imp['cuti_imp_date']  ?>" name="tgl_mulai2" id="tgl_mulai2"> 
+                        </div>
+                        <div class="mb-3">
+                          <label for="Nama" class="form-label">s.d </label>
+                          <input class="form-control" type="date" value="<?php echo $row_cuti_imp['cuti_imp_date_fin']  ?>" name="tgl_selesai2" id="tgl_selesai2"> 
+                        </div>
+                      </div>
+                    </div> <?php } ?>
                     <!--  Tanggal Izin -->
                     <?php 
                       $izin1 = "SELECT izin, izin_date, izin_date_fin FROM surat WHERE id_surat = '$id'";
                       $res3 = mysqli_query($konek,$izin1);
                       $row_izin = mysqli_fetch_array($res3);
+                      if ($row_izin['izin'] == 0) {
                     ?>
-                    <div class="mb-3">   
-                        <input type="checkbox" class="form-check-input primary" <?php echo $check_izin ?> name="jenis_surat" id="jenis_surat" onclick="showForm_Izin(this)">
-                        <label class="form-check-label text-dark">Izin</label>
-                        <div id="form-izin" style="display: none;">
-                          <h5 align="center" class="card-title fw-semibold">Izin</h5>
-                          <div class="mb-3">
-                             <label for="Nama" class="form-label">Izin</label>
-                             <input class="form-control" value="<?php echo $row_izin['izin'] ?>" placeholder="hari" type="number" name="izin" id="izin"> 
-                           </div>
-                           <div class="mb-3">
-                             <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                             <input class="form-control" value="<?php echo $row_izin['izin_date'] ?>" type="date" name="izin_mulai" id="izin_mulai"> 
-                           </div>
-                           <div class="mb-3">
-                             <label for="Nama" class="form-label">s.d</label>
-                             <input class="form-control" value="<?php echo $row_izin['izin_date_fin'] ?>" type="date" name="izin_selesai" id="izin_selesai"> 
-                           </div>
-                        </div>
-                            <script>
-                              function showForm_Izin(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-izin").style.display = "block";
-                                } else {
-                                  document.getElementById("form-izin").style.display = "none";
-                                }
-                              }
-                            </script>
-                    </div>
+                    <div class="mb-3" style="display: none;" >
+                    </div> <?php } else { ?>
+                    <div style="display: block;" >
+                      <div id="form-izin">
+                        <h5 align="center" class="card-title fw-semibold">Izin</h5>
+                        <div class="mb-3">
+                           <label for="Nama" class="form-label">Izin</label>
+                           <input class="form-control" value="<?php echo $row_izin['izin'] ?>" placeholder="hari" type="number" name="izin" id="izin"> 
+                         </div>
+                         <div class="mb-3">
+                           <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                           <input class="form-control" value="<?php echo $row_izin['izin_date'] ?>" type="date" name="izin_mulai" id="izin_mulai"> 
+                         </div>
+                         <div class="mb-3">
+                           <label for="Nama" class="form-label">s.d</label>
+                           <input class="form-control" value="<?php echo $row_izin['izin_date_fin'] ?>" type="date" name="izin_selesai" id="izin_selesai"> 
+                         </div>
+                      </div>
+                    </div> <?php } ?>
                     <!--  Tanggal hamil -->
                     <?php 
                       $hamil1 = "SELECT hamil, hamil_date, hamil_date_fin FROM surat WHERE id_surat = '$id'";
                       $res4 = mysqli_query($konek,$hamil1);
                       $row_hamil = mysqli_fetch_array($res4);
+                      if ($row_hamil['hamil'] == 0) {
                     ?>
-                    <div class="mb-3">   
-                        <input type="checkbox" class="form-check-input primary" <?php echo $check_hamil ?> name="jenis_surat" id="jenis_surat" onclick="showForm_Hamil(this)">
-                        <label class="form-check-label text-dark">Cuti Hamil</label>
-                        <div id="form-cuti-hamil" style="display: none;">
-                          <h5 align="center" class="card-title fw-semibold">Cuti Hamil</h5>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">Cuti Hamil</label>
-                            <input class="form-control" value="<?php echo $row_hamil['hamil'] ?>" placeholder="hari" type="number" name="hamil" id="hamil"> 
-                          </div>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                            <input class="form-control" value="<?php echo $row_hamil['hamil_date'] ?>" type="date" name="hamil_mulai" id="hamil_mulai"> 
-                          </div>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">s.d</label>
-                            <input class="form-control" type="date" value="<?php echo $row_hamil['hamil_date_fin'] ?>" name="hamil_selesai" id="hamil_selesai"> 
-                          </div>
-                        </div>
-                            <script>
-                              function showForm_Hamil(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-cuti-hamil").style.display = "block";
-                                } else {
-                                  document.getElementById("form-cuti-hamil").style.display = "none";
-                                }
-                              }
-                            </script>
+                    <div class="mb-3" style="display: none;" >   
+                    </div> <?php } else { ?>
+                    <div class="mb-3" style="display: block;" >
+                    <div id="form-cuti-hamil">
+                      <h5 align="center" class="card-title fw-semibold">Cuti Hamil</h5>
+                      <div class="mb-3">
+                        <label for="Nama" class="form-label">Cuti Hamil</label>
+                        <input class="form-control" value="<?php echo $row_hamil['hamil'] ?>" placeholder="hari" type="number" name="hamil" id="hamil"> 
+                      </div>
+                      <div class="mb-3">
+                        <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                        <input class="form-control" value="<?php echo $row_hamil['hamil_date'] ?>" type="date" name="hamil_mulai" id="hamil_mulai"> 
+                      </div>
+                      <div class="mb-3">
+                        <label for="Nama" class="form-label">s.d</label>
+                        <input class="form-control" type="date" value="<?php echo $row_hamil['hamil_date_fin'] ?>" name="hamil_selesai" id="hamil_selesai"> 
+                      </div>
                     </div>
+                    </div> <?php } ?>  
                     <!--  Tanggal Sakit -->
                     <?php 
                       $sakit1 = "SELECT sakit, sakit_date, sakit_date_fin FROM surat WHERE id_surat = '$id'";
                       $res5 = mysqli_query($konek,$sakit1);
                       $row_sakit = mysqli_fetch_array($res5);
+                      if ($row_sakit['sakit'] == 0) {
                     ?>
-                    <div class="mb-3">   
-                        <input type="checkbox" class="form-check-input primary" <?php echo $check_sakit ?> name="jenis_surat" id="jenis_surat" onclick="showForm_Sakit(this)">
-                        <label class="form-check-label text-dark">Cuti Sakit</label>
-                        <div id="form-cuti-sakit" style="display: none;">
-                          <h5 align="center" class="card-title fw-semibold">Sakit</h5>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">Sakit</label>
-                            <input class="form-control" value="<?php echo $row_sakit['sakit'] ?>" placeholder="hari" type="number" name="sakit" id="sakit"> 
-                          </div>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
-                            <input class="form-control" type="date" value="<?php echo $row_sakit['sakit_date'] ?>" name="sakit_mulai" id="sakit_mulai"> 
-                          </div>
-                          <div class="mb-3">
-                            <label for="Nama" class="form-label">s.d</label>
-                            <input class="form-control" type="date" value="<?php echo $row_sakit['sakit_date_fin'] ?>" name="sakit_selesai" id="sakit_selesai"> 
-                          </div>
-                        </div>
-                            <script>
-                              function showForm_Sakit(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-cuti-sakit").style.display = "block";
-                                } else {
-                                  document.getElementById("form-cuti-sakit").style.display = "none";
-                                }
-                              }
-                            </script>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <!-- Gambar -->
-            <?php 
-              $gambar_qry = "SELECT gambar FROM surat WHERE id_surat = '$id'";
-              $res_pic = mysqli_query($konek, $gambar_qry);
-              $gambar = mysqli_fetch_array($res_pic);
-            ?>
-            <div class="card-body">
-            <h2 align="center" class="card-title fw-semibold mb-1">Bukti Gambar</h2>
-              <div class="card">
-                <div class="card-body">
+                    <div class="mb-3" style="display: none;" > </div> <?php } else { ?>
+                    <div class="mb-3" style="display: block;" >
+                    <div id="form-cuti-sakit">
+                      <h5 align="center" class="card-title fw-semibold">Sakit</h5>
+                      <div class="mb-3">
+                        <label for="Nama" class="form-label">Sakit</label>
+                        <input class="form-control" value="<?php echo $row_sakit['sakit'] ?>" placeholder="hari" type="number" name="sakit" id="sakit"> 
+                      </div>
+                      <div class="mb-3">
+                        <label for="Nama" class="form-label">Dimulai Dari Tanggal</label>
+                        <input class="form-control" type="date" value="<?php echo $row_sakit['sakit_date'] ?>" name="sakit_mulai" id="sakit_mulai"> 
+                      </div>
+                      <div class="mb-3">
+                        <label for="Nama" class="form-label">s.d</label>
+                        <input class="form-control" type="date" value="<?php echo $row_sakit['sakit_date_fin'] ?>" name="sakit_selesai" id="sakit_selesai"> 
+                      </div>
+                      <h5 align="center" class="card-title fw-semibold">Upload Bukti Gambar</h5>
+                      <?php 
+                        $gambar_qry = "SELECT gambar FROM surat WHERE id_surat = '$id'";
+                        $res_pic = mysqli_query($konek, $gambar_qry);
+                        $gambar = mysqli_fetch_array($res_pic);
+                      ?>
                     <div class="mb-3">
-                    <img  src="Image/<?php echo $gambar['gambar'] ?>"> 
+                      <img  src="Image/<?php echo $gambar['gambar'] ?>"> 
                     </div>
+                    </div>
+                    </div> <?php } ?>
                 </div>
               </div>
             </div>
@@ -450,15 +341,15 @@ session_start();
                      while ($data = mysqli_fetch_array($res1)) {
                          if ($data[1] == 2 && $data[2] == 2 && $data[3] == 2){
                              if ($data[4] > 0 ) {
-                                 ?><a align='center' class='btn btn-secondary' class href='download_cuti.php?id=$data[0]'><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg>Download Raw</a><?php
+                                 ?><a align='center' class='btn btn-secondary' class href='download_cuti.php?id= <?php echo $data[0] ?>'><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg>Download Raw</a><?php
                              } elseif ($data[5] > 0) {
-                                 ?><a align='center' class='btn btn-secondary' href='download_cuti_imp.php?id=$data[0]'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg> Download Raw</a> <?php
+                                 ?><a align='center' class='btn btn-secondary' href='download_cuti_imp.php?id= <?php echo $data[0] ?>'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg> Download Raw</a> <?php
                              } elseif ($data[6] > 0) {
-                                 ?><a align='center' class='btn btn-secondary' href='download_izin.php?id=$data[0]'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg> Download Raw</a><?php
+                                 ?><a align='center' class='btn btn-secondary' href='download_izin.php?id=<?php echo $data[0] ?>'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg> Download Raw</a><?php
                              } elseif ($data[7] > 0) {
-                                 ?><a align='center' class='btn btn-secondary' href='download_sakit.php?id=$data[0]'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg> Download Raw</a> <?php
+                                 ?><a align='center' class='btn btn-secondary' href='download_sakit.php?id=<?php echo $data[0] ?>'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg> Download Raw</a> <?php
                              } elseif ($data[8] > 0) {
-                                 ?><a align='center' class='btn btn-secondary' href='download_hamil.php?id=$data[0]'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg> Download Raw</a> <?php
+                                 ?><a align='center' class='btn btn-secondary' href='download_hamil.php?id=<?php echo $data[0] ?>'> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg> Download Raw</a> <?php
                              } 
                          } elseif ($data[1] != 2 or $data[2] != 2 or $data[3] != 2) {
                              echo "<a align='center' class='btn btn-danger' href='liat_surat.php?id=$data[0]'>Surat Di Tunda</a>";

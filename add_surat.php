@@ -178,7 +178,7 @@ session_start();
                     </div>
                     <div class="mb-3">
                       <label for="exampleInputPassword1" class="form-label">No-HandPhone</label>
-                      <input class="form-control" placeholder="no_HP" type="number" name="no_hp" id="no_hp">
+                      <input class="form-control" placeholder="no_HP" type="number" name="no_hp" id="no_hp" required >
                     </div>
                 </div>
               </div>
@@ -346,6 +346,12 @@ session_start();
                             <label for="Nama" class="form-label">s.d</label>
                             <input class="form-control" type="date" name="sakit_selesai" id="sakit_selesai"> 
                           </div>
+                          <h5 align="center" class="card-title fw-semibold">Upload Bukti Surat</h5>
+                          <div class="mb-3">
+                            <input class="form-control" type="file" name="gambar" id="gambar">
+                            <br>
+                            <p>Keterangan : Wajib untuk surat sakit</p> 
+                          </div>
                         </div>
                             <script>
                               function showForm_Sakit(checkbox) {
@@ -356,17 +362,6 @@ session_start();
                                 }
                               }
                             </script>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <!--  Upload Gambar -->
-            <div class="card-body">
-            <h2 align="center" class="card-title fw-semibold mb-1">Upload Bukti Gambar</h2>
-              <div class="card">
-                <div class="card-body">
-                    <div class="mb-3">
-                      <input class="form-control" type="file" name="gambar" id="gambar"> 
                     </div>
                 </div>
               </div>

@@ -129,7 +129,7 @@ if (isset($_POST['simpan'])) {
     if ($hasil) {
         if (in_array($gambarExtend, $validExtention)) {
             if (move_uploaded_file($tempname, 'Image/'. $gambar)) {
-                echo "<script language='JavaScript'> (window.alert('Surat terkirim')) 
+                echo "<script language='JavaScript'> (window.alert('Surat telah diajukan')) 
                 location.href='list_srt.php'
                 </script>";
             } else {
@@ -138,100 +138,100 @@ if (isset($_POST['simpan'])) {
                 </script>";
             }
         } else {
-            echo "<script language='JavaScript'> (window.alert('ekstensi Gambar tidak valid')) 
+            echo "<script language='JavaScript'> (window.alert('Surat telah diajukan')) 
                 location.href='list_srt.php'
                 </script>";
         }
+    } else {
+        echo "<script language='JavaScript'> (window.alert('Surat Belum Terbuat'))
+            location.href='list_srt.php'
+            </script>";
     }
 }
 
 // menjawab surat
-if (isset($_POST['createPJdats'])) {
-    $jawab = $_POST['jawab'];
-    $id = $_POST['id'];
-    $alasan = $_POST['alasan'];
-    $query="UPDATE surat SET veri_1 = '$jawab', alasan = '$alasan' WHERE id_surat = '$id' ";
-    $hasil=mysqli_query($konek, $query);
-    // var_dump($query);
-    // die;
-    if($hasil) 
-	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
-		  location.href='list_srt2dats.php'
-		  </script>";
-    else 
-	echo "<script language='JavaScript'>
-          ini_set('display_error', 1)
-          location.href='list_srt2dats.php' 
-          </script>";
-}
-if (isset($_POST['createPJpark'])) {
-    $jawab = $_POST['jawab'];
-    $id = $_POST['id'];
-
-    $query="UPDATE surat set veri_1 = '$jawab' WHERE id_surat = '$id'";
-    $hasil=mysqli_query($konek, $query);
-    if($hasil) 
-	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
-		  location.href='list_srt2park.php'
-		  </script>";
-    else 
-	echo "<script language='JavaScript'>
-          (window.alert('surat gagal terjawab'))
-          location.href='list_srt2park.php' 
-          </script>";
-}
-if (isset($_POST['createPJsecr'])) {
+if (isset($_POST['pj_agr'])) {
     $nama = $_POST['nama'];
-    $ket = $_POST['ket'];
-    $jabatan = $_POST['jabatan'];
-    $jawab = $_POST['jawab'];
     $id = $_POST['id'];
-
-    $query="UPDATE surat set nama = '$nama', Keterangan = '$ket', kode_jabatan = '$jabatan', veri_1 = '$jawab' WHERE id_surat = '$id'";
-    $hasil=mysqli_query($konek, $query);
-    if($hasil) 
-	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
-		  location.href='list_srt2secr.php'
-		  </script>";
+    
+    $query = "UPDATE surat SET veri_1 = '2' WHERE id_surat = '$id'";
+    $hasil = mysqli_query($konek, $query);
+    if($hasil)
+    echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
+         location.href='list_srt2.php?id=$nama'
+         </script>";
     else 
-	echo "<script language='JavaScript'>
-          (window.alert('surat gagal terjawab'))
-          location.href='list_srt2secr.php' 
-          </script>";
-}
+    echo "<script language='JavaScript'>
+         (window.alert('surat gagal terjawab'))
+         location.href='list_srt2.php?id=$nama' 
+         </script>";
 
-if (isset($_POST['post_a'])) {
+} elseif (isset($_POST['pj_dcl'])) {
     $nama = $_POST['nama'];
-    $ket = $_POST['ket'];
-    $jabatan = $_POST['jabatan'];
-    $jawab = $_POST['jawab'];
     $id = $_POST['id'];
     $alasan = $_POST['alasan'];
 
-    $query="UPDATE surat set veri_2 = '$jawab',alasan = '$alasan'  WHERE id_surat = '$id'";
-    $hasil=mysqli_query($konek, $query);
-    // var_dump($query);
-    // die;
-    if($hasil) 
-	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
-		  location.href='list_srt3A.php'
-		  </script>";
-    else 
-	echo "<script language='JavaScript'>
-          (window.alert('surat gagal terjawab'))
-          location.href='list_srt3A.php' 
-          </script>";
+    $query = "UPDATE surat SET veri_1 = '1', alasan = '$alasan' WHERE id_surat = '$id'";
+    $hasil = mysqli_query($konek, $query);
+    if (empty($alasan)) {
+        echo "<script language='JavaScript'> (window.alert('Alasan Tidak Boleh Kosong')) 
+             location.href='answer_pjDats.php?id=$id'
+             </script>";
+    } else {
+        if($hasil)
+        echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
+             location.href='list_srt2.php?id=$nama'
+             </script>";
+        else 
+        echo "<script language='JavaScript'>
+             (window.alert('surat gagal terjawab'))
+             location.href='list_srt2.php?id=$nama' 
+             </script>";    
+    }
 }
 
-if (isset($_POST['post_b'])) {
-    $jawab = $_POST['jawab'];
+
+if (isset($_POST['kepeg_agr'])) {
+    $id = $_POST['id'];
+    
+    $query = "UPDATE surat SET veri_2 = '2' WHERE id_surat = '$id'";
+    $hasil = mysqli_query($konek, $query);
+    if($hasil)
+    echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
+         location.href='list_srt3A.php'
+         </script>";
+    else 
+    echo "<script language='JavaScript'>
+         (window.alert('surat gagal terjawab'))
+         location.href='list_srt3A.php' 
+         </script>";
+
+} elseif (isset($_POST['kepeg_dcl'])) {
+    $id = $_POST['id'];
     $alasan = $_POST['alasan'];
-    // $sisa_cuti = $_POST['sisa'];
+
+    $query = "UPDATE surat SET veri_2 = '1', alasan = '$alasan' WHERE id_surat = '$id'";
+    $hasil = mysqli_query($konek, $query);
+    if (empty($alasan)) {
+        echo "<script language='JavaScript'> (window.alert('Alasan Tidak Boleh Kosong')) 
+             location.href='answer_a.php?id=$id'
+             </script>";
+    } else {
+        if($hasil)
+        echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
+             location.href='list_srt3A.php'
+             </script>";
+        else 
+        echo "<script language='JavaScript'>
+             (window.alert('surat gagal terjawab'))
+             location.href='list_srt3A.php' 
+             </script>";    
+    }
+}
+
+if (isset($_POST['kasubag_agr'])) {
     $cuti = $_POST['hari_kontrak1'];
-    $cuti_imp = $_POST['hari_kontrak2'];
-    $sakit = $_POST['sakit'];
-    $izin = $_POST['izin'];
-    $hamil = $_POST['hamil'];
+    $jawab = 2;
     $id = $_POST['id'];
 
     function kurang_kontrak($cuti, $jawab){
@@ -246,12 +246,12 @@ if (isset($_POST['post_b'])) {
     $kontrak_hitung = kurang_kontrak($cuti, $jawab);
     $query="UPDATE surat 
             INNER JOIN user_bnn ON surat.nama = user_bnn.nama 
-            SET surat.veri_3 = '$jawab', surat.alasan = '$alasan', user_bnn.sisa_cuti = user_bnn.sisa_cuti - '$kontrak_hitung' 
+            SET surat.veri_3 = '$jawab', user_bnn.sisa_cuti = user_bnn.sisa_cuti - '$kontrak_hitung' 
             WHERE surat.id_surat = '$id'";
+            
     $hasil=mysqli_query($konek, $query);
-
-    // var_dump($query);
-    // die;
+    var_dump($query);
+    die;    
     if($hasil) 
 	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
 		  location.href='list_srt3A.php'
@@ -264,8 +264,8 @@ if (isset($_POST['post_b'])) {
     } else {
         $query="UPDATE surat SET veri_3 = '$jawab', alasan = '$alasan' WHERE id_surat = '$id'";
         $hasil=mysqli_query($konek, $query);
-        // var_dump($query);
-        // die;
+        var_dump($query);
+        die;
         if($hasil) 
         echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
               location.href='list_srt3A.php'
@@ -276,6 +276,27 @@ if (isset($_POST['post_b'])) {
               location.href='list_srt3A.php' 
               </script>";
     
+    }
+} elseif (isset($_POST['kasubag_dcl'])) {
+    $id = $_POST['id'];
+    $alasan = $_POST['alasan'];
+
+    $query = "UPDATE surat SET veri_3 = '1', alasan = '$alasan' WHERE id_surat = '$id'";
+    $hasil = mysqli_query($konek, $query);
+    if (empty($alasan)) {
+        echo "<script language='JavaScript'> (window.alert('Alasan Tidak Boleh Kosong')) 
+             location.href='answer_b.php?id=$id'
+             </script>";
+    } else {
+        if($hasil)
+        echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
+             location.href='list_srt3A.php'
+             </script>";
+        else 
+        echo "<script language='JavaScript'>
+             (window.alert('surat gagal terjawab'))
+             location.href='list_srt3A.php' 
+             </script>";    
     }
 }
 

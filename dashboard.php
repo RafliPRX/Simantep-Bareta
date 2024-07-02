@@ -173,11 +173,29 @@ $nama = $_SESSION['nama'];
         $jam_masuk = date($hasil[3]);
         $jam_wajib_keluar = date("16:00:00");
         $jam_keluar = date($hasil[6]);
+        $today = date('d-F-Y');
       ?>
       <div class="container-fluid">
         <div class="card">
           <div class="card-body"><br><br>
             <h3 align="center" class="fw-semibold mb-4">Selamat Datang <?php echo $nama; ?> <br><br> di Sistem Manajemen Terpadu</h3>
+            <h3 align="center" class="fw-semibold mb-4" id="clock" ></h3>
+            <script>
+              function updateClock() {
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+                const month = now.toLocaleString('id-ID', { month: 'long' });
+                const day = now.getDate();
+                const year = now.getFullYear();
+              
+                const clockElement = document.getElementById('clock');
+                clockElement.innerHTML = `${day} ${month} ${year} ${hours}:${minutes}:${seconds}`;
+              }
+
+              setInterval(updateClock, 1000); // Memperbarui elemen jam setiap detik            
+            </script>
               <div class="row">
                 <div class="col-md-4">
                   <div class="card">

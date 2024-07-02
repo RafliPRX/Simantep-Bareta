@@ -250,8 +250,8 @@ if (isset($_POST['kasubag_agr'])) {
             WHERE surat.id_surat = '$id'";
             
     $hasil=mysqli_query($konek, $query);
-    var_dump($query);
-    die;    
+    // var_dump($query);
+    // die;    
     if($hasil) 
 	echo "<script language='JavaScript'> (window.alert('surat sudah terjawab')) 
 		  location.href='list_srt3A.php'

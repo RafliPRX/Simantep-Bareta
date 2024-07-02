@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'konek.php';
+// include 'search_acc.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,48 +25,57 @@ include 'konek.php';
           <div class="col-md-8 col-lg-6 col-xxl-3">
             <div class="card mb-0">
               <div class="card-body">
-                <a href="index.php" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                <a href="search_acc.php" class="text-nowrap logo-img text-center d-block py-3 w-100">
                   <img src="image/logo simantep 2.png" width="250" alt="">
                 </a>
                 <p class="text-center">Sistem Pengajuan Cuti</p>
-                <form action="function.php" method="post">
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Username</label>
-                    <select class="form-control" id="nama" name="nama">
-                        <option value="">Nama</option>
-                        <?php
-                            $nama = $_POST['nama'];
-                            $sql = "SELECT * FROM user_bnn";
-                            $res = mysqli_query($konek, $sql);
-                            while ($brs=mysqli_fetch_array($res)) {
-                                if ($brs[0]==$nama) {
-                                    echo "<option value= '$brs[1]'selected>$brs[1]</option>"; 
-                                }else {
-                                    echo "<option value= '$brs[1]'>$brs[1]</option>";
-                                }
-                            }
-                        ?>
-                    </select>
-                  </div>
-                  <div class="mb-4">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input placeholder="Password" type="password" name="pass" id="pass" class="form-control">
-                  </div>
-                  <!-- <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="form-check">
-                      <input class="form-check-input primary" type="checkbox" value="" name="check">
-                      <label class="form-check-label text-dark" for="flexCheckChecked">
-                        Akun PJ 
-                      </label>
-                    </div>
-                  </div> -->
-                  <button type="submit" name="login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
-                  <!-- <button href="index.php" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button> -->
-                  <div class="d-flex align-items-center justify-content-center">
-                    <p class="fs-4 mb-0 fw-bold">Tidak Punya Akun ?</p>
-                    <a class="text-primary fw-bold ms-2" href="signin.php">Create an account</a>
-                  </div>
-                </form>
+                <?php 
+                  if (isset($_POST['find_acc'])) {
+                    $username = $_POST['nama'];
+                    // echo "<p class='text-center'>$username</p>";
+                    ?>
+                      <form action="function.php" method="post">
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Username</label>
+                          <input type="text" placeholder="nama" class="form-control" name="nama" id="nama" value="<?php echo $username; ?>" >
+                        </div>
+                        <div class="mb-4">
+                          <label for="exampleInputPassword1" class="form-label">Password</label>
+                          <input placeholder="Password" type="password" name="pass" id="pass" class="form-control">
+                        </div>
+                        <button type="submit" name="login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
+                        <div class="d-flex align-items-center justify-content-center">
+                          <p class="fs-4 mb-0 fw-bold">Tidak Punya Akun ?</p>
+                          <a class="text-primary fw-bold ms-2" href="signin.php">Create an account</a>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center" >
+                        <p class="fs-4 mb-0 fw-bold" > Note: Setelah Itu Login Seperti Biasa</p>
+                        </div>
+                      </form>
+                    <?php
+                  } else {
+                    ?> 
+                      <form action="function.php" method="post">
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Username</label>
+                          <input type="text" placeholder="nama" class="form-control" name="nama" id="nama">
+                        </div>
+                        <div class="mb-4">
+                          <label for="exampleInputPassword1" class="form-label">Password</label>
+                          <input placeholder="Password" type="password" name="pass" id="pass" class="form-control">
+                        </div>
+                        <button type="submit" name="login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Login</button>
+                        <div class="d-flex align-items-center justify-content-center">
+                          <p class="fs-4 mb-0 fw-bold">Tidak Punya Akun ?</p>
+                          <a class="text-primary fw-bold ms-2" href="signin.php">Create an account</a><br>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center" >
+                        <p class="fs-4 mb-0 fw-bold" > Note: Untuk mencari nama bisa diklik pada logo</p>
+                        </div>
+                      </form>
+                    <?php
+                  }
+                ?>
               </div>
             </div>
           </div>

@@ -152,7 +152,7 @@ session_start();
             echo "<th align ='center'>".$no++."</th>";
             echo "<th align ='center'>".$brs[1]."</th>";
             echo "<td align ='center'>".$status."</td>";
-            echo "<td align ='center'><a href='Detail_Account.php?id=$brs[2]'>Pengaturan Akun</a></td>";            
+            echo "<td align ='center'><a href='buka_account.php?id=$brs[2]'>Membuka</a><a>|||</a><a href='kunci_account.php?id=$brs[2]'>Mengunci</a></td>";            
             echo "</tr>";
         }
         function status($status_raw){

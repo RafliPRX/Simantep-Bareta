@@ -173,7 +173,6 @@ $nama = $_SESSION['nama'];
         $jam_masuk = date($hasil[3]);
         $jam_wajib_keluar = date("16:00:00");
         $jam_keluar = date($hasil[6]);
-        $today = date('d-F-Y');
       ?>
       <div class="container-fluid">
         <div class="card">

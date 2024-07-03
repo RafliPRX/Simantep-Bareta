@@ -178,7 +178,7 @@ if (!isset($_SESSION['login'])) {
                <video autoplay></video>
                <canvas id="canvas" style="display: none;"></canvas>
                <canvas id="canvas1" style="display: none;"></canvas>
-               <div id="map"></div><br>
+               <div style="z-index: 1; position: relative; " id="map"></div><br>
                <div class="form-control">
                
                <?php  

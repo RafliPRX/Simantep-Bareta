@@ -1,17 +1,21 @@
 <?php
+include 'konek.php';
 session_start();
+
 if (!isset($_SESSION['login'])) {
-    header('Location:index.php');
-    exit;
+  header('Location:index.php');
+  exit;
 }
+$nrk = $_SESSION['nrk'];
+$nama = $_SESSION['nama']; 
 ?>
+
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>List Surat <?php echo $_SESSION['nama'] ?></title>
+  <title>Web Absensi</title>
   <link rel="shortcut icon" type="image/png" href="image/bnn.png" />
   <link rel="stylesheet" href="src/assets/css/styles.min.css" />
   <link rel="stylesheet" href="src/assets/css/table.css">
@@ -21,12 +25,12 @@ if (!isset($_SESSION['login'])) {
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
-    <!-- Sidebar Start -->
-    <aside class="left-sidebar">
+     <!-- Sidebar Start -->
+     <aside class="left-sidebar">
       <!-- Sidebar scroll-->
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-          <a href="list_srt2.php" class="text-nowrap logo-img">
+          <a href="list_srt.php" class="text-nowrap logo-img">
             <img align="center" src="image/for rafli.png" width="165" alt="" />
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -34,7 +38,7 @@ if (!isset($_SESSION['login'])) {
           </div>
         </div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-          <a href="list_srt2.php" class="text-nowrap logo-img">
+          <a href="list_srt.php" class="text-nowrap logo-img">
             <img src="image/logo simantep 2.png" width="160" alt="" />
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -125,14 +129,24 @@ if (!isset($_SESSION['login'])) {
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
               <li class="nav-item dropdown">
+              <?php
+               if (empty($_SESSION['f_profile'])) {
+              ?>
                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
                   <img src="src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
                   <h6 class="mb-0"><?php echo $_SESSION['nama'] ?></h6>
+                </a> 
+                <?php } else { ?>
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="./profile/<?php echo $_SESSION['f_profile'] ?>" alt="" width="35" height="35" class="rounded-circle">
+                  <h6 class="mb-0"><?php echo $_SESSION['nama'] ?></h6>
                 </a>
+                <?php } ?>    
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="user_profile.php" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
@@ -156,144 +170,48 @@ if (!isset($_SESSION['login'])) {
         </nav>
       </header>
       <!--  Header End -->
+      <?php 
+        $nama = $_SESSION['nama'];
+        $today= date("Y/m/d");
+        $dashboard = "SELECT * FROM snap WHERE nama = '$nama' AND today = '$today'";
+        $qry = mysqli_query($konek, $dashboard);
+        $hasil = mysqli_fetch_array($qry);
+        $jam_wajib_masuk = date("07:30:00");
+        $jam_masuk = date($hasil[3]);
+        $jam_wajib_keluar = date("16:00:00");
+        $jam_keluar = date($hasil[6]);
+      ?>
       <div class="container-fluid">
         <div class="card">
-          <div class="card-body">
-            <h5 align="center" class="card-title fw-semibold mb-4">Daftar Surat</h5>
-            
-            <table class="fl-table" border="1" width="60%" >
-            <tr>
-                <th align="center" width="5%">no.</th>
-                <th align="center" width="5%">Nama</th>
-                <th align="center" width="20%">Jabatan</th>
-                <th align="center" width="20%">surat</th>
-            </tr>
-            <?php
-                include 'konek.php';
-                $no=1;
-                if ($_SESSION['no_kelompok'] == 1) {
-                $query = "SELECT a.nama, b.nama_jabatan, a.no_kelompok FROM kelompok a, jabatan b WHERE a.id_jabatan = b.id_jabatan AND a.no_kelompok = 2";
-                // $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, c.no_kelompok FROM surat a, jabatan b, kelompok c WHERE a.id_jabatan=b.id_jabatan and a.nama=c.nama and a.id_jabatan = 3";
-                $hasil=mysqli_query($konek,$query);
-                while ($brs=mysqli_fetch_array($hasil))
-                {
-                    echo "<tr>";
-                    echo "<td align ='center'>".$no++."</td>";
-                    echo "<td align ='center'>".$brs[0]."</td>";
-                    echo "<td align ='center'>".$brs[1]."</td>";
-                    echo "<td align ='center'><a href='list_srt2.php?id=$brs[0]'>Liat Surat</a></td>";
-                    echo "</tr>";
-                }
-                } elseif ($_SESSION['no_kelompok'] == 3) {
-                    $query = "SELECT a.nama, b.nama_jabatan, a.no_kelompok FROM kelompok a, jabatan b WHERE a.id_jabatan = b.id_jabatan AND a.no_kelompok = 4";
-                    // $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, c.no_kelompok FROM surat a, jabatan b, kelompok c WHERE a.id_jabatan=b.id_jabatan and a.nama=c.nama and a.id_jabatan = 3";
-                    $hasil=mysqli_query($konek,$query);
-                    while ($brs=mysqli_fetch_array($hasil))
-                    {
-                        echo "<tr>";
-                        echo "<td align ='center'>".$no++."</td>";
-                        echo "<td align ='center'>".$brs[0]."</td>";
-                        echo "<td align ='center'>".$brs[1]."</td>";
-                        echo "<td align ='center'><a href='list_srt2.php?id=$brs[0]'>Liat Surat</a></td>";
-                        echo "</tr>";
-                    }
-                } elseif ($_SESSION['no_kelompok'] == 5) {
-                    $query = "SELECT a.nama, b.nama_jabatan, a.no_kelompok FROM kelompok a, jabatan b WHERE a.id_jabatan = b.id_jabatan AND a.no_kelompok = 6";
-                    // $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, c.no_kelompok FROM surat a, jabatan b, kelompok c WHERE a.id_jabatan=b.id_jabatan and a.nama=c.nama and a.id_jabatan = 3";
-                    $hasil=mysqli_query($konek,$query);
-                    while ($brs=mysqli_fetch_array($hasil))
-                    {
-                        echo "<tr>";
-                        echo "<td align ='center'>".$no++."</td>";
-                        echo "<td align ='center'>".$brs[0]."</td>";
-                        echo "<td align ='center'>".$brs[1]."</td>";
-                        echo "<td align ='center'><a href='list_srt2.php?id=$brs[0]'>Liat Surat</a></td>";
-                        echo "</tr>";
-                    }
-                } elseif ($_SESSION['no_kelompok'] == 7) {
-                    $query = "SELECT a.nama, b.nama_jabatan, a.no_kelompok FROM kelompok a, jabatan b WHERE a.id_jabatan = b.id_jabatan AND a.no_kelompok = 8";
-                    // $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, c.no_kelompok FROM surat a, jabatan b, kelompok c WHERE a.id_jabatan=b.id_jabatan and a.nama=c.nama and a.id_jabatan = 3";
-                    $hasil=mysqli_query($konek,$query);
-                    while ($brs=mysqli_fetch_array($hasil))
-                    {
-                        echo "<tr>";
-                        echo "<td align ='center'>".$no++."</td>";
-                        echo "<td align ='center'>".$brs[0]."</td>";
-                        echo "<td align ='center'>".$brs[1]."</td>";
-                        echo "<td align ='center'><a href='list_srt2.php?id=$brs[0]'>Liat Surat</a></td>";
-                        echo "</tr>";
-                    }
-                } elseif ($_SESSION['no_kelompok'] == 9) {
-                    $query = "SELECT a.nama, b.nama_jabatan, a.no_kelompok FROM kelompok a, jabatan b WHERE a.id_jabatan = b.id_jabatan AND a.no_kelompok = 10";
-                    // $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, c.no_kelompok FROM surat a, jabatan b, kelompok c WHERE a.id_jabatan=b.id_jabatan and a.nama=c.nama and a.id_jabatan = 3";
-                    $hasil=mysqli_query($konek,$query);
-                    while ($brs=mysqli_fetch_array($hasil))
-                    {
-                        echo "<tr>";
-                        echo "<td align ='center'>".$no++."</td>";
-                        echo "<td align ='center'>".$brs[0]."</td>";
-                        echo "<td align ='center'>".$brs[1]."</td>";
-                        echo "<td align ='center'><a href='list_srt2.php?id=$brs[0]'>Liat Surat</a></td>";
-                        echo "</tr>";
-                    }
-                } elseif ($_SESSION['no_kelompok'] == 11) {
-                    $query = "SELECT a.nama, b.nama_jabatan, a.no_kelompok FROM kelompok a, jabatan b WHERE a.id_jabatan = b.id_jabatan AND a.no_kelompok = 12";
-                    // $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, c.no_kelompok FROM surat a, jabatan b, kelompok c WHERE a.id_jabatan=b.id_jabatan and a.nama=c.nama and a.id_jabatan = 3";
-                    $hasil=mysqli_query($konek,$query);
-                    while ($brs=mysqli_fetch_array($hasil))
-                    {
-                        echo "<tr>";
-                        echo "<td align ='center'>".$no++."</td>";
-                        echo "<td align ='center'>".$brs[0]."</td>";
-                        echo "<td align ='center'>".$brs[1]."</td>";
-                        echo "<td align ='center'><a href='list_srt2.php?id=$brs[0]'>Liat Surat</a></td>";
-                        echo "</tr>";
-                    }
-                } 
-                
-                $query="SELECT a.id_surat, a.nama, a.keterangan, b.nama_jabatan, a.veri_1, c.no_kelompok FROM surat a, jabatan b, kelompok c WHERE a.id_jabatan=b.id_jabatan and a.nama=c.nama and a.id_jabatan = 3";
-                $hasil=mysqli_query($konek,$query);
-                while ($brs=mysqli_fetch_array($hasil))
-                {
-                    echo "<tr>";
-                    echo "<td align ='center'>".$no++."</td>";
-                    echo "<td align ='center'>".$brs[0]."</td>";
-                    echo "<td align ='center'>".$brs[1]."</td>";
-                    echo "<td>".$brs[2]."</td>";
-                    echo "<td>".$brs[3]."</td>";
-                    if ($brs[4] == 2) {
-                        echo "<td align ='center'>";
-                        echo "<img src ='green.png' width ='25' height ='25'";
-                        echo "</td>";
-                    }else if ($brs[4] == 1){
-                        echo "<td align ='center'>";
-                        echo "<img src ='red.png' width ='25' height ='25'";
-                        echo "</td>";
-                    } elseif ($brs[4] == 0) {
-                        echo "<td align ='center'>";
-                        echo "belum dijawab";
-                        echo "</td>";
-                    } else {
-                        echo "<td align ='center'>";
-                        echo "undefined";
-                        echo "</td>";
-                    }
-                    echo "<td align ='center'><a href='answer_pjDats.php?id=$brs[0]'>jawab</a></td>";
-                    echo "</tr>";
-                }
-            ?>
-        </table>
-      
+          <div class="card-body"><br><br>
+            <h3 align="center" class="fw-semibold mb-4">Selamat Datang <?php echo $nama; ?> <br><br> di Sistem Manajemen Terpadu</h3>
+            <h3 align="center" class="fw-semibold mb-4" id="clock" ></h3>
+            <script>
+              function updateClock() {
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+                const month = now.toLocaleString('id-ID', { month: 'long' });
+                const day = now.getDate();
+                const year = now.getFullYear();
+              
+                const clockElement = document.getElementById('clock');
+                clockElement.innerHTML = `${day} ${month} ${year} ${hours}:${minutes}:${seconds}`;
+              }
+
+              setInterval(updateClock, 1000); // Memperbarui elemen jam setiap detik            
+            </script>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script src="src/assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="src/assets/js/sidebarmenu.js"></script>
-  <script src="src/assets/js/app.min.js"></script>
-  <script src="src/assets/libs/simplebar/dist/simplebar.js"></script>
+  <script src="./src/assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="./src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./src/assets/js/sidebarmenu.js"></script>
+  <script src="./src/assets/js/app.min.js"></script>
+  <script src="./src/assets/libs/simplebar/dist/simplebar.js"></script>
 </body>
 
 </html>

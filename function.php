@@ -58,7 +58,7 @@ if (isset($_POST['login'])) {
                     if ($role == 1) {
                         header('Location:dashboard.php');
                     } elseif ($role >= 2 && $role <= 8) {
-                        header('Location:list_srt2dats.php');
+                        header('Location:dashboard_pj.php');
                     } elseif ($role == 9 || $role == 10) {
                         header('Location:list_srt3A.php');
                     } elseif ($role == 11) {
@@ -146,6 +146,45 @@ if (isset($_POST['simpan'])) {
         echo "<script language='JavaScript'> (window.alert('Surat Belum Terbuat'))
             location.href='list_srt.php'
             </script>";
+    }
+}
+// Tambah Pengajuan Dana
+if (isset($_POST['simpan_pengajuan'])) {
+    $nama = $_POST['nama'];
+    $nrk = $_POST['nrk'];
+    $jabatan = $_POST['jabatan'];
+    $nama_kegiatan= $_POST['kegiatan'];
+    $kapan = $_POST['event'];
+    $acc_521211 = $_POST['acc521211'];
+    $acc_522141_kendaraan = $_POST['522141_kendaraan'];
+    $acc_522141_tempat = $_POST['522141_tempat'];
+    $acc_522151 = $_POST['522151'];
+    $acc_524113 = $_POST['524113'];
+    $acc_524114 = $_POST['524114'];
+    $acc_522191 = $_POST['522191'];
+    $keterangan = $_POST['ket_medis'];
+    $total_dana = $_POST['total_manajemen'];
+
+    $today = date("Y-m-d");
+    $sql = "INSERT INTO dana_bnn(id_dana, nama, NRK, jabatan_pj, nama_kegiatan, rencana_pelaksana, acc_521211, acc_522141_kendaraan, acc_522141_tempat,   
+    acc_522151, acc_524113, acc_524114, acc_522191, keterangan, total_dana_manajemen, veri_1, veri_2, today) VALUES (NULL, '$nama', '$nrk', '$jabatan',
+    '$nama_kegiatan', '$kapan', '$acc_521211', '$acc_522141_kendaraan', '$acc_522141_tempat', '$acc_522151', '$acc_524113', '$acc_524114', '$acc_522191', '$keterangan', '$total_dana', '1', '1', '$today')";
+    // var_dump($kapan);
+    // var_dump($nama_kegiatan);
+    // var_dump($acc_521211);
+    // var_dump($sql);
+    // die;
+    $query = mysqli_query($konek, $sql);
+
+
+    if ($query) {
+        echo "<script language='JavaScript'> (window.alert('Formulir Pengajuan Dana telah Diajukan')) 
+        location.href='list_pengajuan.php'
+        </script>";
+    } else {
+        echo "<script language='JavaScript'> (window.alert('Formulir Pengajuan Dana Gagal')) 
+        location.href='add_money_plans.php'
+        </script>";
     }
 }
 

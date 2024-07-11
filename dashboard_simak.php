@@ -48,6 +48,10 @@ $nama = $_SESSION['nama'];
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
+            <?php 
+              $role = $_SESSION['id_jabatan_sup'];
+              if ($role < 9) {
+            ?>
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Home</span>
@@ -77,6 +81,26 @@ $nama = $_SESSION['nama'];
                 <span class="hide-menu">Daftar Pengajuan Surat</span>
               </a>
             </li>
+            <?php } elseif($role == 10) { ?>
+              <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Sipecut /</span><br>
+              <span class="hide-menu">Sistem Pengajuan Cuti</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="list_srt3A.php" aria-expanded="false">
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+                <path d="M3 7l9 6l9 -6" />
+              </svg>
+                <span class="hide-menu">List Surat</span>
+              </a>
+            </li>
+            <?php } ?>
+            <?php 
+              if ($role >= 10 && $role <= 12) { 
+            ?>
             <li class="nav-small-cap">
             <a class="sidebar-link" href="dashboard_simak.php" aria-expanded="false">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -84,7 +108,7 @@ $nama = $_SESSION['nama'];
               <span class="hide-menu">Sistem Manajemen Keuangan</span>
             </a>  
             </li>
-            <li class="sidebar-item">
+            <li class="sidebar-item" style="display: none;">
               <a class="sidebar-link" href="Add_money_plans.php" aria-expanded="false">
               <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
@@ -93,7 +117,7 @@ $nama = $_SESSION['nama'];
                 <span class="hide-menu">Rencana Penarikan Dana</span>
               </a>
             </li>
-            <li class="sidebar-item">
+            <li class="sidebar-item" style="display: none;">
               <a class="sidebar-link" href="dana_LPJ.php" aria-expanded="false">
                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -104,9 +128,38 @@ $nama = $_SESSION['nama'];
                 <span class="hide-menu">LPJ</span>
               </a>
             </li>
+            <?php } else { ?>
+              <li class="nav-small-cap">
+            <a class="sidebar-link" href="dashboard_simak.php" aria-expanded="false">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Simak/</span><br>
+              <span class="hide-menu">Sistem Manajemen Keuangan</span>
+            </a>  
+            </li>
+            <li class="sidebar-item" style="display: block;">
+              <a class="sidebar-link" href="Add_money_plans.php" aria-expanded="false">
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
+              <path d="M16 19h6" /><path d="M19 16v6" /><path d="M3 7l9 6l9 -6" />
+              </svg>
+                <span class="hide-menu">Rencana Penarikan Dana</span>
+              </a>
+            </li>
+            <li class="sidebar-item" style="display: block;">
+              <a class="sidebar-link" href="dana_LPJ.php" aria-expanded="false">
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                  <path d="M4 13h3l3 3h4l3 -3h3" />
+                  </svg>
+                <span class="hide-menu">Pengajuan Proposal Dan</span>
+                <span class="hide-menu">LPJ</span>
+              </a>
+            </li>
+            <?php } ?>
           </ul>
         </nav>
-      <!-- End Sidebar navigation -->
+        <!-- End Sidebar navigation -->
       </div>
       <!-- End Sidebar scroll-->
     </aside>
@@ -202,11 +255,146 @@ $nama = $_SESSION['nama'];
                 const clockElement = document.getElementById('clock');
                 clockElement.innerHTML = `${day} ${month} ${year} ${hours}:${minutes}:${seconds}`;
               }
-
               setInterval(updateClock, 1000); // Memperbarui elemen jam setiap detik            
             </script>
           </div>
         </div>
+        <div class="card">
+          <?php 
+            $role = $_SESSION['id_jabatan_sup'];
+            function show($role) {
+              if ($role == 12) {
+                return "display: none;";
+              } else {
+                return "display: block;";
+              }
+            }
+            $show = show($role);
+          ?>
+          <div class="card-body" style="<?php echo $show ?>" >
+            <h5 align="center" class="card-title fw-semibold mb-4">Cek Progres Pengajuan RPD</h5>
+            <table class="fl-table" border="1" width="100%" >
+            <tr>
+                <th width="5%">NO.</th>
+                <th width="10%">NAMA KEGIATAN</th>
+                <th width="15%">TANGGAL PELAKSANAAN</th>
+                <th width="20%"> FEEDBACK BAGIAN KEUANGAN</th>
+                <th width="10%">DETAIL</th>
+            </tr>
+        <?php
+        include 'konek.php';
+        $no=1;
+        function nama($role){
+          if ($role < 9) {
+            $nama = $_SESSION['nama'];
+            return  "WHERE nama = '$nama'";
+          } elseif ($role < 13) {
+            return "";
+          }
+        }
+
+        $nama = nama($role);
+        $query="SELECT nama_kegiatan, rencana_pelaksana, keterangan_keuangan, id_dana from dana_bnn";
+        $hasil=mysqli_query($konek,$query);
+        while ($brs=mysqli_fetch_array($hasil))
+        {
+            echo "<tr>";
+            echo "<th align ='center'>".$no++."</td>";
+            echo "<th align ='center'>".$brs[0]."</td>";
+            echo "<th align ='center'>".$brs[1]."</td>";
+            echo "<th align ='center'>".$brs[2]."</td>";
+            echo "<td align ='center'><a href='Read_money_plans.php?id=$brs[3]'>Buka</a></td>";
+
+        }
+        ?>
+        </table>
+      
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 align="center" class="card-title fw-semibold mb-4">Cek Progres Pengajuan Proposal dan LPJ</h5>
+            <table class="fl-table" border="1" width="100%" >
+            <tr>
+                <th rowspan="2" width="5%">NO.</th>
+                <th rowspan="2" width="5%">UNIT</th>
+                <th rowspan="2" width="10%">NAMA KEGIATAN</th>
+                <th rowspan="2" width="15%">TANGGAL PELAKSANAAN</th>
+                <th rowspan="2" width="15%">TANGGAL & JAM PENGAJUAN PROPOSAL</th>
+                <th colspan="2" width="20%">KASUBAG TATA USAHA</th>
+                <th colspan="2" width="20%">KEPALA BALAI</th>
+                <th colspan="2" width="20%">BAGIAN KEUANGAN</th>
+                <th rowspan="2" width="10%">DETAIL</th>
+            </tr>
+            <tr>
+                <th width="7%" > Status </th>
+                <th width="10%" > Tanggal & Jam Selesai Periksa </th>
+                <th width="7%" > Status </th>
+                <th width="10%" > Tanggal & Jam Selesai Periksa </th>
+                <th>Keterangan</th>
+                <th>Tanggal & Jam Diterima</th>
+            </tr>
+        <?php
+        include 'konek.php';
+        $no=1;
+        $nama = nama($role);
+        $query="SELECT nama_kegiatan, rencana_pelaksana, today, today_jam, veri_1, veri_1_date, veri_1_jam, veri_2, veri_2_date, veri_2_jam, keterangan, keterangan_jam, keterangan_date, units, id_lpj FROM lpj_bnn $nama";
+        $hasil=mysqli_query($konek,$query);
+        while ($brs=mysqli_fetch_array($hasil))
+        {
+            echo "<tr>";
+            echo "<th align ='center'>".$no++."</td>";
+            echo "<th align ='center'>".$brs[13]."</td>";
+            echo "<th align ='center'>".$brs[0]."</td>";
+            echo "<th align ='center'>".$brs[1]."</td>";
+            echo "<th align ='center'>".$brs[2]."<br>".$brs[3]."</td>";
+            if ($brs[4] == 2) {
+                echo "<td align ='center'>";
+                echo "<img src ='green.png' width ='25' height ='25'";
+                echo "</td>";
+            }else if ($brs[4] == 1){
+                echo "<td align ='center'>";
+                echo "<img src ='red.png' width ='25' height ='25'";
+                echo "</td>";
+            }elseif ($brs[4] == 0) {
+                echo "<th align ='center'>";
+                echo "BELUM DIJAWAB";
+                echo "</th>";
+            } else {
+                echo "<td align ='center'>";
+                echo "undefined";
+                echo "</td>";
+            }
+            echo "<th align ='center'>".$brs[5]."<br>".$brs[6]."</td>";
+            if ($brs[7] == 2) {
+                echo "<th align ='center'>";
+                echo "<img src ='green.png' width ='25' height ='25'";
+                echo "</th>";
+            }else if ($brs[7] == 1){
+                echo "<th align ='center'>";
+                echo "<img src ='red.png' width ='25' height ='25'";
+                echo "</th>";
+            }elseif ($brs[7] == 0) {
+                echo "<th align ='center'>";
+                echo "BELUM DIJAWAB";
+                echo "</th>";
+            } else {
+                echo "<th align ='center'>";
+                echo "undefined";
+                echo "</th>";
+            }
+            echo "<th align ='center'>".$brs[8]."<br>".$brs[9]."</td>";
+            echo "<th align ='center'>".$brs[10]."</td>";
+            echo "<th align ='center'>".$brs[11]."<br>".$brs[12]."</td>";
+            echo "<td align ='center'><a href='Read_dana_LPJ.php?id=$brs[14]'>Buka</a></td>";
+        }
+        ?>
+        </table>
+          </div>
+        </div>
+        <p>Note</p>
+        <p>Hijau = Diterima</p>
+        <p>Merah = Ditolak</p>
       </div>
     </div>
   </div>

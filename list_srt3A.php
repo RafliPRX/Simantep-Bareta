@@ -45,9 +45,30 @@ if (!isset($_SESSION['login'])) {
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
-            <li class="nav-small-cap">
+            <?php
+            $role = $_SESSION['id_jabatan_sup'];
+            if ($role == 12) {  
+            ?>
+            <li class="nav-small-cap" style="display: none;" >
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Home</span>
+              <span class="hide-menu">Sipecut /</span><br>
+              <span class="hide-menu">Sistem Pengajuan Cuti</span>
+            </li>
+            <li class="sidebar-item" style="display: none;" >
+              <a class="sidebar-link" href="list_srt3A.php" aria-expanded="false">
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+                <path d="M3 7l9 6l9 -6" />
+              </svg>
+                <span class="hide-menu">List Surat</span>
+              </a>
+            </li>
+            <?php } else { ?>
+              <li class="nav-small-cap" style="display: block;" >
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Sipecut /</span><br>
+              <span class="hide-menu">Sistem Pengajuan Cuti</span>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="list_srt3A.php" aria-expanded="false">
@@ -59,8 +80,8 @@ if (!isset($_SESSION['login'])) {
                 <span class="hide-menu">List Surat</span>
               </a>
             </li>
+            <?php } ?>  
             <?php
-              $role = $_SESSION['id_jabatan_sup']; 
               if ($role == 9) {
                 ?> 
                   <li class="sidebar-item" style="display: block">
@@ -76,7 +97,7 @@ if (!isset($_SESSION['login'])) {
                 <?php
               } else {
                 ?>  
-                  <li class="sidebar-item" style="display: none" >
+                  <li class="sidebar-item" style="display: none;" >
                     <a class="sidebar-link" href="list_srt3B.php" aria-expanded="false">
                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-users"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
                       <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
@@ -89,6 +110,65 @@ if (!isset($_SESSION['login'])) {
                 <?php
               }
             ?>
+            <?php 
+              if ($role >= 10 && $role <= 12) { 
+            ?>
+            <li class="nav-small-cap">
+            <a class="sidebar-link" href="dashboard_simak.php" aria-expanded="false">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Simak/</span><br>
+              <span class="hide-menu">Sistem Manajemen Keuangan</span>
+            </a>  
+            </li>
+            <li class="sidebar-item" style="display: none;">
+              <a class="sidebar-link" href="Add_money_plans.php" aria-expanded="false">
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
+              <path d="M16 19h6" /><path d="M19 16v6" /><path d="M3 7l9 6l9 -6" />
+              </svg>
+                <span class="hide-menu">Rencana Penarikan Dana</span>
+              </a>
+            </li>
+            <li class="sidebar-item" style="display: none;">
+              <a class="sidebar-link" href="dana_LPJ.php" aria-expanded="false">
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                  <path d="M4 13h3l3 3h4l3 -3h3" />
+                  </svg>
+                <span class="hide-menu">Pengajuan Proposal Dan</span>
+                <span class="hide-menu">LPJ</span>
+              </a>
+            </li>
+            <?php } else { ?>
+              <li class="nav-small-cap">
+            <a class="sidebar-link" href="dashboard_simak.php" aria-expanded="false">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Simak/</span><br>
+              <span class="hide-menu">Sistem Manajemen Keuangan</span>
+            </a>  
+            </li>
+            <li class="sidebar-item" style="display: block;">
+              <a class="sidebar-link" href="Add_money_plans.php" aria-expanded="false">
+              <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
+              <path d="M16 19h6" /><path d="M19 16v6" /><path d="M3 7l9 6l9 -6" />
+              </svg>
+                <span class="hide-menu">Rencana Penarikan Dana</span>
+              </a>
+            </li>
+            <li class="sidebar-item" style="display: block;">
+              <a class="sidebar-link" href="dana_LPJ.php" aria-expanded="false">
+                  <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                  <path d="M4 13h3l3 3h4l3 -3h3" />
+                  </svg>
+                <span class="hide-menu">Pengajuan Proposal Dan</span>
+                <span class="hide-menu">LPJ</span>
+              </a>
+            </li>
+            <?php } ?>
           </ul>
         </nav>
         <!-- End Sidebar navigation -->

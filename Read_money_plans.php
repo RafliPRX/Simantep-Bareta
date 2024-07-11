@@ -1,6 +1,7 @@
 <?php
 include 'konek.php';
 session_start();
+$id = $_GET['id'];
 ?>
 <!doctype html>
 <html lang="en">
@@ -227,26 +228,24 @@ session_start();
             <h2 align="center" class="card-title fw-semibold mb-1">Data Diri</h2>
               <div class="card">
                 <div class="card-body">
+                  </div>
+                  <?php 
+                    $query = "SELECT nama, NRK, jabatan_pj FROM dana_bnn WHERE id_dana = '$id'";
+                    $result = mysqli_query($konek, $query);
+                    $row1 = mysqli_fetch_array($result);
+                  ?>
                   <!--  Data Diri -->
                     <div class="mb-3">
                       <label for="Nama" class="form-label">Nama</label>
-                      <input class="form-control" type="text" name="nama" id="nama" value="<?php echo $_SESSION['nama'] ?>" readonly>
+                      <input class="form-control" type="text" name="nama" id="nama" value="<?php echo $row1['nama'] ?>" readonly>
                     </div>
                     <div class="mb-3">
                       <label for="exampleInputPassword1" class="form-label">NIP/NRK</label>
-                      <input class="form-control" type="text" name="nrk" id="nrk" readonly value="<?php echo $_SESSION['nrk'] ?>">
+                      <input class="form-control" type="text" name="nrk" id="nrk" readonly value="<?php echo $row1['NRK'] ?>">
                     </div>
                     <div class="mb-3">
-                      <?php 
-                      $jabatan = $_SESSION['id_jabatan_sup'];
-                      $nama = $_SESSION['nama'];
-                      $sql = "SELECT a.nama, b.nama_jabatan_sup FROM user_bnn a, jabatan_super b WHERE a.id_jabatan_sup=b.id_jabatan_sup AND a.nama='$nama'";
-                      $query = mysqli_query($konek, $sql);
-                      $row = mysqli_fetch_assoc($query);
-                      $jabatan_sup = $row['nama_jabatan_sup'];
-                      ?>
                       <label for="exampleInputPassword1" class="form-label">Jabatan</label>
-                      <input type="text" class="form-control" name="jabatan" id="jabatan" readonly value="<?php echo $jabatan_sup ?>">
+                      <input type="text" class="form-control" name="jabatan" id="jabatan" readonly value="<?php echo $row1['jabatan_pj'] ?>">
                     </div>
                     <!-- <div class="mb-3"> -->
                       <!-- <label for="exampleInputPassword1" class="form-label">No-HandPhone</label> -->
@@ -256,141 +255,189 @@ session_start();
               </div>
             </div>
             <div class="card-body">
-            <h2 align="center" >Nama Kegiatan Dan Unit</h2><br>
-              <div class="card"><br>
-              <h3 align="center">Nama Kegiatan</h3>
+            <h2 align="center" class="card-title fw-semibold mb-1">Unit</h2>
+              <div class="card">
+                <?php 
+                $query = "SELECT units FROM dana_bnn WHERE id_dana = '$id'";
+                $res = mysqli_query($konek, $query);
+                $row = mysqli_fetch_array($res);
+                $units = $row['units'];
+                $sosial = "Sosial";
+                $medis = "Medis";
+                $manajemen = "Manajemen";
+                function detail_sosial($units,$sosial){
+                  if($units == $sosial){
+                    return "display: block;";
+                  }  else {
+                    return "display: none;";
+                  }
+                }
+                function detail_medis($units,$medis){
+                  if($units == $medis){
+                    return "display: block;";
+                  }  else {
+                    return "display: none;";
+                  }
+                }
+                function detail_manajemen($units,$manajemen){
+                  if($units == $manajemen){
+                    return "display: block;";
+                  }  else {
+                    return "display: none;";
+                  }
+                }
+                $sosial_detail = detail_sosial($units,$sosial);
+                $medis_detail = detail_medis($units,$medis);
+                $manajemen_detail = detail_manajemen($units,$manajemen);
+                
+                ?>                
                 <div class="card-body">
-                <div class="mb-3">
-                  <label for="Nama" class="form-label">Nama Rencana Kegiatan dan Program</label>
-                  <input class="form-control" placeholder="Nama Rencana" type="text" name="kegiatan" id="kegiatan"> 
-                </div>
-                <div class="mb-3">
-                  <label for="Nama" class="form-label">Rencana Pelaksanaan </label>
-                  <input class="form-control" type="date" name="event" id="event"> 
-                </div><br>
-                <h3 align="center">Jenis Unit</h3>
                   <!--  Unit Sosial -->
+                    <?php 
+                      $sosial = "SELECT nama_kegiatan, rencana_pelaksana, acc_521211_sosial, acc_522141_kendaraan, acc_522141_tempat, acc_522151, acc_524113, acc_524114 FROM dana_bnn WHERE id_dana = '$id'";
+                      $res = mysqli_query($konek, $sosial);
+                      $row = mysqli_fetch_array($res);
+                      $kendaraan = $row['acc_522141_kendaraan'];
+                      $tempat = $row['acc_522141_tempat'];
+                    ?>
                     <div class="mb-3">   
-                        <input type="checkbox" class="form-check-input primary" value="Sosial" name="unit" id="unit" onclick="showForm_Kontrak(this)">
-                        <label class="form-check-label text-dark">Sosial</label>
-                        <div id="form-cuti-kontrak" style="display: none;">
+                        <div id="form-cuti-kontrak" style="<?php echo $sosial_detail ?>">
                           <h5 align="center" class="card-title fw-semibold">Unit Sosial</h5>
                           <div class="mb-3">
+                            <label for="Nama" class="form-label">Nama Rencana Kegiatan dan Program</label>
+                            <input class="form-control" value="<?php echo $row['nama_kegiatan'] ?>" type="text" name="kegiatan" id="kegiatan"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Rencana Pelaksanaan </label>
+                            <input class="form-control" value="<?php echo $row['rencana_Pelaksana'] ?>" type="date" name="event" id="event"> 
+                          </div>
+                          <div class="mb-3">
                             <label for="Nama" class="form-label">Kebutuhan Akun 521211 </label>
-                            <input class="form-control" type="text" name="521211_sosial" id="521211_sosial">
+                            <input class="form-control" type="text" value="<?php echo $row['acc_521211_sosial'] ?>" name="acc521211" id="acc521211">
                           </div>
                           <div class="mb-3">
                             <label for="Nama" class="form-label">Kebutuhan Akun 522141 </label><br>
-                                <div class="mb-3" >
+                                <?php 
+                                function acc522141_kendaraan($kendaraan) {
+                                  if ($kendaraan >= 1) {
+                                    return "display: block;";
+                                  } else {
+                                    return "display: none;";
+                                  }
+                                }
+                                function acc522141_tempat($tempat) {
+                                  if ($tempat >= 1) {
+                                    return "display: block;";
+                                  } else {
+                                    return "display: none;";
+                                  }
+                                }
+                                $tempat_detai = acc522141_tempat($tempat);
+                                $kendaraan_detail = acc522141_kendaraan($kendaraan);
+                                ?>
+                                <div class="mb-3" style="<?php echo $tempat_detai ?>" >
                                     <label style="margin-right: 20px" ></label>
-                                    <input style="margin-right: 5px" type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_tempat(this)">
                                     <label class="form-check-label text-dark">Sewa Tempat</label>
-                                    <div id="form-tempat" style="display: none;"  ><br>
-                                        <input class="form-control" placeholder="Sewa Tempat" type="text" name="522141_tempat" id="522141_tempat">
+                                    <div id="form-tempat"><br>
+                                        <input class="form-control" value="<?php echo $row['acc_522141_tempat'] ?>" type="text" name="522141_tempat" id="522141_tempat">
                                     </div>
                                 </div>
-                                <div class="mb-3" >
+                                <div class="mb-3" style="<?php echo $kendaraan_detail ?>" >
                                     <label style="margin-right: 20px" ></label>
-                                    <input style="margin-right: 5px" type="checkbox" class="form-check-input primary" name="jenis_surat" id="jenis_surat" onclick="showForm_kendaraan(this)">
-                                    <label class="form-check-label text-dark">Sewa Kendaraan</label>
-                                    <div id="form-kendaraan" style="display: none;" ><br>
-                                        <input class="form-control" placeholder="Sewa Kendaraan" type="text" name="522141_kendaraan" id="522141_kendaraan">
+                                    <label class="form-check-label text-dark"></label>Sewa Kendaraan</label>
+                                    <div id="form-kendaraan" ><br>
+                                        <input class="form-control" value="<?php echo $row['acc_522141_kendaraan'] ?>" type="text" name="522141_kendaraan" id="522141_kendaraan">
                                     </div>
                                 </div>
                           </div>
                           <div class="mb-3">
                             <label for="Nama" class="form-label">Kebutuhan Akun 522151 </label>
-                            <input class="form-control" type="text" name="522151" id="522151">
+                            <input class="form-control" type="text" value="<?php echo $row['acc_522151'] ?>" name="522151" id="522151">
                           </div>
                           <div class="mb-3">
                             <label for="Nama" class="form-label">Kebutuhan Akun 524113 </label>
-                            <input class="form-control" type="text" name="524113" id="524113">
+                            <input class="form-control" type="text" value="<?php echo $row['acc_524113'] ?>" name="524113" id="524113">
                           </div>
                           <div class="mb-3">
                             <label for="Nama" class="form-label">Kebutuhan Akun 524114 </label>
-                            <input class="form-control" type="text" name="524114" id="524114">
+                            <input class="form-control" type="text" value="<?php echo $row['acc_524114'] ?>" name="524114" id="524114">
                           </div>
                         </div>
-                            <script>
-                              function showForm_kendaraan(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-kendaraan").style.display = "block";
-                                } else {
-                                  document.getElementById("form-kendaraan").style.display = "none";
-                                }
-                              }
-  
-                              function showForm_tempat(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-tempat").style.display = "block";
-                                } else {
-                                  document.getElementById("form-tempat").style.display = "none";
-                                }
-                              }
-
-                              function showForm_Kontrak(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-cuti-kontrak").style.display = "block";
-                                } else {
-                                  document.getElementById("form-cuti-kontrak").style.display = "none";
-                                }
-                              }
-                            </script>
                     </div>
                     <!--  Unit Medis -->
-                    <div class="mb-3">   
-                        <input type="checkbox" class="form-check-input primary" value="Medis" name="unit" id="unit" onclick="showForm_Inportant(this)">
-                        <label class="form-check-label text-dark">Medis</label>
-                        <div id="form-cuti-alasan-penting" style="display: none;">
+                    <div class="mb-3">
+                        <?php 
+                          $medis = "SELECT nama_kegiatan, rencana_pelaksana, acc_521211_medis, acc_522191, keterangan FROM dana_bnn WHERE id_dana = '$id'";
+                          $res1 = mysqli_query($konek, $medis);
+                          $row1 = mysqli_fetch_array($res1);
+                        ?>
+                        <div id="form-cuti-alasan-penting" style="<?php echo $medis_detail ?>">
                           <h5 align="center" class="card-title fw-semibold">Unit Medis</h5>
                           <div class="mb-3">
+                            <label for="Nama" class="form-label">Nama Kegiatan & Program(Lengkap)</label>
+                            <input readonly class="form-control" value="<?php echo $row1['nama_kegiatan'] ?>" type="text" name="nama_kegiatan" id="nama_kegiatan"> 
+                          </div>
+                          <div class="mb-3">
+                            <label for="Nama" class="form-label">Rencana Pelaksanaan</label>
+                            <input readonly class="form-control" value="<?php echo $row1['rencana_pelaksana'] ?>" name="when_event" id="when_event"> 
+                          </div>
+                          <div class="mb-3">
                             <label for="Nama" class="form-label">Kebutuhan Akun 521211 </label>
-                            <input class="form-control" type="text" name="521211_medis" id="521211_medis"> 
+                            <input readonly class="form-control" type="text" value="<?php echo $row1['acc_521211_medis'] ?>" name="521211" id="521211"> 
                           </div>
                           <div class="mb-3">
                             <label for="Nama" class="form-label">Kebutuhan Akun 522191 </label>
-                            <input class="form-control" type="text" name="522191" id="522191"> 
+                            <input readonly class="form-control" type="text" value="<?php echo $row1['acc_522191'] ?>" name="522191" id="522191"> 
                           </div>
                           <div class="mb-3">
                             <label for="Nama" class="form-label">Keterangan </label>
-                            <input class="form-control" type="text" name="ket_medis" id="ket_medis "> 
+                            <input readonly class="form-control" type="text" value="<?php echo $row1['keterangan'] ?>" name="ket_medis" id="ket_medis "> 
                           </div>
 
                         </div>
                     </div>
-                    <script>
-                      function showForm_Inportant(checkbox) {
-                        if (checkbox.checked) {
-                          document.getElementById("form-cuti-alasan-penting").style.display = "block";
-                        } else {
-                          document.getElementById("form-cuti-alasan-penting").style.display = "none";
-                        }
-                      }
-                    </script>
                     <!--  Unit Manajemen -->
+                      <?php 
+                        $manajemen = "SELECT nama_kegiatan, rencana_Pelaksana, total_dana_manajemen FROM dana_bnn WHERE id_dana = '$id'";
+                        $res2 = mysqli_query($konek, $manajemen);
+                        $row2 = mysqli_fetch_array($res2);
+                      ?>
                     <div class="mb-3">   
-                        <input type="checkbox" class="form-check-input primary" value="Manajemen" name="unit" id="unit" onclick="showForm_Izin(this)">
-                        <label class="form-check-label text-dark">Manajemen</label>
-                        <div id="form-izin" style="display: none;">
+                        <div id="form-izin" style="<?php echo $manajemen_detail ?>">
                           <h5 align="center" class="card-title fw-semibold">Unit Manajemen</h5>
+                          <div class="mb-3">
+                             <label readonly for="Nama" class="form-label">Nama Kegiatan & Program</label>
+                             <input readonly class="form-control" value="<?php echo $row2['nama_kegiatan'] ?>" type="text" name="nama_kegiatan" id="nama_kegiatan"> 
+                           </div>
+                           <div class="mb-3">
+                             <label for="Nama" class="form-label">Rencana Pelaksana</label>
+                             <input readonly class="form-control" value="<?php echo $row2['rencana_pelaksana'] ?>" name="when_event" id="when_event"> 
+                           </div>
                            <div class="mb-3">
                              <label for="Nama" class="form-label">Total Permintaan Dana</label>
-                             <input class="form-control" placeholder="Total Permintaan Dana" type="text" name="total_manajemen" id="total_manajemen"> 
+                             <input readonly class="form-control" value="<?php echo $row2['total_manajemen'] ?>" type="text" name="total_manajemen" id="total_manajemen"> 
                            </div>
                            <div class="mb-3">
                              <label for="Nama" class="form-label">Metode Pembayaran</label>
-                             <input class="form-control" readonly placeholder="kosongkan" type="text" name="method" id="method"> 
+                             <input readonly class="form-control" readonly placeholder="kosongkan" type="text" name="method" id="method"> 
                            </div>
                         </div>
-                            <script>
-                              function showForm_Izin(checkbox) {
-                                if (checkbox.checked) {
-                                  document.getElementById("form-izin").style.display = "block";
-                                } else {
-                                  document.getElementById("form-izin").style.display = "none";
-                                }
-                              }
-                            </script>
+                    </div><br>
+                    <?php 
+                      $query = "SELECT keterangan_keuangan FROM dana_bnn WHERE id_dana = '$id'";
+                      $result = mysqli_query($konek, $query);
+                      $row = mysqli_fetch_array($result);
+                    ?>
+                    <div class="mb-3"><br>
+                        <h3 align="center" >Keterangan Keuangan</h3><br>
+                        <div class="mb-3" >
+                          <textarea class="form-control" name="keterangan" id="keterangan"><?php echo $row['keterangan_keuangan'] ?></textarea>
+                        </div>
+                        <div style="display: flex; justify-content: center;" >
+                        <input type="text" name="id" id="id" value="<?php echo $id ?>" >
+                        <button type="submit" class="btn btn-primary" value="buat surat" id="simpan_keterangan_RPD" name="simpan_keterangan_RPD"> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-send"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></svg> Tambahkan</button>
+                        </div>
+                    </div>
                     </div>
                 </div>
               </div>
@@ -403,7 +450,6 @@ session_start();
                       $today = $year . '-' . $month . '-' . $day;
                       ?>
                       <input class="form-control" value="<?php echo $today; ?>" type="hidden" name="date_now" id="date_now">
-              <button type="submit" class="btn btn-primary" value="buat surat" id="simpan_pengajuan" name="simpan_keterangan_RPD"> <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-send"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></svg> Tambahkan</button>
             </div>
            </form>           
           </div>

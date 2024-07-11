@@ -59,10 +59,12 @@ if (isset($_POST['login'])) {
                         header('Location:dashboard.php');
                     } elseif ($role >= 2 && $role <= 8) {
                         header('Location:dashboard_pj.php');
-                    } elseif ($role == 9 || $role == 10) {
+                    } elseif ($role >= 9 && $role <= 11 ) {
                         header('Location:list_srt3A.php');
-                    } elseif ($role == 11) {
-                        header('Location:list_srt2dats.php');
+                    } elseif ($role == 12) {
+                        header('Location:dashboard_simak.php');
+                    } elseif ($role >= 13) {
+                        header('Location:dashboard_simak.php');
                     } else {
                         echo "<script language ='JavaScript'> (window.alert('Error: Invalid role'))
                         location.href='index.php'
@@ -150,12 +152,14 @@ if (isset($_POST['simpan'])) {
 }
 // Tambah Pengajuan Dana
 if (isset($_POST['simpan_pengajuan'])) {
+    $unit = $_POST['unit'];
     $nama = $_POST['nama'];
     $nrk = $_POST['nrk'];
     $jabatan = $_POST['jabatan'];
     $nama_kegiatan= $_POST['kegiatan'];
     $kapan = $_POST['event'];
-    $acc_521211 = $_POST['acc521211'];
+    $acc_521211_sosial = $_POST['521211_sosial'];
+    $acc_521211_medis = $_POST['521211_medis'];
     $acc_522141_kendaraan = $_POST['522141_kendaraan'];
     $acc_522141_tempat = $_POST['522141_tempat'];
     $acc_522151 = $_POST['522151'];
@@ -165,10 +169,10 @@ if (isset($_POST['simpan_pengajuan'])) {
     $keterangan = $_POST['ket_medis'];
     $total_dana = $_POST['total_manajemen'];
 
-    $today = date("Y-m-d");
-    $sql = "INSERT INTO dana_bnn(id_dana, nama, NRK, jabatan_pj, nama_kegiatan, rencana_pelaksana, acc_521211, acc_522141_kendaraan, acc_522141_tempat,   
-    acc_522151, acc_524113, acc_524114, acc_522191, keterangan, total_dana_manajemen, veri_1, veri_2, today) VALUES (NULL, '$nama', '$nrk', '$jabatan',
-    '$nama_kegiatan', '$kapan', '$acc_521211', '$acc_522141_kendaraan', '$acc_522141_tempat', '$acc_522151', '$acc_524113', '$acc_524114', '$acc_522191', '$keterangan', '$total_dana', '1', '1', '$today')";
+    $sql = "INSERT INTO dana_bnn(id_dana, nama, NRK, jabatan_pj, nama_kegiatan, rencana_pelaksana, acc_521211_sosial, acc_521211_medis, acc_522141_kendaraan, acc_522141_tempat,   
+    acc_522151, acc_524113, acc_524114, acc_522191, keterangan, total_dana_manajemen, units) VALUES (NULL, '$nama', '$nrk', '$jabatan',
+    '$nama_kegiatan', '$kapan', '$acc_521211_sosial', '$acc_521211_medis', '$acc_522141_kendaraan', '$acc_522141_tempat', '$acc_522151',
+    '$acc_524113', '$acc_524114', '$acc_522191', '$keterangan', '$total_dana', '$unit')";
     // var_dump($kapan);
     // var_dump($nama_kegiatan);
     // var_dump($acc_521211);
@@ -179,11 +183,42 @@ if (isset($_POST['simpan_pengajuan'])) {
 
     if ($query) {
         echo "<script language='JavaScript'> (window.alert('Formulir Pengajuan Dana telah Diajukan')) 
-        location.href='list_pengajuan.php'
+        location.href='dashboard_simak.php'
         </script>";
     } else {
         echo "<script language='JavaScript'> (window.alert('Formulir Pengajuan Dana Gagal')) 
         location.href='add_money_plans.php'
+        </script>";
+    }
+}
+// Tambah Pengajuan Proposal dan LPJ
+if (isset($_POST['simpan_proposal'])) {
+    $unit = $_POST['unit'];
+    $nama = $_POST['nama'];
+    $nrk = $_POST['nrk'];
+    $jabatan = $_POST['jabatan'];
+    $nama_kegiatan= $_POST['kegiatan'];
+    $kapan = $_POST['event'];
+    $today = date("Y-m-d");
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $today_jam = date("H:i:s");
+    $sql = "INSERT INTO lpj_bnn(id_lpj, nama, nrk, jabatan, nama_kegiatan, rencana_pelaksana, units, veri_1,
+     veri_2, today, today_jam) VALUES (NULL, '$nama', '$nrk', '$jabatan', '$nama_kegiatan', '$kapan', '$unit', '0', '0', '$today', '$today_jam')";
+    // var_dump($kapan);
+    // var_dump($nama_kegiatan);
+    // var_dump($acc_521211);
+    // var_dump($sql);
+    // die;
+    $query = mysqli_query($konek, $sql);
+
+
+    if ($query) {
+        echo "<script language='JavaScript'> (window.alert('Formulir Pengajuan Proposal dan LPJ telah Diajukan')) 
+        location.href='dashboard_simak.php'
+        </script>";
+    } else {
+        echo "<script language='JavaScript'> (window.alert('Formulir Pengajuan Proposal dan LPJ Gagal')) 
+        location.href='dana_LPJ.php'
         </script>";
     }
 }
@@ -422,5 +457,132 @@ if (isset($_POST['unlocked'])) {
         location.href='list_account.php'
         </script>";
     }
+}
+
+//jawaban lpj pada kasubag dan kepala balai
+if (isset($_POST['acc_lpj'])) {
+    $role = $_SESSION['id_jabatan_sup'];
+    $id = $_POST['id'];
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $today_date = date("Y-m-d");
+    $today_jam = date("H:i:s");
+    if ($role == 10) {
+        $query = "UPDATE lpj_bnn SET veri_1 = '2', veri_1_date = '$today_date', veri_1_jam = '$today_jam' WHERE id_lpj='$id'";
+        $res = mysqli_query($konek, $query);
+        if ($res) {
+            echo "<script language='JavaScript'> (window.alert('berhasil(kasubag)'))
+            location.href='dashboard_simak.php'
+            </script>";
+            
+        } else {
+            echo "<script language='JavaScript'> (window.alert('Gagal(kasubag)'))
+            location.href='dashboard_simak.php'
+            </script>";
+        }    
+        // var_dump($query);
+        // die;
+    } elseif ($role == 12) {
+        $query = "UPDATE lpj_bnn SET veri_2 = '2', veri_2_date = '$today_date', veri_2_jam = '$today_jam' WHERE id_lpj='$id'";
+        $res = mysqli_query($konek, $query);
+        if ($res) {
+            echo "<script language='JavaScript'> (window.alert('berhasil(kepalai balai)'))
+            location.href='dashboard_simak.php'
+            </script>";
+            
+        } else {
+            echo "<script language='JavaScript'> (window.alert('Gagal(kepalai balai)'))
+            location.href='dashboard_simak.php'
+            </script>";
+        }    
+        // var_dump($query);
+        // die;
+
+    }
+}
+if (isset($_POST['dcl_lpj'])) {
+    $role = $_SESSION['id_jabatan_sup'];
+    $id = $_POST['id'];
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $today_date = date("Y-m-d");
+    $today_jam = date("H:i:s");
+    if ($role == 10) {
+        $query = "UPDATE lpj_bnn SET veri_1 = '1', veri_1_date = '$today_date', veri_1_jam = '$today_jam' WHERE id_lpj='$id'";
+        $res = mysqli_query($konek, $query);
+        if ($res) {
+            echo "<script language='JavaScript'> (window.alert('berhasil(kasubag)'))
+            location.href='dashboard_simak.php'
+            </script>";
+            
+        } else {
+            echo "<script language='JavaScript'> (window.alert('Gagal(kasubag)'))
+            location.href='dashboard_simak.php'
+            </script>";
+        }    
+        // var_dump($query);
+        // die;
+    } elseif ($role == 12) {
+        $query = "UPDATE lpj_bnn SET veri_2 = '1', veri_2_date = '$today_date', veri_2_jam = '$today_jam' WHERE id_lpj='$id'";
+        $res = mysqli_query($konek, $query);
+        if ($res) {
+            echo "<script language='JavaScript'> (window.alert('berhasil(kepalai balai)'))
+            location.href='dashboard_simak.php'
+            </script>";
+            
+        } else {
+            echo "<script language='JavaScript'> (window.alert('Gagal(kepalai balai)'))
+            location.href='dashboard_simak.php'
+            </script>";
+        }    
+        // var_dump($query);
+        // die;
+
+    }
+}
+
+// edit keterangan keuangan
+if (isset($_POST['simpan_keterangan_LPJ'])) {
+    $id = $_POST['id'];
+    $keterangan = $_POST['keterangan'];
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $today_date = date("Y-m-d");
+    $today_jam = date("H:i:s");
+
+    $query = "UPDATE lpj_bnn SET keterangan = '$keterangan', keterangan_jam = '$today_jam', keterangan_date = '$today_date' WHERE id_lpj = '$id'";
+    // var_dump($query);
+    // die;
+    $res = mysqli_query($konek, $query);
+    if ($res) {
+        echo "<script language='JavaScript'> (window.alert('berhasil Keterangan'))
+        location.href='dashboard_simak.php'
+        </script>";
+        
+    } else {
+        echo "<script language='JavaScript'> (window.alert('berhasil Keterangan'))
+        location.href='dashboard_simak.php'
+        </script>";
+    }    
+}
+
+if (isset($_POST['simpan_keterangan_RPD'])) {
+    $id = $_POST['id'];
+    $keterangan = $_POST['keterangan'];
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $today_date = date("Y-m-d");
+    $today_jam = date("H:i:s");
+
+    $query = "UPDATE dana_bnn SET keterangan_keuangan = '$keterangan' WHERE id_dana = '$id'";
+    // var_dump($query);
+    // die;
+    $res = mysqli_query($konek, $query);
+    if ($res) {
+        echo "<script language='JavaScript'> (window.alert('berhasil Keterangan'))
+        location.href='dashboard_simak.php'
+        </script>";
+        
+    } else {
+        echo "<script language='JavaScript'> (window.alert('berhasil Keterangan'))
+        location.href='dashboard_simak.php'
+        </script>";
+    }    
 }
 ?>

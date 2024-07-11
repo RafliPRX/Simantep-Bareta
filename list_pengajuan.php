@@ -173,23 +173,30 @@ if (!isset($_SESSION['login'])) {
       <div class="container-fluid">
         <div class="card">
           <div class="card-body">
-            <h5 align="center" class="card-title fw-semibold mb-4">Daftar Pengajuan Penarikan Dana</h5>
+            <h5 align="center" class="card-title fw-semibold mb-4">Cek Progres Pengajuan Proposal dan LPJ</h5>
             
             <table class="fl-table" border="1" width="100%" >
             <tr>
-                <th width="5%">NO.</th>
-                <th width="10%">NAMA KEGIATAN</th>
-                <th width="20%">TANGGAL PELAKSANAAN</th>
-                <th width="20%">TANGGAL PENGAJUAN PROPOSAL</th>
-                <th width="10%">JABATAN</th>
-                <th width="10%">KASUBAG TATA USAHA</th>
-                <th width="10%">KEPALA BALAI</th>
+                <th rowspan="2" width="5%">NO.</th>
+                <th rowspan="2" width="10%">NAMA KEGIATAN</th>
+                <th rowspan="2" width="15%">TANGGAL PELAKSANAAN</th>
+                <th rowspan="2" width="15%">TANGGAL & JAM PENGAJUAN PROPOSAL</th>
+                <th colspan="2" width="20%">KASUBAG TATA USAHA</th>
+                <th colspan="2" width="20%">KEPALA BALAI</th>
+                <th colspan="2" width="20%">BAGIAN KEUANGAN</th>
+            </tr>
+            <tr>
+                <th width="7%" > Status </th>
+                <th width="10%" > Tanggal & Jam Selesai Periksa </th>
+                <th width="7%" > Status </th>
+                <th width="10%" > Tanggal & Jam Selesai Periksa </th>
+                <th>Keterangan</th>
             </tr>
         <?php
         include 'konek.php';
         $no=1;
         $nama = $_SESSION['nama'];
-        $query="SELECT nama_kegiatan, rencana_pelaksana, jabatan_pj, today, veri_1, veri_2 from dana_bnn where nama = '$nama'";
+        $query="SELECT nama_kegiatan, rencana_pelaksana, jabatan_pj, today, veri_1, veri_1_Date, veri_2, veri_2_Date, keterangan_keuangan, today_jam from dana_bnn where nama = '$nama'";
         $hasil=mysqli_query($konek,$query);
         while ($brs=mysqli_fetch_array($hasil))
         {
@@ -197,8 +204,7 @@ if (!isset($_SESSION['login'])) {
             echo "<th align ='center'>".$no++."</td>";
             echo "<th align ='center'>".$brs[0]."</td>";
             echo "<th align ='center'>".$brs[1]."</td>";
-            echo "<th align ='center'>".$brs[3]."</td>";
-            echo "<th align ='center'>".$brs[2]."</td>";
+            echo "<th align ='center'>".$brs[3]."<br>".$brs[9]."</td>";
             if ($brs[4] == 2) {
                 echo "<td align ='center'>";
                 echo "<img src ='green.png' width ='25' height ='25'";
@@ -216,15 +222,16 @@ if (!isset($_SESSION['login'])) {
                 echo "undefined";
                 echo "</td>";
             }
-            if ($brs[5] == 2) {
+            echo "<th align ='center'>".$brs[5]."</td>";
+            if ($brs[6] == 2) {
                 echo "<th align ='center'>";
                 echo "<img src ='green.png' width ='25' height ='25'";
                 echo "</th>";
-            }else if ($brs[5] == 1){
+            }else if ($brs[6] == 1){
                 echo "<th align ='center'>";
                 echo "<img src ='red.png' width ='25' height ='25'";
                 echo "</th>";
-            }elseif ($brs[5] == 0) {
+            }elseif ($brs[6] == 0) {
                 echo "<th align ='center'>";
                 echo "BELUM DIJAWAB";
                 echo "</th>";
@@ -233,6 +240,8 @@ if (!isset($_SESSION['login'])) {
                 echo "undefined";
                 echo "</th>";
             }
+            echo "<th align ='center'>".$brs[7]."</td>";
+            echo "<th align ='center'>".$brs[8]."</td>";
             // echo "<td align ='center'><a href='liat_surat.php?id=$brs[0]'>lihat surat</a></td>";
         }
         ?>

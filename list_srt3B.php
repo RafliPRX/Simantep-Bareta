@@ -44,7 +44,8 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
           <ul id="sidebarnav">
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Home</span>
+              <span class="hide-menu">Sipecut /</span><br>
+              <span class="hide-menu">Sistem Pengajuan Cuti</span>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="list_srt3A.php" aria-expanded="false">
@@ -142,7 +143,8 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                       echo "<option value='" . $brs[1] . "' $selected>" . $brs[1] . "</option>";
                     }
                   ?>
-                </select>
+                </select><br>
+                <input type="date" name="date" id="date" class="form-control" >
                 <div class="d-flex justify" >
                 <button type="submit" class="btn btn-outline-primary m-1" name="kirim" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -157,6 +159,12 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                   <Button type="submit" class="btn btn-outline-primary m-1" name="switch_malam" > <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-moon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg> Shift Malam  </Button>
                   <Button type="submit" class="btn btn-outline-primary m-1" name="switch_pagi" > <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg> Shift Pagi  </Button>
                 </form>
+                <?php if (isset($_POST['switch_pagi'])) : ?>
+                  <a href="excel_kepeg_xls.php?bagian=pagi" class="btn btn-outline-primary m-1"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-printer"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" /><path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" /><path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" /></svg> Cetak Shift Pagi </a>
+                <?php endif; ?>
+                <?php if (isset($_POST['switch_malam'])) : ?>
+                  <a href="excel_kepeg_xls.php?bagian=malam" class="btn btn-outline-primary m-1"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-printer"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" /><path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" /><path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" /></svg> Cetak Shift Malam </a>
+                <?php endif; ?>
                 </div><br>
               <table class="fl-table" border="1" width="100%" >
                 <tr>
@@ -177,7 +185,10 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                   if (isset($_POST['switch_pagi'])) {
                     $no = 1;
                     $kata = $_GET['nama'];
-                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
+                    date_default_timezone_set('Asia/Kuala_Lumpur');
+                    $filter_date = $_GET['date'];
+                    $today_date = date("Y-m-d");                
+                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total, id_snap FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
                     $qry_total = "SELECT TIME_FORMAT(SEC_TO_TIME(SUM(IF(telat > '00:00:00', TIME_TO_SEC(telat), 0))), '%H:%i:%s') AS total_telat, TIME_FORMAT(SEC_TO_TIME(SUM(IF(cepat > '00:00:00', TIME_TO_SEC(cepat), 0))), '%H:%i:%s') AS total_cepat FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
                     $res_total = mysqli_query($konek, $qry_total);
                     $brs_total = mysqli_fetch_array($res_total);
@@ -203,7 +214,7 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                         <th align ='center'><?php echo $kwk_real ?></th>
                         <th align ='center'><?php echo $jwk_real ?></th>
                         <th align ='center'><?php echo $total ?></th>
-                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> </th>
+                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> <a href="gambar_detail.php?id=<?php echo $brs[9] ?>"> Detail Gambar </a> </th>
                       </tr>
                       <?php
 
@@ -222,7 +233,9 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                   } elseif (isset($_POST['switch_malam'])) {
                     $no = 1;
                     $kata = $_GET['nama'];
-                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'malam'";
+                    date_default_timezone_set('Asia/Kuala_Lumpur');
+                    $today_date = date("Y-m-d");                
+                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total, id_snap FROM snap WHERE (nama like '%$kata%') AND bagian = 'malam'";
                     $qry_total = "SELECT TIME_FORMAT(SEC_TO_TIME(SUM(IF(telat > '00:00:00', TIME_TO_SEC(telat), 0))), '%H:%i:%s') AS total_telat, TIME_FORMAT(SEC_TO_TIME(SUM(IF(cepat > '00:00:00', TIME_TO_SEC(cepat), 0))), '%H:%i:%s') AS total_cepat FROM snap WHERE (nama like '%$kata%') AND bagian = 'malam'";
                     $res_total = mysqli_query($konek, $qry_total);
                     $brs_total = mysqli_fetch_array($res_total);
@@ -248,7 +261,7 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                         <th align ='center'><?php echo $kwk_real ?></th>
                         <th align ='center'><?php echo $jwk_real ?></th>
                         <th align ='center'><?php echo $total ?></th>
-                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> </th>
+                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> <a href="gambar_detail.php?id=<?php echo $brs[9] ?>"> Detail Gambar </a> </th>
                       </tr>
                       <?php
 
@@ -264,14 +277,21 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                       </tr>
 
                     <?php
-                  } else {
+                  } elseif(isset($_GET['kirim'])) {
                     $no = 1;
                     $kata = $_GET['nama'];
-                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
+                    $today = $_GET['date'];
+                    date_default_timezone_set('Asia/Kuala_Lumpur');
+                    $today_date = date("Y-m-d");
+                    $filter_date = $_GET['date'];
+                    $res_date = date("Y/m/d", strtotime($filter_date));                
+                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total, id_snap FROM snap WHERE (nama LIKE '%$kata%' AND today = '$res_date')";
                     $qry_total = "SELECT TIME_FORMAT(SEC_TO_TIME(SUM(IF(telat > '00:00:00', TIME_TO_SEC(telat), 0))), '%H:%i:%s') AS total_telat, TIME_FORMAT(SEC_TO_TIME(SUM(IF(cepat > '00:00:00', TIME_TO_SEC(cepat), 0))), '%H:%i:%s') AS total_cepat FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
                     $res_total = mysqli_query($konek, $qry_total);
                     $brs_total = mysqli_fetch_array($res_total);
                     $res = mysqli_query($konek, $qry);
+                    // var_dump($qry);
+                    // die;
 
                     while ($brs = mysqli_fetch_array($res)) {
                       $total = $brs[8];
@@ -293,7 +313,7 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                         <th align ='center'><?php echo $kwk_real ?></th>
                         <th align ='center'><?php echo $jwk_real ?></th>
                         <th align ='center'><?php echo $total ?></th>
-                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> </th>
+                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> <a href="gambar_detail.php?id=<?php echo $brs[9] ?>"> Detail Gambar </a> </th>
                       </tr>
                       <?php
 
@@ -309,9 +329,56 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                       </tr>
 
                     <?php
-                  }
+                  } else {
+                    $no = 1;
+                    $kata = $_GET['nama'];
+                    date_default_timezone_set('Asia/Kuala_Lumpur');
+                    $today_date = date("Y/m/d");
+                    $qry = "SELECT today ,nama, snap_in, jam_in, telat, snap_out, jam_out, cepat, total, id_snap FROM snap WHERE today = '$today_date' AND bagian = 'pagi'";
+                    $qry_total = "SELECT TIME_FORMAT(SEC_TO_TIME(SUM(IF(telat > '00:00:00', TIME_TO_SEC(telat), 0))), '%H:%i:%s') AS total_telat, TIME_FORMAT(SEC_TO_TIME(SUM(IF(cepat > '00:00:00', TIME_TO_SEC(cepat), 0))), '%H:%i:%s') AS total_cepat FROM snap WHERE (nama like '%$kata%') AND bagian = 'pagi'";
+                    $res_total = mysqli_query($konek, $qry_total);
+                    $brs_total = mysqli_fetch_array($res_total);
+                    $res = mysqli_query($konek, $qry);
+                    // var_dump($qry);
+                    // die;
 
-                    
+                    while ($brs = mysqli_fetch_array($res)) {
+                      $total = $brs[8];
+                      $jam_masuk = $brs[3];
+                      $telat = $brs[4];
+                      $jam_pulang = $brs[6];
+                      $cepat = $brs[7];
+                      $kwk_real = kwkReal($total);
+                      $jwk_real = sisa($total);
+                      $status1 = telat($jam_masuk, $telat);
+                      $status2 = cepat($jam_pulang, $cepat);
+                      ?> 
+                      <tr>
+                        <th align ='center'><?php echo $no++ ?></th>
+                        <th align ='center'><?php echo $brs[0] ?></th>
+                        <th align ='center'><?php echo $brs[1] ?></th>
+                        <th align ='center'><?php echo $jam_masuk ?></th>
+                        <th align ='center'><?php echo $jam_pulang ?></th>
+                        <th align ='center'><?php echo $kwk_real ?></th>
+                        <th align ='center'><?php echo $jwk_real ?></th>
+                        <th align ='center'><?php echo $total ?></th>
+                        <th align ='center'><?php echo $status1 ?> <?php echo $status2 ?> <a href="gambar_detail.php?id=<?php echo $brs[9] ?>"> Detail Gambar </a> </th>
+                      </tr>
+                      <?php
+
+                    }
+                    ?> 
+                      <tr>
+                        <th align ='center' colspan="8">Total Telat</th>
+                        <th align="center"> <?php echo $brs_total[0] ?> </th>
+                      </tr>
+                      <tr>
+                        <th align ='center' colspan="8">Total Pulang Cepat</th>
+                        <th align="center"> <?php echo $brs_total[1] ?> </th>
+                      </tr>
+
+                    <?php
+                  }                    
                   function kwkReal($total) {
                     $jwk_real_raw = strtotime("08:00:00");
                     $jam_selesai_raw = strtotime($total);
@@ -352,7 +419,7 @@ date_default_timezone_set('Asia/Kuala_Lumpur');
                     $jam_balik = strtotime('16:00:00');
                     $waktuSelesai = strtotime($jam_pulang);
                     if ($waktuSelesai <= $jam_balik) {
-                      $cepat = "Pulang Cepat :". $cepat;
+                      $cepat = "Pulang Cepat :". $cepat. "<br>";
                     } else {
                       $cepat = false;
                     }

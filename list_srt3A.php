@@ -141,14 +141,14 @@ if (!isset($_SESSION['login'])) {
               </a>
             </li>
             <?php } else { ?>
-              <li class="nav-small-cap">
+              <li style="display: none;" class="nav-small-cap">
             <a class="sidebar-link" href="dashboard_simak.php" aria-expanded="false">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Simak/</span><br>
               <span class="hide-menu">Sistem Manajemen Keuangan</span>
             </a>  
             </li>
-            <li class="sidebar-item" style="display: block;">
+            <li class="sidebar-item" style="display: none;">
               <a class="sidebar-link" href="Add_money_plans.php" aria-expanded="false">
               <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M12 19h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
@@ -157,7 +157,7 @@ if (!isset($_SESSION['login'])) {
                 <span class="hide-menu">Rencana Penarikan Dana</span>
               </a>
             </li>
-            <li class="sidebar-item" style="display: block;">
+            <li class="sidebar-item" style="display: none;">
               <a class="sidebar-link" href="dana_LPJ.php" aria-expanded="false">
                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
